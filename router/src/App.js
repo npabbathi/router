@@ -1,15 +1,16 @@
-import logo from './logo.svg';
 import './App.css';
+import { Auth } from "./components/auth";
+import { auth } from "./config/firebase";
+import { useState } from "react";
 
 function App() {
+
+  const [currentUser, setCurrentUser] = useState("");
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          ROUTER
-        </p>
-      </header>
+      <h1> Current User: {currentUser} </h1>
+      <Auth setCurrentUser={setCurrentUser}/>
     </div>
   );
 }
