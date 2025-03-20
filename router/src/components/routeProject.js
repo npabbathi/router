@@ -4,6 +4,7 @@ import { getDocs, addDoc, deleteDoc, doc, collection } from "firebase/firestore"
 import RouteCard from "./routeCard";
 import "./routeProject.css"
 
+// This file deals with displaying all of the routes in the firestore database, along with adding/deleting routes.
 export const RouteProject = () => {
     
     //list of all the routes in firebase
@@ -18,6 +19,9 @@ export const RouteProject = () => {
     const [incline, setIncline] = useState(90);
     const [description, setDescription] = useState("Climbing climbing, boulder boulder, rock rock.");
 
+    /**
+     * uses firestore to retrieve the documents for ***all*** the current routes in the database
+     */
     const getRouteList = async () => {
         try {
             const data = await getDocs(routeCollectionRef);
@@ -31,12 +35,18 @@ export const RouteProject = () => {
         }
     };
 
+    /**
+     * uses firestore to delete a route in the database
+     */
     const onDeleteRoute = async (id) => {
         const routeDoc = doc(db, "routes", id);
         await deleteDoc(routeDoc);
         await getRouteList();
     }
 
+    /**
+     * uses the current information the user has filled to create a new route to store in the database
+     */
     const onSubmitRoute = async (e) => {
         e.preventDefault(); //to prevent page refresh
         try {
@@ -52,6 +62,7 @@ export const RouteProject = () => {
         }
     }
 
+    // loads in the list of routes in the database as soon as the component is rendered
     useEffect(() => {
         getRouteList();
     }, []);
