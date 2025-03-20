@@ -1,6 +1,8 @@
 import { db } from "../config/firebase";
 import { useEffect, useState } from "react";
 import { getDocs, addDoc, deleteDoc, doc, collection } from "firebase/firestore";
+import RouteCard from "./routeCard";
+import "./routeProject.css"
 
 export const RouteProject = () => {
     
@@ -35,7 +37,8 @@ export const RouteProject = () => {
         await getRouteList();
     }
 
-    const onSubmitRoute = async () => {
+    const onSubmitRoute = async (e) => {
+        e.preventDefault(); //to prevent page refresh
         try {
             await addDoc(routeCollectionRef, {
                 name: name,
@@ -56,24 +59,25 @@ export const RouteProject = () => {
     return (
         <div>
             <h1>New Route:</h1>
-            <input placeholder="Name" onChange={(e) => setName(e.target.value)}></input>
-            <input placeholder="Grade" type="number" onChange={(e) => setGrade(e.target.value)}></input>
-            <input placeholder="Incline/Angle" type="range" min="0" max="180" step="5" onChange={(e) => setIncline(e.target.value)}/><label>{incline}</label>
-            <input placeholder="Description" onChange={(e) => setDescription(e.target.value)}></input>
-            <button onClick={onSubmitRoute}> Add new route </button>
+            <form onSubmit={(e) => {onSubmitRoute(e)}}>
+                <input placeholder="Name" onChange={(e) => setName(e.target.value)}></input><br/>
+                <input placeholder="Grade" type="number" onChange={(e) => setGrade(e.target.value)}></input><br/>
+                <label><input placeholder="Incline/Angle" type="range" min="0" max="180" step="5" onChange={(e) => setIncline(e.target.value)}/> {incline}º</label><br/>
+                <input placeholder="Description" onChange={(e) => setDescription(e.target.value)}></input><br/>
+                <input type="submit" value="Submit"/>
+            </form>
 
             <h1>{name}</h1>
             <h2>V{grade} - {incline}º</h2>
             <p>{description}</p>
             <hr/>
-            {routesList.map((route) => (
-                <div>
-                    <h1>{route.name}</h1>
-                    <h2>V{route.grade} - {route.incline}º</h2>
-                    <p>{route.description}</p>
-                    <button onClick={() => {onDeleteRoute(route.id)}}>-</button>
-                </div>
-            ))}
+            <div className="allRouteCards">
+                {routesList.map((route) => (
+                    <div>
+                        <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} onDeleteRoute={onDeleteRoute} id={route.id}/>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
