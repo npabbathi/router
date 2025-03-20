@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import PrivateRoutes from './private.js'
+import Login from '../pages/login.js'
 import Home from "../pages/home.js";
 import Create from "../pages/create.js";
 import Review from "../pages/review.js";
@@ -9,11 +11,14 @@ import Map from "../pages/map.js";
 const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/map" element={<Map />} />
-      <Route path="/create" element={<Create />} />
-      <Route path="/review" element={<Review />} />
-      <Route path="/drafts" element={<Drafts />} />
+      <Route element={<PrivateRoutes />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/map" element={<Map />} />
+        <Route path="/create" element={<Create />} />
+        <Route path="/review" element={<Review />} />
+        <Route path="/drafts" element={<Drafts />} />
+      </Route>
+      <Route path="/login" element={<Login/>}/>
     </Routes>
   );
 };

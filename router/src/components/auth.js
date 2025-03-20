@@ -2,7 +2,8 @@ import { auth } from "../config/firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
 import { useState } from "react";
 // This file handles the user authentication to firebase. It allows for signing up, logging in, and logging out of an account
-export const Auth = ({setCurrentUser}) => {
+
+export const Auth = ({ setCurrentUser }) => {
     //input states
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -45,11 +46,20 @@ export const Auth = ({setCurrentUser}) => {
 
     return (
         <div>
-            <input placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
-            <input placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+            <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+            <input placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
             <button onClick={signUp}> Sign Up </button>
             <button onClick={signIn}> Log In </button>
             <button onClick={logout}> Log out </button>
         </div>
-    ) 
+    )
+}
+
+export const logout = async (setCurrentUser) => {
+    try {
+        await signOut(auth);
+        setCurrentUser("");
+    } catch (err) {
+        console.error(err)
+    }
 }
