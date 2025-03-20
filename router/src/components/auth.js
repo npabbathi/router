@@ -1,12 +1,25 @@
 import { auth } from "../config/firebase"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { useState } from "react";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth"
+import { useState, useEffect } from "react";
 // This file handles the user authentication to firebase. It allows for signing up, logging in, and logging out of an account
 
 export const Auth = ({ setCurrentUser }) => {
     //input states
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setCurrentUser(user);
+                localStorage.setItem("token", "true"); 
+            } else {
+                setCurrentUser(null);
+                localStorage.removeItem("token"); 
+            }
+        });
+        return () => unsubscribe();
+    }, [setCurrentUser]);
 
     /**
      * This function tries to create a user with the current email and password. if the requirements for the email/password are not met, an error is catched in the terminal
@@ -55,10 +68,11 @@ export const Auth = ({ setCurrentUser }) => {
     )
 }
 
-export const logout = async (setCurrentUser) => {
+export const logout = async (navigate) => {
     try {
         await signOut(auth);
-        setCurrentUser("");
+        localStorage.removeItem("token");
+        navigate("/login");
     } catch (err) {
         console.error(err)
     }

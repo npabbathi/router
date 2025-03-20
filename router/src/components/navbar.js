@@ -1,14 +1,13 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from '../images/logo.png';
-import { auth } from "../config/firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
 import logout_icon from "../images/person-circle.svg";
 import { logout } from "../components/auth";
 
-const Header = ( { currentUser, setCurrentUser } ) => {
+const Header = ({ currentUser, setCurrentUser }) => {
+    const navigate = useNavigate();
     return (
         <Navbar expand="lg" className="bg-body-tertiary justify-content-center">
             <Container>
@@ -37,19 +36,23 @@ const Header = ( { currentUser, setCurrentUser } ) => {
                             <Nav.Link as={Link} to="/drafts" eventKey="link-4">DRAFTS</Nav.Link>
                         </Nav.Item>
                     </Nav>
-                    <Navbar.Collapse className="justify-content-end">
-                        <Navbar.Text>
-                            Signed in as: <a>{currentUser}</a>
+                    <Dropdown align="end">
+                        <Dropdown.Toggle variant="light" id="dropdown-basic">
                             <img
-                                    src={logout_icon}
-                                    alt="Logout"
-                                    width="20"
-                                    height="20"
-                                    style={{ cursor: "pointer", marginLeft: "10px" }}
-                                    onClick={() => logout(setCurrentUser)}
-                                />
-                        </Navbar.Text>
-                    </Navbar.Collapse>
+                                src={logout_icon}
+                                alt="User Icon"
+                                width="30"
+                                height="30"
+                                className="rounded-circle"
+                                style={{ cursor: "pointer", marginLeft: "10px" }}
+                            />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item disabled>{currentUser}</Dropdown.Item>
+                            <Dropdown.Divider />
+                            <Dropdown.Item onClick={() => logout(setCurrentUser)}>Logout</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
