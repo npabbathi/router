@@ -1,10 +1,10 @@
 import './App.css';
 import { Auth } from "./components/auth";
 import Header from "./components/navbar";
-import { auth } from "./config/firebase";
 import { useState } from "react";
 import Router from "./components/router";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
+import RouteProject from "./components/routeProject";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -18,8 +18,11 @@ function App() {
       <Header/>
       <Router/>
       <div className="App">
-        <h1> Current User: {currentUser} </h1>
+        {currentUser !== "" && <h1> Current User: {currentUser} </h1>}
+        {currentUser === "" && <h1> Sign in! </h1>}
         <Auth setCurrentUser={setCurrentUser} />
+        <hr/>
+        <RouteProject/>
       </div>
     </div>
     </BrowserRouter>
