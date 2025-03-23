@@ -7,6 +7,7 @@ import Create from "../pages/create.js";
 import Review from "../pages/review.js";
 import Drafts from "../pages/drafts.js";
 import Map from "../pages/map.js";
+import Wall from "../pages/wall.js";
 
 const Router = () => {
   return (
@@ -17,6 +18,8 @@ const Router = () => {
         <Route path="/create" element={<Create />} />
         <Route path="/review" element={<Review />} />
         <Route path="/drafts" element={<Drafts />} />
+
+        <Route path="/wall" element={<Wall />} />
       </Route>
       <Route path="/login" element={<Login/>}/>
     </Routes>
