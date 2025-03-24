@@ -15,7 +15,32 @@ const areas = [
         strokeColor: "black",
         link: "/wall",
         image: "/images/map1-walls/fs1.png"
-     }
+     },
+    { name: "East Wall", 
+        shape: "poly", 
+        coords: [77, 33, 209, 34, 186, 98, 215, 161, 150, 310, 126, 500, 112, 571, 77, 574],
+        fillColor: "rgba(255, 0, 0, 0.70)", 
+        strokeColor: "black",
+        link: "/wall",
+        image: "/images/map1-walls/east-wall.png"
+     },
+    { name: "FS2", 
+        shape: "poly", 
+        coords: [285, 154, 313, 176, 351, 245, 343, 263, 327, 277, 289, 270, 286, 248, 272, 222],
+        fillColor: "rgba(255, 0, 0, 0.70)", 
+        strokeColor: "black",
+        link: "/wall",
+        image: "/images/map1-walls/fs2.png"
+     },
+    // { name: "test", 
+    //     shape: "circle", 
+    //     coords: [0, 0, 5],
+    //     preFillColor: "yellow", 
+    //     fillColor: "rgba(255, 0, 0, 0.70)", 
+    //     strokeColor: "black",
+    //     link: "/wall",
+    //     image: ""
+    //  }
 ];
 
 const ClimbingMap = () => {
@@ -40,7 +65,7 @@ const ClimbingMap = () => {
     return (
         <div>
             <h1 className="header">Select a Wall</h1>
-            <div className="header">note: select FS1 for now</div>   {/** delete later once everything is fleshed */}
+            <div className="header">note: east wall, fs1, and fs2 can be selected</div>   {/** delete later once everything is fleshed */}
             <div className="map-con">
                 <ImageMapper
                     src={gym_map}
@@ -50,7 +75,6 @@ const ClimbingMap = () => {
                     // imgWidth={930}
                     responsive
                     parentWidth={mapWidth}
-                    natural
                 />
             </div>
         </div>
