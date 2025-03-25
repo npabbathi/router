@@ -43,12 +43,14 @@ const areas = [
     //  }
 ];
 
+const MIN_WIDTH = 500;
+
 const ClimbingMap = () => {
     const navigate = useNavigate();
-    const [mapWidth, setMapWidth] = useState(window.innerWidth * 0.8)
+    const [mapWidth, setMapWidth] = useState(Math.max(window.innerWidth * 0.55, MIN_WIDTH));
 
     const handleResize = () => {
-        setMapWidth(window.innerWidth * 0.8); // Update width on resize
+        setMapWidth(Math.max(window.innerWidth * 0.55, MIN_WIDTH));
     };
 
     useEffect(() => {
@@ -72,7 +74,6 @@ const ClimbingMap = () => {
                     name="climbing-map"
                     areas={areas}
                     onClick={(area) => handleAreaClick(area)}
-                    // imgWidth={930}
                     responsive
                     parentWidth={mapWidth}
                 />

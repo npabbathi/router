@@ -10,7 +10,7 @@
     align-items: center;
     width: 100vw;
     height: 80vh;
-    overflow: hidden;
+    /* overflow: hidden; */
     margin: auto;
 
     /* border: 1px solid #ccc */
