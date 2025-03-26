@@ -8,6 +8,7 @@ import Review from "../pages/review.js";
 import Drafts from "../pages/drafts.js";
 import Map from "../pages/map.js";
 import Wall from "../pages/wall.js";
+import Upload from "../pages/upload.js";
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
         <Route path="/create" element={<Create />} />
         <Route path="/review" element={<Review />} />
         <Route path="/drafts" element={<Drafts />} />
+        <Route path="/upload" element={<Upload />} />
 
         <Route path="/wall" element={<Wall />} />
       </Route>

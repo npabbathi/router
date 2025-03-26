@@ -1,6 +1,7 @@
 import { auth } from "../config/firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth"
 import { useState, useEffect } from "react";
+
 // This file handles the user authentication to firebase. It allows for signing up, logging in, and logging out of an account
 
 export const Auth = ({ setCurrentUser }) => {
