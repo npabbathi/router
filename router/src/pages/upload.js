@@ -18,27 +18,25 @@ const Upload = () => {
         const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
         uploadBytes(imageRef, imageUpload).then(() => {
             alert(`image /${imageUpload.name} upload`)
+        }).then(() => {
+            listAll(imageListRef).then((response) => {
+                response.items.forEach((item) => {
+                    getDownloadURL(item).then((url) => {
+                        setImageList((prev) => [...prev, url]);
+                    });
+                });
+            });
         })
     };
-
-    useEffect(() => {
-        listAll(imageListRef).then((response) => {
-          response.items.forEach((item) => {
-            getDownloadURL(item).then((url) => {
-                setImageList((prev) => [...prev, url]);
-            });
-          });
-        });
-    }, []);
 
     return (
         <div>
             <input type="file" onChange={(event) => {setImageUpload(event.target.files[0])}}/>
             <button onClick={uploadImage}>Upload Image</button>
-
-            {imageList.map((url) => {
+            <img src={imageList[imageList.length - 1]}/>
+            {/* {imageList.map((url) => {
                 return <img src={url} alt="route"/>
-            })}
+            })} */}
         </div>
     );
 };
