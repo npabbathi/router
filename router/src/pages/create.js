@@ -34,7 +34,7 @@ const Upload = () => {
     };
 
     const nextPage = () => {
-      navigate('/info');
+        navigate('/info', { state: { imageUrl: imageList[imageList.length - 1] } });
     }
 
     return (

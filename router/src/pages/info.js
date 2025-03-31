@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from 'react-router-dom';
 
 const Info = () => {
   const [routeName, setRouteName] = useState(""); 
@@ -6,6 +7,8 @@ const Info = () => {
   const [incline, setIncline] = useState(0);
   const [description, setDesc] = useState(""); 
   const [notes, setNotes] = useState("");
+  const location = useLocation();
+  const imageUrl = location.state?.imageUrl;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -133,6 +136,11 @@ const Info = () => {
           Submit
         </button>
       </form>
+            
+      <div>
+            {imageUrl && <img src={imageUrl} alt="Uploaded" />}
+      </div>
+
     </div>
 
 
