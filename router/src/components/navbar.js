@@ -35,9 +35,6 @@ const Header = ({ currentUser, setCurrentUser }) => {
                         <Nav.Item>
                             <Nav.Link as={Link} to="/drafts" eventKey="link-4">DRAFTS</Nav.Link>
                         </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link as={Link} to="/upload" eventKey="link-5">UPLOAD</Nav.Link>
-                        </Nav.Item>
                     </Nav>
                     <Dropdown align="end">
                         <Dropdown.Toggle variant="light" id="dropdown-basic">
