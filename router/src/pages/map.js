@@ -14,7 +14,7 @@ const areas = [
         fillColor: "rgba(255, 0, 0, 0.70)", 
         strokeColor: "black",
         link: "/wall",
-        image: "/images/map1-walls/fs1.png"
+        image: `${process.env.PUBLIC_URL}/images/map1-walls/fs1.png`
      },
     { name: "East Wall", 
         shape: "poly", 
@@ -22,7 +22,7 @@ const areas = [
         fillColor: "rgba(255, 0, 0, 0.70)", 
         strokeColor: "black",
         link: "/wall",
-        image: "/images/map1-walls/east-wall.png"
+        image: `${process.env.PUBLIC_URL}/images/map1-walls/east-wall.png`
      },
     { name: "FS2", 
         shape: "poly", 
@@ -30,7 +30,15 @@ const areas = [
         fillColor: "rgba(255, 0, 0, 0.70)", 
         strokeColor: "black",
         link: "/wall",
-        image: "/images/map1-walls/fs2.png"
+        image: `${process.env.PUBLIC_URL}/images/map1-walls/fs2.png`
+     },
+     { name: "North Wall", 
+        shape: "poly", 
+        coords: [541, 549, 571, 565, 164, 566, 234, 500, 420, 559, 433, 547, 443, 531],
+        fillColor: "rgba(255, 0, 0, 0.70)", 
+        strokeColor: "black",
+        link: "/wall",
+        image: `${process.env.PUBLIC_URL}/images/map1-walls/north-wall.png`
      },
     // { name: "test", 
     //     shape: "circle", 
