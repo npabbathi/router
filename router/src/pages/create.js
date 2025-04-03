@@ -7,41 +7,38 @@ import { useNavigate } from 'react-router-dom';
 const Upload = () => {
 
     const [imageUpload, setImageUpload] = useState(null);
-    const [imageList, setImageList] = useState([]);
+    const [image, setImage] = useState(null);
     const [isUploaded, setIsUploaded] = useState(false);
     const navigate = useNavigate();
 
-    const imageListRef = ref(storage, "images/");
-
     const uploadImage = () => {
-        if (imageUpload == null) {
-            console.error("no image selected")
+        if (!imageUpload) {
+            console.error("No image selected");
             return;
         }
-        const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+    
+        const uniqueImageName = `${imageUpload.name + v4()}`;
+        const imageRef = ref(storage, `images/${uniqueImageName}`);
+    
         uploadBytes(imageRef, imageUpload).then(() => {
-            alert(`image /${imageUpload.name} upload`)
-        }).then(() => {
-            listAll(imageListRef).then((response) => {
-                response.items.forEach((item) => {
-                    getDownloadURL(item).then((url) => {
-                        setImageList((prev) => [...prev, url]);
-                        setIsUploaded(true);
-                    });
-                });
-            });
-        })
+            return getDownloadURL(imageRef); // Fetch URL for the uploaded image
+        }).then((url) => {
+            setImage(url);
+            setIsUploaded(true);
+        }).catch((error) => {
+            console.error("Upload failed:", error);
+        });
     };
-
+    
     const nextPage = () => {
-        navigate('/info', { state: { imageUrl: imageList[imageList.length - 1] } });
-    }
+        navigate('/info', { state: { image } }); // Pass as an object
+    };
 
     return (
         <div>
             <input type="file" onChange={(event) => {setImageUpload(event.target.files[0])}}/>
             <button onClick={uploadImage}>Upload Image</button>
-            <img src={imageList[imageList.length - 1]}/>
+            <img src={image}/>
             {/* {imageList.map((url) => {
                 return <img src={url} alt="route"/>
             })} */}

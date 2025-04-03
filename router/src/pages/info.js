@@ -20,7 +20,7 @@ const Info = () => {
 
 
   const location = useLocation();
-  const imageUrl = location.state?.imageUrl;
+  const imageUrl = location.state?.image;
 
 const onSaveDraft = async (e) => {
   e.preventDefault();
