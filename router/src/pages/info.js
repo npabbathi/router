@@ -1,151 +1,101 @@
 import React, { useState } from "react";
 import { useLocation } from 'react-router-dom';
 
+
+import { RouteActions } from "./routeActions"
+import './info.css';
+
 const Info = () => {
-  const [routeName, setRouteName] = useState(""); 
+
+  /* route information here */
+  const [routeName, setRouteName] = useState("My New Route");
   const [grade, setGrade] = useState(""); 
   const [incline, setIncline] = useState(0);
   const [description, setDesc] = useState(""); 
   const [notes, setNotes] = useState("");
+  const now = new Date(); 
+  const timestamp = now.toLocaleString(); 
+
+  const { onSubmitRoute } = RouteActions(); 
+
+
   const location = useLocation();
   const imageUrl = location.state?.imageUrl;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    console.log({ routeName, grade, incline, description, notes });
-  };
+const onSaveDraft = async (e) => {
+  e.preventDefault();
+  
+  try {
+    await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp});
+    alert("Route saved to drafts!"); 
+  } catch(error) { 
+    console.error("Error with saving route to draft :(", error); 
+    alert("Failed to save the route. "); 
+  }
+};
 
-  return (
-    <div style={{ maxWidth: '100%', margin: 'auto', padding: '20px', background: 'white', boxShadow: '0px 0px 10px rgba(0,0,0,0.1)', borderRadius: '10px' }}>
-      <h1 style={{ fontSize: '30px', fontWeight: 'bold', marginBottom: '16px' }}>Create Route</h1>
 
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '16px' }}>
-          <label htmlFor="routeName" style={{ display: 'block', marginBottom: '8px' }}>Route Name</label>
-          <input 
-            id="routeName"
-            type="text"
-            fullWidth
-            value={routeName}
-            onChange={(e) => setRouteName(e.target.value)} 
-            placeholder="Enter route name"
-            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
-            required
-          />
+return (
+  <div className = "container">
+    <h1 className = "title">Create Route</h1>
+    <form onSubmit = {onSaveDraft}> 
+      <div className = "form-group">
+        <label htmlFor = "routeName">Route Name</label>
+        <input 
+          id="routeName" type = "text" value = {routeName}
+          placeholder="Enter route name"
+          onChange={(e) => setRouteName(e.target.value)} 
+          required
+        />
+      </div>
+      
+      <div className = "form-group">
+        <label htmlFor = "grade">Grade</label>
+        <div className = "grade-buttons">
+          {Array.from({ length: 8 }, (_, i) => `V${i + 1}`).map((gradeLabel) => (
+            <button 
+              key = {gradeLabel}
+              type = "button"
+              onClick = {() => setGrade(gradeLabel)} 
+              className = {grade === gradeLabel ? "grade-button selected" : "grade-button"}
+            >
+              {gradeLabel}
+            </button>
+          ))}
         </div>
-        
-        <div style={{ marginBottom: '16px' }}>
-        <label htmlFor="grade" style={{ display: 'block', marginBottom: '8px' }}>Grade</label>
-            <div style={{ display: 'flex', gap: '8px' }}>
-                {Array.from({ length: 8 }, (_, i) => `V${i + 1}`).map((gradeLabel) => (
-                <button 
-                    key={gradeLabel}
-                    type="button"
-                    onClick={() => setGrade(gradeLabel)} 
-                    style={{
-                    padding: '10px',
-                    width: '40px', 
-                    height: '40px', 
-                    borderRadius: '8px',
-                    border: '1px solid #ccc',
-                    backgroundColor: grade === gradeLabel ? '#8390FA' : '#fff', 
-                    color: grade === gradeLabel ? '#fff' : '#000', 
-                    }}
-                >
-                    {gradeLabel}
-                </button>
-                ))}
-            </div>
-        </div>
-            
-        <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'center' }}>
-            <label 
-                htmlFor="incline" 
-                style={{ display: 'inline-block', marginRight: '16px', width: '100px', }}
-            > Wall Incline
-            </label>
-            <input 
-                id="inclineSlider"
-                type="range"
-                min="0"
-                max="180"
-                value={incline}
-                onChange={(e) => setIncline(Number(e.target.value))}
-                style={{
-                width: '80%',
-                marginRight: '16px', 
-                }}
-            />
-            <input 
-                id="incline"
-                type="number"
-                value={incline}
-                onChange={(e) => setIncline(Number(e.target.value))}
-                style={{
-                width: '60px', 
-                padding: '8px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                }}
-            />
-        </div>
-
-
-        <div style={{ marginBottom: '16px' }}>
-          <label htmlFor="description" style={{ display: 'block', marginBottom: '8px' }}>Description</label>
-          <input 
-            id="description"
-            type="text"
-            fullWidth
-            value={description}
-            onChange={(e) => setDesc(e.target.value)} 
-            placeholder="Enter route information."
-            style={{ width: '100%',
-                    padding: '8px',
-                    borderRadius: '4px', 
-                    border: '1px solid #ccc', 
-                    height: '150px'}}
-            required
-          />
-        </div>
-
-        <div style={{ marginBottom: '16px' }}>
-          <label htmlFor="notes" style={{ display: 'block', marginBottom: '8px' }}>Additional Notes</label>
-          <input 
-            id="notes"
-            type="text"
-            fullWidth
-            value={notes}
-            onChange={(e) => setNotes((e.target.value))} 
-            placeholder="Extra notes (safety, concerns, etc.)"
-            style={{ width: '100%',
-                    padding: '8px', 
-                    borderRadius: '4px', 
-                    border: '1px solid #ccc',  
-                    height: '150px', 
-                    resize: 'vertical'}}
-            required
-          />
-        </div> 
-
-        <button 
-          type="submit" 
-          style = {{  borderRadius: '4px'}}
-          >
-          Submit
-        </button>
-      </form>
-            
-      <div>
-            {imageUrl && <img src={imageUrl} alt="Uploaded" />}
+      </div>
+      
+      <div className = "form-group incline-group">
+        <label htmlFor = "incline">Wall Incline</label>
+        <input id = "inclineSlider" type = "range" min = "0" max = "180" value = {incline}
+          onChange={(e) => setIncline(Number(e.target.value))}
+        />
+        <input  id = "incline" type = "number"value = {incline}
+          onChange = {(e) => setIncline(Number(e.target.value))}
+        />
       </div>
 
-    </div>
+      <div className = "form-group">
+        <label htmlFor = "description">Description</label>
+        <textarea value = {description} onChange = {(e) => setDesc(e.target.value)} 
+          placeholder="Enter route information."
+          required
+        />
+      </div>
 
-
-
-  );
+      <div className="form-group">
+        <label htmlFor = "notes">Additional Notes</label>
+        <textarea value = {notes} onChange={(e) => setNotes(e.target.value)} 
+          placeholder = "Extra notes (safety, concerns, etc.)"
+          required
+        />
+      </div>
+      <input type = "submit" value="Save to Drafts" className="submit-button"/>
+    </form>
+    
+    {imageUrl && <img src = {imageUrl} alt = "Uploaded" className = "uploaded-image" />}
+  </div>
+);
 };
 
 export default Info;

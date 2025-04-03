@@ -6,6 +6,7 @@ const Welcome = () => {
   const gyms = ["Austin Bouldering Project - Springdale ", "Austin, Bouldering Project – Westgate", "Crux Climbing Center", "Mesa Rim Climbind Center " ];
 
   const navigate = useNavigate(); 
+  
   const handleSubmit = () => {
     if (selectedGym) {
         navigate("/map", {state: {gym: selectedGym}}); 
