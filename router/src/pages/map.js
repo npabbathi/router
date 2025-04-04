@@ -39,6 +39,48 @@ const areas = [
         link: "/wall",
         image: `${process.env.PUBLIC_URL}/images/map1-walls/north-wall.png`
      },
+     { name: "Roof", 
+        shape: "poly", 
+        coords: [327, 34, 577, 34, 514, 82, 467, 175, 413, 152, 371, 118, 354, 99, 336, 65],
+        fillColor: "rgba(255, 0, 0, 0.70)", 
+        strokeColor: "black",
+        link: "/wall",
+        image: `${process.env.PUBLIC_URL}/images/map1-walls/roof.png`
+     },
+     { name: "FS3", 
+        shape: "poly", 
+        coords: [611, 117, 650, 92, 713, 154, 698, 193, 681, 219, 647, 217, 629, 221],
+        fillColor: "rgba(255, 0, 0, 0.70)", 
+        strokeColor: "black",
+        link: "/wall",
+        image: `${process.env.PUBLIC_URL}/images/map1-walls/fs3.png`
+     },
+     { name: "FS4", 
+        shape: "poly", 
+        coords: [677, 356, 685, 346, 707, 335, 711, 359, 718, 376, 718, 389, 699, 428, 672, 426, 675, 396, 671, 376],
+        fillColor: "rgba(255, 0, 0, 0.70)", 
+        strokeColor: "black",
+        link: "/wall",
+        image: `${process.env.PUBLIC_URL}/images/map1-walls/fs4.png`
+     },
+     { name: "West Wall", 
+        shape: "poly", 
+        coords: [732, 33, 882, 33, 882, 536, 767, 536, 767, 566, 739, 566, 737, 555, 741, 545, 767, 525, 835, 514, 781, 273, 794, 74],
+        fillColor: "rgba(255, 0, 0, 0.70)", 
+        strokeColor: "black",
+        link: "/wall",
+        image: `${process.env.PUBLIC_URL}/images/map1-walls/west-wall.png`
+     },
+     { name: "FSBIG", 
+        shape: "poly", 
+        coords: [458, 297, 466, 249, 508, 222, 554, 233, 591, 297, 589, 353, 569, 434, 388, 450, 370, 457, 354, 453, 
+            344, 436, 331, 428, 321, 401, 327, 389, 325, 371, 376, 379, 400, 374, 449, 322, 473, 317, 446, 334, 396, 381, 
+            366, 385, 332, 379, 328, 394, 330, 415, 344, 436, 363, 451, 397, 447, 463, 417, 550, 333, 557, 292, 509, 227, 471, 249, 458, 297],
+        fillColor: "rgba(255, 0, 0, 0.70)", 
+        strokeColor: "black",
+        link: "/wall",
+        image: `${process.env.PUBLIC_URL}/images/map1-walls/fsbig.png`
+     },
     // { name: "test", 
     //     shape: "circle", 
     //     coords: [0, 0, 5],
@@ -74,7 +116,6 @@ const ClimbingMap = () => {
     return (
         <div>
             <h1 className="header">Select a Wall</h1>
-            <div className="header">note: east wall, fs1, and fs2 can be selected</div>   {/** delete later once everything is fleshed */}
             <div className="map-con">
                 <ImageMapper
                     src={gym_map}
