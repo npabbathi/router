@@ -20,13 +20,14 @@ const Info = () => {
 
 
   const location = useLocation();
-  const imageUrl = location.state?.image;
+  const imageUrl = location.state?.imageObject;
+  const imagePath = location.state?.imagePath;
 
 const onSaveDraft = async (e) => {
   e.preventDefault();
   
   try {
-    await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp});
+    await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, imagePath});
     alert("Route saved to drafts!"); 
   } catch(error) { 
     console.error("Error with saving route to draft :(", error); 

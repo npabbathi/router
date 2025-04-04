@@ -26,13 +26,13 @@ const Review = () => {
         });
 
         const fetchRoute = async () => {
-            await getRouteByName("Allison's Test 2.0 ");
+            await getRouteByName("among us");
             setIsLoading(false);
         };
 
         fetchRoute();
 
-        const imageRef = ref(storage, "images/IMG_4441_fddd11b0-293e-434a-8c57-766e6d54c783.JPG");
+        const imageRef = ref(storage, "images/6887_Among_us_Yellow_f7f07057-91ce-404d-a372-8e62ec0e36ef.png");
         getDownloadURL(imageRef)
             .then((url) => {
                 setImage(url);

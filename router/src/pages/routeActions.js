@@ -57,7 +57,7 @@ export const RouteActions = () => {
     /**
      * uses the current information the user has filled to create a new route to store in the database
      */
-    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp }) => {
+    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp, imagePath }) => {
         // e.preventDefault(); //to prevent page refresh
         try {
             await addDoc(routeCollectionRef, {
@@ -66,7 +66,8 @@ export const RouteActions = () => {
                 incline,
                 description,
                 notes,
-                timestamp
+                timestamp,
+                imagePath
             })
             await getRouteList();
         } catch (err) {

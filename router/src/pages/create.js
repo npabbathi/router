@@ -6,8 +6,12 @@ import { useNavigate } from 'react-router-dom';
 
 const Upload = () => {
 
+    // image selected by the "choose file" button 
     const [imageUpload, setImageUpload] = useState(null);
+    // image object used to display on screen once image is selected
     const [image, setImage] = useState(null);
+    // path of the image to save to firestore
+    const [imagePath, setImagePath] = useState("");
     const [isUploaded, setIsUploaded] = useState(false);
     const navigate = useNavigate();
 
@@ -31,6 +35,7 @@ const Upload = () => {
             .then(() => getDownloadURL(imageRef))
             .then((url) => {
                 setImage(url);
+                setImagePath(`images/${uniqueImageName}`);
                 setIsUploaded(true);
             })
             .catch((error) => {
@@ -39,7 +44,12 @@ const Upload = () => {
     };
     
     const nextPage = () => {
-        navigate('/info', { state: { image } }); // Pass as an object
+        navigate('/info', { state: 
+            { 
+                imageObject : image,
+                imagePath : imagePath,
+            } 
+        }); // Pass as an object
     };
 
     return (
@@ -47,9 +57,6 @@ const Upload = () => {
             <input type="file" onChange={(event) => {setImageUpload(event.target.files[0])}}/>
             <button onClick={uploadImage}>Upload Image</button>
             <img src={image}/>
-            {/* {imageList.map((url) => {
-                return <img src={url} alt="route"/>
-            })} */}
             <button onClick={nextPage} disabled={!isUploaded}>Next</button>
         </div>
     );
