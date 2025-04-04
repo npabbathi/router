@@ -89,7 +89,7 @@ export const RouteProject = () => {
             <div className="allRouteCards">
                 {routesList.map((route) => (
                     <div>
-                        <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} id={route.id}/>
+                        <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} id={route.id} can_delete={true}/>
                     </div>
                 ))}
             </div>

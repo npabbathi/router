@@ -6,7 +6,6 @@ import ImageMapper from "react-img-mapper";
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-
 const areas = [
     { name: "FS1", 
         shape: "poly", 

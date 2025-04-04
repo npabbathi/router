@@ -3,7 +3,7 @@ import "./routeCard.css"
 
 //this file deals with displaying a "card" or overview of a route, either used in the drafts or current/previous routes part of the website
 
-export const RouteCard = ({name, grade, incline, description, onDeleteRoute, id, notes, timestamp}) => {
+export const RouteCard = ({name, grade, incline, description, onDeleteRoute, id, notes, timestamp, can_delete}) => {
     
     return (
         <div className="card">
@@ -14,7 +14,7 @@ export const RouteCard = ({name, grade, incline, description, onDeleteRoute, id,
             <p>{description}</p>
             <p> {notes} </p>
             <p> {timestamp} </p>
-            <button onClick={() => {onDeleteRoute(id)}}>Delete Route</button>
+            {can_delete && <button onClick={() => { onDeleteRoute(id) }}>Delete Route</button>}
         </div>
     )
 }

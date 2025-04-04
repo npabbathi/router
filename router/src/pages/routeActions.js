@@ -1,19 +1,19 @@
 import { db } from "../config/firebase";
 import { useEffect, useState } from "react";
-import { getDocs, addDoc, deleteDoc, doc, collection } from "firebase/firestore";
+import { getDocs, addDoc, deleteDoc, doc, collection, query, where, } from "firebase/firestore";
 import "../components/routeProject.css"
 
 
 // This file deals with displaying all of the routes in the firestore database, along with adding/deleting routes.
 export const RouteActions = () => {
-    
+
     //list of all the routes in firebase
     const [routesList, setRoutesList] = useState([]);
+    const [route, setRoute] = useState(null);
 
     //get the collection of movies from firebase
     const routeCollectionRef = collection(db, "routes")
 
-   
     const getRouteList = async () => {
         try {
             const data = await getDocs(routeCollectionRef);
@@ -27,6 +27,24 @@ export const RouteActions = () => {
         }
     };
 
+    const getRouteByName = async (routeName) => {
+        console.log(`Searching for route: ${routeName}`); // Log the search term
+        const routeCollectionRef = collection(db, "routes");
+        const q = query(routeCollectionRef, where("name", "==", routeName));
+
+        try {
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
+                const routeData = querySnapshot.docs[0].data();
+                setRoute(routeData);
+            } else {
+                console.log(`No route found with name: "${routeName}"`); // Log no results
+                setRoute(null);
+            }
+        } catch (error) {
+            console.error("Error fetching route: ", error);
+        }
+    };
     /**
      * uses firestore to delete a route in the database
      */
@@ -39,7 +57,7 @@ export const RouteActions = () => {
     /**
      * uses the current information the user has filled to create a new route to store in the database
      */
-    const onSubmitRoute = async ({name, grade, incline, description, notes, timestamp}) => {
+    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp }) => {
         // e.preventDefault(); //to prevent page refresh
         try {
             await addDoc(routeCollectionRef, {
@@ -47,7 +65,7 @@ export const RouteActions = () => {
                 grade,
                 incline,
                 description,
-                notes, 
+                notes,
                 timestamp
             })
             await getRouteList();
@@ -61,6 +79,5 @@ export const RouteActions = () => {
         getRouteList();
     }, []);
 
-    return {routesList, getRouteList, onDeleteRoute, onSubmitRoute }; 
-}; 
-    
+    return { routesList, getRouteList, onDeleteRoute, onSubmitRoute, getRouteByName, route };
+};

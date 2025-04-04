@@ -17,17 +17,25 @@ const Upload = () => {
             return;
         }
     
-        const uniqueImageName = `${imageUpload.name + v4()}`;
-        const imageRef = ref(storage, `images/${uniqueImageName}`);
+        const originalName = imageUpload.name;
+        const extension = originalName.substring(originalName.lastIndexOf('.'));
+        const baseName = originalName.substring(0, originalName.lastIndexOf('.'));
+        const uniqueImageName = `${baseName}_${v4()}${extension}`;
     
-        uploadBytes(imageRef, imageUpload).then(() => {
-            return getDownloadURL(imageRef); // Fetch URL for the uploaded image
-        }).then((url) => {
-            setImage(url);
-            setIsUploaded(true);
-        }).catch((error) => {
-            console.error("Upload failed:", error);
-        });
+        const imageRef = ref(storage, `images/${uniqueImageName}`);
+        const metadata = {
+            contentType: imageUpload.type || "image/jpeg",
+        };
+    
+        uploadBytes(imageRef, imageUpload, metadata)
+            .then(() => getDownloadURL(imageRef))
+            .then((url) => {
+                setImage(url);
+                setIsUploaded(true);
+            })
+            .catch((error) => {
+                console.error("Upload failed:", error);
+            });
     };
     
     const nextPage = () => {
