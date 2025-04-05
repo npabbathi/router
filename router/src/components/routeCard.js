@@ -1,21 +1,34 @@
-import { useEffect, useState } from "react";
 import "./routeCard.css"
-import { storage } from "../config/firebase";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from "react";
 
 //this file deals with displaying a "card" or overview of a route, either used in the drafts or current/previous routes part of the website
 
 export const RouteCard = ({name, grade, incline, description, onDeleteRoute, id, notes, timestamp, image, can_delete}) => {
+
+    const [isHovering, setIsHovering] = useState(false);
     
     return (
-        <div className="card">
-            <h1>{name}</h1>
-            <img src={image}></img>
-            <hr/>
-            <h2>{grade} - {incline}º</h2>
-            <p>{description}</p>
-            <p> {notes} </p>
-            <p> {timestamp} </p>
-            {can_delete && <button onClick={() => { onDeleteRoute(id) }}>Delete Route</button>}
+        <div className="routeCard">
+            {/* for icon buttons (credit below) */}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+            <div className="imagePreview" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                <div className="underImage">
+                    <img src={image}></img>
+                </div>
+                { isHovering &&
+                    <div className="overText">
+                        <p3> {timestamp} </p3>
+                        <p> Description: {description}</p>
+                        <p> Notes: {notes} </p>
+                    </div>
+                }
+            </div>
+            <div className="titleInfo">
+                <h1>{name}</h1>
+                {can_delete && <button onClick={() => { onDeleteRoute(id) }}><i class="fa fa-trash"></i></button>}
+            </div>
+            <h4>{grade} - {incline}º</h4>
         </div>
     )
 }
