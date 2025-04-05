@@ -1,0 +1,68 @@
+.route-card {
+    background: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: white;
+}
+
+.route-card .route-header {
+    display: flex;
+    align-items: flex-start;
+    font-size: 18px;
+    font-weight: bold; 
+    flex-direction: row;
+}
+
+.route-card .header .img {
+    flex: 1;
+}
+
+.route-card .header .name-container {
+    flex: 1;
+    flex-direction: column;
+}
+
+.route-card .description {
+    border: 1px solid #120101; 
+    border-radius: 10px;
+}
+
+.route-card .details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    font-size: 14px;
+    padding: 10px 0;
+}
+
+.route-card .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.route-element {
+    flex-direction: column;
+    flex: 1;
+    border-radius: 1px;
+    border-color: red;
+}
+
+.route-header-name-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .route-card {
+        max-width: 100%;
+    }
+}
