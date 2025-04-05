@@ -1,4 +1,104 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+}
+
+.col:first-child {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .route-image {
-    max-width: 50%;
-    margin-top: 16px;
+    width: 100%;
+    max-height: 100%;
+    object-fit: fill;
+}
+
+.col:last-child {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    /* gap: 20px; */
+    /* padding: 20px; */
+    background: white;
+    /* border-radius: 10px; */
+    border: 1px solid #000000;
+    overflow-y: auto;
+}
+
+.route-card {
+    background: #fff;
+    padding: 20px;
+    /* border-radius: 10px; */
+    /* border: 1px solid #120101; */
+}
+
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.comments-section {
+    /* border-radius: 10px; */
+    padding: 20px;
+    border: 1px solid #120101;
+}
+
+.details-section {
+    /* border-radius: 10px; */
+    padding: 20px;
+    border: 1px solid #120101;
+}
+
+.title {
+    border-color: #120101;
+    border-radius: 10px;
+}
+
+.comment {
+    background: var(--secondary-color);
+    padding: 10px;
+    border-radius: 15px;
+    color: white;
+    border: 2px solid hsl(0, 89%, 4%);
+    margin-bottom: 10px;
+}
+
+.comment p {
+    margin: 0;
+}
+
+form {    
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    resize: none;
+}
+
+button {
+    background: var(--secondary-color);
+    color: white;
+    padding: 10px;
+    border-radius: 10px !important;
+    border: 2px solid hsl(0, 89%, 4%);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: var(--accent-color);
 }

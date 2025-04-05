@@ -1,10 +1,36 @@
+:root {
+  --primary-color: #8390FA;    /* Purple */
+  --secondary-color: #397367;  /* Dark background */
+  --accent-color: #EF709D;     /* Accent color */
+  --dark-color: #1D2F6F;      
+  --text-color: #000000;       
+  --background-color: #FDFFFC;    
+  --link-color: #3f88ff;       /* Link color */
+}
+
 body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0e0e11;
+  color: white;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+}
+
+.navbar {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--dark-color);
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar .nav-link:hover {
+  color: var(--primary-color);
+}
+
+blockquote, .serif-text {
+  font-family: 'Noto Serif', serif;
+  font-style: italic;
 }
 
 code {

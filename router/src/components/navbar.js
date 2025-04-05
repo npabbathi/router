@@ -22,7 +22,7 @@ const Header = ({ currentUser, setCurrentUser }) => {
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="justify-content-center" variant="underline" defaultActiveKey="/home">
+                    <Nav className="justify-content-center navbar" variant="underline" defaultActiveKey="/home">
                         <Nav.Item>
                             <Nav.Link as={Link} to="/map" eventKey="link-1">MAP</Nav.Link>
                         </Nav.Item>
