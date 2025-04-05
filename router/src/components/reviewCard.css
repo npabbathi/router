@@ -12,26 +12,16 @@
     color: white;
 }
 
-.route-card .route-header {
+.header {
+    border-color: black;
+}
+
+.route-card .header {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-between;
     font-size: 18px;
-    font-weight: bold; 
-    flex-direction: row;
-}
-
-.route-card .header .img {
-    flex: 1;
-}
-
-.route-card .header .name-container {
-    flex: 1;
-    flex-direction: column;
-}
-
-.route-card .description {
-    border: 1px solid #120101; 
-    border-radius: 10px;
+    font-weight: bold;
 }
 
 .route-card .details {
@@ -48,17 +38,25 @@
     gap: 8px;
 }
 
-.route-element {
-    flex-direction: column;
-    flex: 1;
-    border-radius: 1px;
-    border-color: red;
+.route-card .description {
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 8px;
 }
 
-.route-header-name-container {
+.route-card .tags {
     display: flex;
-    flex-direction: row;
-    flex: 1;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.route-card .tag {
+    background: rgba(0, 0, 255, 0.2);
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 @media (max-width: 768px) {
