@@ -27,7 +27,7 @@ const onSaveDraft = async (e) => {
   e.preventDefault();
   
   try {
-    await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, imagePath});
+    await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: []});
     alert("Route saved to drafts!"); 
   } catch(error) { 
     console.error("Error with saving route to draft :(", error); 

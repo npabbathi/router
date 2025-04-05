@@ -7,15 +7,14 @@ import Comment from "../components/comment";
 import { auth } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import './review.css';
+import { db } from "../config/firebase";
+import {doc, updateDoc} from "firebase/firestore";
 
 const Review = () => {
     const [image, setImage] = useState(null);
     const { route, getRouteByName } = RouteActions();
     const [isLoading, setIsLoading] = useState(true);
-    const [comments, setComments] = useState([
-        { username: "Alice", text: "This is a great route!" },
-        { username: "Bob", text: "Tough but fun!" }
-    ]);
+    const [comments, setComments] = useState([]);
     const [commentText, setCommentText] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
 
@@ -25,15 +24,17 @@ const Review = () => {
         });
 
         const fetchRoute = async () => {
-            await getRouteByName("acm kickoff");
+            await getRouteByName("blue by billie eilish")
             setIsLoading(false);
         };
 
         fetchRoute();
-    }, [getRouteByName]);
+    }, []);
 
     useEffect(() => {
         if (route && route.imagePath) {
+            setComments(route.comments);
+            setIsLoading(false);
             const imageRef = ref(storage, route.imagePath);
             getDownloadURL(imageRef)
                 .then((url) => {
@@ -53,8 +54,12 @@ const Review = () => {
             return;
         }
 
-        const newComment = { username: currentUser, text: commentText };
+        const newComment = { username: currentUser, comment: commentText };
         setComments((prevComments) => [...prevComments, newComment]);
+        const routeRef = doc(db, "routes", route.id);
+        updateDoc(routeRef, {
+            comments: [...comments, newComment]
+        })
         setCommentText('');
     };
 
@@ -84,7 +89,7 @@ const Review = () => {
                     </div>
                     {comments.length > 0 ? (
                         comments.map((comment, index) => (
-                            <Comment key={index} username={comment.username} text={comment.text} className="comment" />
+                            <Comment key={index} username={comment.username} comment={comment.comment} className="comment" />
                         ))
                     ) : (
                         <p>No comments yet!</p>

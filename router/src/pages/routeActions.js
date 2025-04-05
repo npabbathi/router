@@ -11,7 +11,7 @@ export const RouteActions = () => {
     const [routesList, setRoutesList] = useState([]);
     const [route, setRoute] = useState(null);
 
-    //get the collection of movies from firebase
+    //get the collection of routes from firebase
     const routeCollectionRef = collection(db, "routes")
 
     const getRouteList = async () => {
@@ -35,7 +35,11 @@ export const RouteActions = () => {
         try {
             const querySnapshot = await getDocs(q);
             if (!querySnapshot.empty) {
-                const routeData = querySnapshot.docs[0].data();
+                const filteredData = querySnapshot.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                }));
+                const routeData = filteredData[0];
                 setRoute(routeData);
             } else {
                 console.log(`No route found with name: "${routeName}"`); // Log no results
@@ -57,7 +61,7 @@ export const RouteActions = () => {
     /**
      * uses the current information the user has filled to create a new route to store in the database
      */
-    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp, imagePath }) => {
+    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp, imagePath, comments }) => {
         // e.preventDefault(); //to prevent page refresh
         try {
             await addDoc(routeCollectionRef, {
@@ -67,7 +71,8 @@ export const RouteActions = () => {
                 description,
                 notes,
                 timestamp,
-                imagePath
+                imagePath,
+                comments
             })
             await getRouteList();
         } catch (err) {
