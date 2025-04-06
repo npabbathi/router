@@ -5,6 +5,7 @@ import Login from '../pages/login.js'
 import Home from "../pages/home.js";
 import Create from "../pages/create.js";
 import Review from "../pages/review.js";
+import All from "../pages/all.js";
 import Drafts from "../pages/drafts.js";
 import Map from "../pages/map.js";
 import Wall from "../pages/wall.js";
@@ -17,7 +18,7 @@ const Router = () => {
         <Route path="/" element={<Home />} />
         <Route path="/map" element={<Map />} />
         <Route path="/create" element={<Create />} />
-        <Route path="/review" element={<Review />} />
+        <Route path="/review" element={<All />} />
         <Route path="/drafts" element={<Drafts />} />
         <Route path="/info" element={<Info />} />
 
