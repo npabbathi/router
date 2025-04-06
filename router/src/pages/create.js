@@ -3,6 +3,7 @@ import { storage } from "../config/firebase";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import { useNavigate } from 'react-router-dom';
+import './create.css';
 
 const Upload = () => {
 
@@ -56,9 +57,9 @@ const Upload = () => {
     return (
         <div>
             <input type="file" onChange={(event) => {setImageUpload(event.target.files[0])}}/>
-            <button onClick={uploadImage}>Upload Image</button>
+            <button className="create-button" onClick={uploadImage}>Upload Image</button>
             <img src={image}/>
-            <button onClick={nextPage} disabled={!isUploaded}>Next</button>
+            <button className="create-button" onClick={nextPage} disabled={!isUploaded}>Next</button>
         </div>
     );
 };

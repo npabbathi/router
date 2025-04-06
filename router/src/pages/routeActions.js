@@ -53,6 +53,24 @@ export const RouteActions = () => {
             console.error("Error fetching route: ", error);
         }
     };
+
+    const getRouteById = async (id) => {
+        try {
+            const docRef = doc(db, "routes", id);
+            const routeDoc = await getDoc(docRef);
+            if (routeDoc.exists()) {
+                const routeData = { ...routeDoc.data(), id: routeDoc.id };
+                setRoute(routeData);
+            } else {
+                console.log(`No route found with id: "${id}"`);
+                setRoute(null);
+            }
+        } catch (error) {
+            console.error("Error fetching route by ID: ", error);
+            setRoute(null);
+        }
+    };
+    
     /**
      * uses firestore to delete a route in the database
      */
@@ -141,5 +159,5 @@ export const RouteActions = () => {
         getRouteList();
     }, []);
 
-    return { routesList, getRouteList, onDeleteRoute, onSubmitRoute, onEditRoute, onUpdateRoute, getRouteByName, route };
+    return { routesList, getRouteList, onDeleteRoute, onSubmitRoute, onEditRoute, onUpdateRoute, getRouteByName, getRouteById, route };
 };

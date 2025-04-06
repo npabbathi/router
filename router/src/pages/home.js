@@ -33,7 +33,7 @@ const Welcome = () => {
       {selectedGym && <p>Selected gym: {selectedGym}</p>}
 
       <br/>
-      <button
+      <button style={{margin: "20px"}}
       onClick = {handleSubmit}
         >
         Submit
