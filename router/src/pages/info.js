@@ -63,9 +63,10 @@ const Info = () => {
 
 return (
   <div className = "container">
-    <h1 className = "title">{!isEditing ? "Create" : "Edit"} Route</h1>
-
-    <form onSubmit = {onSaveDraft}> 
+    
+    
+    <form onSubmit = {onSaveDraft} className = "form-part" > 
+    <h1 className = "title"> Insert Route Information </h1>
       <div className = "form-group">
         <label htmlFor = "routeName">Route Name</label>
         <input 
@@ -120,11 +121,15 @@ return (
       <input type = "submit" value="Save to Drafts" className="submit-button"/>
     </form>
     
-    {imageUrl && <img src = {imageUrl} alt = "Uploaded" className = "uploaded-image" />}
+    {imageUrl && 
+    ( <div className = 'image-part'>
+      <img src = {imageUrl} alt = "Uploaded" className = "uploaded-image" />
+      </div>
+      )}
   </div>
+
 );
 };
 
 export default Info;
-
 

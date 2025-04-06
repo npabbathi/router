@@ -7,6 +7,18 @@
     border-radius: 10px;
   }
   
+  .form-part{
+    flex: 1; 
+  }
+
+  .image-part { 
+    flex: 1; 
+    display: flex; 
+    justify-content: center; 
+    align-items: felx-start; 
+  }
+
+
 
   .title {
     font-size: 30px;
@@ -93,6 +105,11 @@
   
   .uploaded-image {
     max-width: 100%;
-    margin-top: 16px;
+    /* margin-top: 16px; */
+    height: auto; 
+    border-radius: 8px; 
+    object-fit: contain; 
   }
+
+ 
   
