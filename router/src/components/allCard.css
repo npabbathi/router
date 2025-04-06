@@ -1,4 +1,4 @@
-.imagePreview {
+.allImagePreview {
     border-radius: 20px;
     border: 2px solid black;
     padding: 20px;
@@ -6,7 +6,7 @@
     position: relative;
 }
 
-.imagePreview img {
+.allImagePreview img {
     width: 250px;
     height: 250px;
     object-fit: cover;
@@ -14,14 +14,14 @@
     border: 2px solid black;
 }
 
-.routeCard {
+.allCard {
     width: 300px;
     margin: 20px;
     border-radius: 24px;
     border: 4px solid black;
 }
 
-.routeCard h1 {
+.allCard h1 {
     overflow-wrap: break-word;
 }
 
@@ -30,19 +30,19 @@
     margin: 10px;
 }
 
-.routeCard button {
-    background-color: var(--secondary-color) !important;
+.allCard button {
+    background-color: var(--accent-color) !important;
     border: none;
     height: 40px;
     margin-left: 20px;
     color: var(--background-color) !important;
 }
 
-.routeCard button:hover {
-    color: var(--accent-color) !important;;
+.allCard button:hover {
+    color: var(--dark-color) !important;;
 }
 
-.routeCard h4 {
+.allCard h4 {
     display: flex;
     margin: 10px;
 }

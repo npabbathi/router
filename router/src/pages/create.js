@@ -85,9 +85,9 @@ const Upload = () => {
     return (
         <div>
             <input type="file" onChange={(event) => {setImageUpload(event.target.files[0])}}/>
-            <button onClick={uploadImage}>Upload Image</button>
+            <button className="create-button" onClick={uploadImage}>Upload Image</button>
             <img src={image}/>
-            <button onClick={nextPage} disabled={!isUploaded}>Next</button>
+            <button className="create-button" onClick={nextPage} disabled={!isUploaded}>Next</button>
         </div>
     );
 };

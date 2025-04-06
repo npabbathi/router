@@ -9,10 +9,12 @@ import { onAuthStateChanged } from "firebase/auth";
 import './review.css';
 import { db } from "../config/firebase";
 import {doc, updateDoc} from "firebase/firestore";
+import { useParams } from "react-router-dom";
 
 const Review = () => {
+    const { id } = useParams();
     const [image, setImage] = useState(null);
-    const { route, getRouteByName } = RouteActions();
+    const { route, getRouteById } = RouteActions();
     const [isLoading, setIsLoading] = useState(true);
     const [comments, setComments] = useState([]);
     const [commentText, setCommentText] = useState('');
@@ -24,7 +26,7 @@ const Review = () => {
         });
 
         const fetchRoute = async () => {
-            await getRouteByName("fat yoshi")
+            await getRouteById(id)
             setIsLoading(false);
         };
 
