@@ -1,7 +1,8 @@
 import { db } from "../config/firebase";
 import { useEffect, useState } from "react";
-import { getDocs, addDoc, deleteDoc, doc, collection, query, where, } from "firebase/firestore";
+import { getDocs, updateDoc, getDoc, addDoc, deleteDoc, doc, collection, query, where, } from "firebase/firestore";
 import "../components/routeProject.css"
+import { useNavigate } from 'react-router-dom';
 
 
 // This file deals with displaying all of the routes in the firestore database, along with adding/deleting routes.
@@ -13,6 +14,9 @@ export const RouteActions = () => {
 
     //get the collection of routes from firebase
     const routeCollectionRef = collection(db, "routes")
+
+    //nagivation
+    const navigate = useNavigate();
 
     const getRouteList = async () => {
         try {
@@ -80,10 +84,62 @@ export const RouteActions = () => {
         }
     }
 
+    /**
+     * uses the current information the user has filled to update an existing route in the database
+     */
+    const onUpdateRoute = async ({ id, name, grade, incline, description, notes, timestamp, imagePath, comments }) => {
+        try {
+            const routeRef = doc(db, "routes", id);
+            await updateDoc(routeRef, {
+                name,
+                grade,
+                incline,
+                description,
+                notes,
+                timestamp,
+                imagePath,
+                comments
+            })
+            await getRouteList();
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    /**
+     * loads in the current route to be sent to /info to edit
+     * 
+     * @param {*} id id of the document to edit
+     * @param {*} imageUrl image url (so we dont need to get from db again)
+     */
+    const onEditRoute = async (id, imageUrl) => {
+        console.log("editing a route! id: " + id);
+        const docRef = doc(db, "routes", id);
+        const routeDoc = await getDoc(docRef);
+
+        if (routeDoc.exists()) {
+            console.log("Document data:", routeDoc.data());
+        } else {
+            console.error("No such document!");
+            return;
+        }
+        
+        //pass the document info to info
+        navigate('/info', { state: 
+            { 
+                imageObject : imageUrl,
+                imagePath : routeDoc.data().imagePath,
+                isEditing : true,
+                id: id,
+                routeData: routeDoc.data()
+            } 
+        }); // Pass as an object
+    }
+
     // loads in the list of routes in the database as soon as the component is rendered
     useEffect(() => {
         getRouteList();
     }, []);
 
-    return { routesList, getRouteList, onDeleteRoute, onSubmitRoute, getRouteByName, route };
+    return { routesList, getRouteList, onDeleteRoute, onSubmitRoute, onEditRoute, onUpdateRoute, getRouteByName, route };
 };

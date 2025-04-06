@@ -10,7 +10,7 @@ import { storage } from "../config/firebase";
 // This file deals with displaying all of the routes in the firestore database, along with adding/deleting routes.
 export const RouteProject = () => {
     
-    const { routesList, onSubmitRoute, onDeleteRoute } = RouteActions(); // hooks must be defined with uppercase
+    const { routesList, onEditRoute, onDeleteRoute } = RouteActions();
     const [routesWithUrls, setRoutesWithUrls] = useState([]);
 
     useEffect(() => {
@@ -44,7 +44,7 @@ export const RouteProject = () => {
                 {routesWithUrls.map((route) => (
                     <div key={route.id}>
                         <h1>{route.image}</h1>
-                        <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} id={route.id} can_delete={true} image={route.imageUrl}/>
+                        <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} onEditRoute={onEditRoute} id={route.id} can_delete={true} image={route.imageUrl}/>
                     </div>
                 ))}
             </div>

@@ -31,13 +31,13 @@
 }
 
 .routeCard button {
-    margin-left: auto;
-    background: none;
+    background: none !important;
     border: none;
+    color:black !important;
 }
 
 .routeCard button:hover {
-    color: red;
+    color: red !important;;
 }
 
 .routeCard h4 {

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 import { RouteActions } from "./routeActions"
@@ -15,30 +15,56 @@ const Info = () => {
   const [notes, setNotes] = useState("");
   const now = new Date(); 
   const timestamp = now.toLocaleString(); 
+  const navigate = useNavigate();
 
-  const { onSubmitRoute } = RouteActions(); 
+  const { onSubmitRoute, onUpdateRoute } = RouteActions(); 
 
 
   const location = useLocation();
   const imageUrl = location.state?.imageObject;
   const imagePath = location.state?.imagePath;
 
-const onSaveDraft = async (e) => {
-  e.preventDefault();
-  
-  try {
-    await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: []});
-    alert("Route saved to drafts!"); 
-  } catch(error) { 
-    console.error("Error with saving route to draft :(", error); 
-    alert("Failed to save the route. "); 
-  }
-};
+  // if user is brought to this page from the edit button in drafts, these values will be populated. isEditing will be false if they come from create, otherwise true if they come from drafts
+  const isEditing = location.state?.isEditing;
+  const id = location.state?.id;
+  const routeData = location.state?.routeData;
+
+  const onSaveDraft = async (e) => {
+    e.preventDefault();
+    
+    try {
+      //updates a route if they came from drafts
+      if (isEditing) {
+        await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: routeData.comments});
+        navigate("/drafts")
+        alert("Route updated to in drafts!");
+      } else { //creates a new route if making it for the first time
+        await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: []});
+        alert("Route added to drafts!"); 
+      }
+    } catch(error) { 
+      console.error("Error with saving route to draft :(", error); 
+      alert("Failed to save the route. "); 
+    }
+  };
+
+  // if the user came from draft, load the previous draft data.
+  useEffect(() => {
+    if (isEditing) {
+      //set states to previous data
+      setRouteName(routeData.name);
+      setGrade(routeData.grade);
+      setIncline(routeData.incline);
+      setDesc(routeData.description);
+      setNotes(routeData.notes)
+    }
+  }, []);
 
 
 return (
   <div className = "container">
-    <h1 className = "title">Create Route</h1>
+    <h1 className = "title">{!isEditing ? "Create" : "Edit"} Route</h1>
+
     <form onSubmit = {onSaveDraft}> 
       <div className = "form-group">
         <label htmlFor = "routeName">Route Name</label>

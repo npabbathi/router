@@ -48,6 +48,7 @@ const Upload = () => {
             { 
                 imageObject : image,
                 imagePath : imagePath,
+                isEditing : false,
             } 
         }); // Pass as an object
     };

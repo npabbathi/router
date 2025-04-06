@@ -24,7 +24,7 @@ const Review = () => {
         });
 
         const fetchRoute = async () => {
-            await getRouteByName("blue by billie eilish")
+            await getRouteByName("fat yoshi")
             setIsLoading(false);
         };
 
