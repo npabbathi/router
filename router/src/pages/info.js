@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 
-
 import { RouteActions } from "./routeActions"
 import './info.css';
 
 const Info = () => {
 
   /* route information here */
-  const [routeName, setRouteName] = useState("My New Route");
+  const [routeName, setRouteName] = useState("");
   const [grade, setGrade] = useState(""); 
   const [incline, setIncline] = useState(0);
   const [description, setDesc] = useState(""); 
@@ -60,18 +59,47 @@ const Info = () => {
     }
   }, []);
 
+  // if the user wants to go back to the file upload page, original image should still remain 
+  // as of now, really useless code 
+  const prevPage = () => {
+    navigate('/create', { state: 
+      {
+        imageObject: imageUrl, 
+        imagePath: imagePath, 
+        isEditing: true, 
+      }
+    }); 
+  }; 
+
+  // const nextPage = () => { 
+  //   navigate('/annotate', { state: 
+  //     { 
+  //       name, 
+  //       grade, 
+  //       incline,
+  //       description, 
+  //       notes, 
+  //       timestamp, 
+  //       imagePath, 
+  //       comments
+  //     }
+  //   }); 
+  // }; 
+
 
 return (
+  <div className = "outer-container"> 
+
   <div className = "container">
     
     
     <form onSubmit = {onSaveDraft} className = "form-part" > 
-    <h1 className = "title"> Insert Route Information </h1>
+    <h1 className = "title"> INSERT ROUTE INFORMATION </h1>
       <div className = "form-group">
         <label htmlFor = "routeName">Route Name</label>
         <input 
           id="routeName" type = "text" value = {routeName}
-          placeholder="Enter route name"
+          placeholder="Enter route name."
           onChange={(e) => setRouteName(e.target.value)} 
           required
         />
@@ -115,18 +143,36 @@ return (
         <label htmlFor = "notes">Additional Notes</label>
         <textarea value = {notes} onChange={(e) => setNotes(e.target.value)} 
           placeholder = "Extra notes (safety, concerns, etc.)"
-          required
         />
       </div>
-      <input type = "submit" value="Save to Drafts" className="submit-button"/>
+
+      
+      <input type = "submit" value="Save to Drafts" className="submit-button"/> 
+    
     </form>
     
     {imageUrl && 
     ( <div className = 'image-part'>
       <img src = {imageUrl} alt = "Uploaded" className = "uploaded-image" />
       </div>
-      )}
+    )}
+
+
+      
   </div>
+
+  <div className = 'button-row'>
+      <div className = 'button-left'>
+        <button type = 'button' className = 'navigate-button' onClick={prevPage} > Back </button>
+      </div>
+      <div className = 'button-right'>
+        <button type = 'button' className = 'navigate-button' onClick={() => navigate('/annotate')} > Next </button>
+      </div>
+    </div>
+
+  </div>
+
+  
 
 );
 };

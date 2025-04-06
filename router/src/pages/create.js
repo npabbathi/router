@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 import { storage } from "../config/firebase";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import "./create.css"
+import { RouteActions } from "./routeActions"
+
 
 const Upload = () => {
+
 
     // image selected by the "choose file" button 
     const [imageUpload, setImageUpload] = useState(null);
@@ -15,6 +19,22 @@ const Upload = () => {
     const [isUploaded, setIsUploaded] = useState(false);
     const navigate = useNavigate();
 
+
+    // if we're coming from drafts, we want to be able to edit the file
+    // const location = useLocation(); 
+    // const isEditing = location.state?.isEditing; 
+    // const id = location.state?.id; 
+    // const routeData = location.state?.routeData; 
+
+
+    // useEffect(() => { 
+    //     if (isEditing) { 
+    //         console.log(routeData.imageUrl); 
+    //         // setImagePath(routeData.imageUrl); 
+    //     }
+    // }, []);
+
+
     const uploadImage = () => {
         if (!imageUpload) {
             console.error("No image selected");
@@ -22,9 +42,15 @@ const Upload = () => {
         }
     
         const originalName = imageUpload.name;
+
+        // after last . – something like .jpeg
         const extension = originalName.substring(originalName.lastIndexOf('.'));
+
+        // from 0 to . – initial name 
         const baseName = originalName.substring(0, originalName.lastIndexOf('.'));
+       
         const uniqueImageName = `${baseName}_${v4()}${extension}`;
+        
     
         const imageRef = ref(storage, `images/${uniqueImageName}`);
         const metadata = {
@@ -52,6 +78,9 @@ const Upload = () => {
             } 
         }); // Pass as an object
     };
+
+
+    
 
     return (
         <div>

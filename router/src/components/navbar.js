@@ -30,10 +30,11 @@ const Header = ({ currentUser, setCurrentUser }) => {
                             <Nav.Link as={Link} to="/create" eventKey="link-2">CREATE</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to="/review" eventKey="link-3">REVIEW</Nav.Link>
+                            <Nav.Link as={Link} to="/drafts" eventKey="link-4">DRAFTS</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to="/drafts" eventKey="link-4">DRAFTS</Nav.Link>
+                            <Nav.Link as={Link} to="/review" eventKey="link-3">REVIEW</Nav.Link>
+                            
                         </Nav.Item>
                     </Nav>
                     <Dropdown align="end">
