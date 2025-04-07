@@ -1,0 +1,12 @@
+.wall-con {
+    width: 90%;
+    max-width: 800px;
+    height: 600px;
+    margin: auto;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
