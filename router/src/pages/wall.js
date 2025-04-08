@@ -14,7 +14,7 @@ const Wall = () => {
     const containerRef = useRef(null);
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
-    // Padding initializations for top and bottom
+    // Padding initializations for top and bottom 
     const paddingTop = 20; // padding value for top
     const paddingBottom = 20; // padding value for bottom
 
@@ -47,7 +47,7 @@ const Wall = () => {
     
         setCircles((prev) => [
             ...prev,
-            { x, y }, // image-space coords
+            { x, y }, // image-space coordinates
         ]);
     };
 
