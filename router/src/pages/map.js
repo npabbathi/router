@@ -6,6 +6,7 @@ import ImageMapper from "react-img-mapper";
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
+// interactive areas/walls of the map
 const areas = [
     { name: "FS1", 
         shape: "poly", 
@@ -95,6 +96,8 @@ const areas = [
 const MIN_WIDTH = 500;
 
 const ClimbingMap = () => {
+
+    // the methods below are related to the interactivity and resizing of the map
     const navigate = useNavigate();
     const [mapWidth, setMapWidth] = useState(Math.max(window.innerWidth * 0.55, MIN_WIDTH));
 

@@ -83,7 +83,7 @@ export const RouteActions = () => {
     /**
      * uses the current information the user has filled to create a new route to store in the database
      */
-    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp, imagePath, comments }) => {
+    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp, imagePath, comments, coordinates, wall }) => {
         // e.preventDefault(); //to prevent page refresh
         try {
             await addDoc(routeCollectionRef, {
@@ -94,7 +94,9 @@ export const RouteActions = () => {
                 notes,
                 timestamp,
                 imagePath,
-                comments
+                comments,
+                coordinates,
+                wall
             })
             await getRouteList();
         } catch (err) {
@@ -105,7 +107,7 @@ export const RouteActions = () => {
     /**
      * uses the current information the user has filled to update an existing route in the database
      */
-    const onUpdateRoute = async ({ id, name, grade, incline, description, notes, timestamp, imagePath, comments }) => {
+    const onUpdateRoute = async ({ id, name, grade, incline, description, notes, timestamp, imagePath, comments, coordinates, wall }) => {
         try {
             const routeRef = doc(db, "routes", id);
             await updateDoc(routeRef, {
@@ -116,7 +118,9 @@ export const RouteActions = () => {
                 notes,
                 timestamp,
                 imagePath,
-                comments
+                comments,
+                coordinates,
+                wall
             })
             await getRouteList();
         } catch (err) {
@@ -154,10 +158,31 @@ export const RouteActions = () => {
         }); // Pass as an object
     }
 
+    const getRoutesByWall = async (wallName) => {
+        const q = query(routeCollectionRef, where("wall", "==", wallName));
+    
+        try {
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
+                const wallRoutes = querySnapshot.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                }));
+                return wallRoutes;
+            } else {
+                console.log(`No routes found for wall: "${wallName}"`);
+                return [];
+            }
+        } catch (error) {
+            console.error("Error fetching routes by wall:", error);
+            return [];
+        }
+    };
+
     // loads in the list of routes in the database as soon as the component is rendered
     useEffect(() => {
         getRouteList();
     }, []);
 
-    return { routesList, getRouteList, onDeleteRoute, onSubmitRoute, onEditRoute, onUpdateRoute, getRouteByName, getRouteById, route };
+    return { routesList, getRouteList, onDeleteRoute, onSubmitRoute, onEditRoute, onUpdateRoute, getRouteByName, getRouteById, getRoutesByWall, route };
 };

@@ -12,6 +12,12 @@ const Info = () => {
   const [incline, setIncline] = useState(0);
   const [description, setDesc] = useState(""); 
   const [notes, setNotes] = useState("");
+  const [wall, setWall] = useState("");
+  const [coordinates, setCoordinates] = useState({
+    x: 0,
+    y: 0,
+  });
+  
   const now = new Date(); 
   const timestamp = now.toLocaleString(); 
   const navigate = useNavigate();
@@ -34,11 +40,11 @@ const Info = () => {
     try {
       //updates a route if they came from drafts
       if (isEditing) {
-        await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: routeData.comments});
+        await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: routeData.comments, coordinates: routeData.coordinates, wall: routeData.wall});
         navigate("/drafts")
         alert("Route updated to in drafts!");
       } else { //creates a new route if making it for the first time
-        await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: []});
+        await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: [], coordinates, wall});
         alert("Route added to drafts!"); 
       }
     } catch(error) { 
