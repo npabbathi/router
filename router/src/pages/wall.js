@@ -14,6 +14,10 @@ const Wall = () => {
     const containerRef = useRef(null);
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
+    // Padding initializations for top and bottom
+    const paddingTop = 20; // padding value for top
+    const paddingBottom = 20; // padding value for bottom
+
     useEffect(() => {
         if (containerRef.current) {
             const rect = containerRef.current.getBoundingClientRect();
@@ -22,25 +26,44 @@ const Wall = () => {
     }, [imageUrl]);
 
     const scale = image
-        ? Math.min(containerSize.width / image.width, containerSize.height / image.height)
+        ? Math.min(containerSize.width / image.width, (containerSize.height - paddingTop - paddingBottom) / image.height) // Adjust scale considering padding
         : 1;
 
     const placeCircle = (e) => {
+        // Ensures the action of placing a circle responds to only left clicks
+        if (e.evt.button !== 0) return;
+
         const stage = e.target.getStage();
         const pointer = stage.getPointerPosition();
+    
+        // Adjust for image offset, scale, and padding
+        const imageX = (containerSize.width - image.width * scale) / 2;
+        const imageY = (containerSize.height - image.height * scale - paddingTop - paddingBottom) / 2 + paddingTop; // Account for padding
 
-        // Convert pointer to image-space coordinates
-        const x = pointer.x / scale;
-        const y = pointer.y / scale;
+        const x = (pointer.x - imageX) / scale;
+        const y = (pointer.y - imageY) / scale;
 
+        console.log(`Circle placed at: x=${x.toFixed(2)}, y=${y.toFixed(2)}`);
+    
         setCircles((prev) => [
             ...prev,
-            {
-                x: pointer.x, // keep in screen-space for rendering
-                y: pointer.y,
-            },
+            { x, y }, // image-space coords
         ]);
     };
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (containerRef.current) {
+                const rect = containerRef.current.getBoundingClientRect();
+                setContainerSize({ width: rect.width, height: rect.height });
+            }
+        };
+    
+        window.addEventListener("resize", handleResize);
+        handleResize();
+    
+        return () => window.removeEventListener("resize", handleResize);
+    }, [imageUrl]);
 
     return (
         <div>
@@ -48,27 +71,27 @@ const Wall = () => {
             <div className="wall-con" ref={containerRef}>
                 {image && (
                     <Stage
-                        width={image.width * scale}
-                        height={image.height * scale}
+                        width={containerSize.width}
+                        height={containerSize.height}
                         onClick={placeCircle}
                     >
                         <Layer>
-                            {/* Scaled image */}
+                            {/* Scaled image with padding */}
                             <KonvaImage
                                 image={image}
-                                x={0}
-                                y={0}
+                                x={(containerSize.width - image.width * scale) / 2}
+                                y={(containerSize.height - image.height * scale - paddingTop - paddingBottom) / 2 + paddingTop}
                                 scaleX={scale}
                                 scaleY={scale}
                             />
 
-                            {/* Fixed-size circles */}
+                            {/* Dynamically-size circles */}
                             {circles.map((circle, idx) => (
                                 <Circle
                                     key={idx}
-                                    x={circle.x}
-                                    y={circle.y}
-                                    radius={9} // 15 pixel-sized circles, regardless of image scale
+                                    x={circle.x * scale + (containerSize.width - image.width * scale) / 2}
+                                    y={circle.y * scale + (containerSize.height - image.height * scale - paddingTop - paddingBottom) / 2 + paddingTop}
+                                    radius={10}
                                     fill="rgba(255, 0, 0, 0.5)"
                                     stroke="red"
                                     strokeWidth={2}
@@ -81,5 +104,6 @@ const Wall = () => {
         </div>
     );
 };
+
 
 export default Wall;
