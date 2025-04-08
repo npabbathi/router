@@ -83,7 +83,7 @@ export const RouteActions = () => {
     /**
      * uses the current information the user has filled to create a new route to store in the database
      */
-    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp, imagePath, comments, coordinates, wall }) => {
+    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp, imagePath, comments }) => {
         // e.preventDefault(); //to prevent page refresh
         try {
             await addDoc(routeCollectionRef, {
@@ -94,9 +94,7 @@ export const RouteActions = () => {
                 notes,
                 timestamp,
                 imagePath,
-                comments,
-                coordinates,
-                wall
+                comments
             })
             await getRouteList();
         } catch (err) {
@@ -107,7 +105,7 @@ export const RouteActions = () => {
     /**
      * uses the current information the user has filled to update an existing route in the database
      */
-    const onUpdateRoute = async ({ id, name, grade, incline, description, notes, timestamp, imagePath, comments, coordinates, wall }) => {
+    const onUpdateRoute = async ({ id, name, grade, incline, description, notes, timestamp, imagePath, comments }) => {
         try {
             const routeRef = doc(db, "routes", id);
             await updateDoc(routeRef, {
@@ -118,9 +116,7 @@ export const RouteActions = () => {
                 notes,
                 timestamp,
                 imagePath,
-                comments,
-                coordinates,
-                wall
+                comments
             })
             await getRouteList();
         } catch (err) {
