@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Stage, Layer, Circle, Image as KonvaImage } from "react-konva";
+import { Stage, Layer, Circle, Image as KonvaImage, Text } from "react-konva";
 import useImage from "use-image";
 import "./wall.css";
 import { RouteActions } from "./routeActions";
@@ -68,30 +68,39 @@ const Wall = () => {
         const routeCircles = wallRoutes.map((route, idx) => {
             const { x, y } = route.coordinates || {};
             if (x && y) {
-                // Convert to image space (taking scale and offset into account)
                 const imageX = (containerSize.width - image.width * scale) / 2;
                 const imageY = (containerSize.height - image.height * scale - paddingTop - paddingBottom) / 2 + paddingTop;
-                
+    
                 const circleX = x * scale + imageX;
                 const circleY = y * scale + imageY;
-
+    
                 return (
-                    <Circle
-                        key={idx}
-                        x={circleX}
-                        y={circleY}
-                        radius={11}
-                        fill={route.color}
-                        stroke={route.color}
-                        strokeWidth={2}
-                    />
+                    <React.Fragment key={idx}>
+                        <Circle
+                            x={circleX}
+                            y={circleY}
+                            radius={11}
+                            fill={route.color}
+                            stroke="black"
+                            strokeWidth={0.5}
+                        />
+                        <Text
+                            x={circleX - 7}
+                            y={circleY - 5}
+                            text={route.grade}
+                            fontSize={12}
+                            fill="white"
+                            fontStyle="bold"
+                        />
+                    </React.Fragment>
                 );
             }
             return null;
         });
-
+    
         return routeCircles;
     };
+    
 
     // handles resizing
     useEffect(() => {
