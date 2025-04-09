@@ -10,6 +10,7 @@ import Drafts from "../pages/drafts.js";
 import Map from "../pages/map.js";
 import Wall from "../pages/wall.js";
 import Info from "../pages/info.js";
+import Annotate from "../pages/annotate.js"
 
 const Router = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
         <Route path="/info" element={<Info />} />
         <Route path="/review/:id" element={<Review />} />
         <Route path="/wall" element={<Wall />} />
+        <Route path="/annotate" element={<Annotate />} />
       </Route>
       <Route path="/login" element={<Login/>}/>
     </Routes>

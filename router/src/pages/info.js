@@ -77,20 +77,24 @@ const Info = () => {
     }); 
   }; 
 
-  // const nextPage = () => { 
-  //   navigate('/annotate', { state: 
-  //     { 
-  //       name, 
-  //       grade, 
-  //       incline,
-  //       description, 
-  //       notes, 
-  //       timestamp, 
-  //       imagePath, 
-  //       comments
-  //     }
-  //   }); 
-  // }; 
+
+ // will definitely need to pass more into this then just routeData. Because let's say a user is in the annotate
+ // page, but then wants to go back to this page, we need to preserve everything and repopulate the information
+  const nextPage = () => { 
+    navigate('/annotate', { state: 
+      { 
+        routeData: routeData,
+        // name, 
+        // grade, 
+        // incline,
+        // description, 
+        // notes, 
+        // timestamp, 
+        // imagePath, 
+        // comments
+      }
+    }); 
+  }; 
 
 
 return (
@@ -172,7 +176,7 @@ return (
         <button type = 'button' className = 'navigate-button' onClick={prevPage} > Back </button>
       </div>
       <div className = 'button-right'>
-        <button type = 'button' className = 'navigate-button' onClick={() => navigate('/annotate')} > Next </button>
+        <button type = 'button' className = 'navigate-button' onClick={nextPage} > Next </button>
       </div>
     </div>
 

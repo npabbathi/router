@@ -5,6 +5,8 @@ import './map.css';
 import ImageMapper from "react-img-mapper";
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
 
 // interactive areas/walls of the map
 const areas = [
@@ -96,11 +98,15 @@ const areas = [
 const MIN_WIDTH = 500;
 
 const ClimbingMap = () => {
-
-    // the methods below are related to the interactivity and resizing of the map
+    const location = useLocation();
     const navigate = useNavigate();
     const [mapWidth, setMapWidth] = useState(Math.max(window.innerWidth * 0.55, MIN_WIDTH));
 
+    const routeData = location.state?.routeData;
+    const isPlacingRoute = location.state?.isPlacingRoute;
+
+
+    // the methods below are related to the interactivity and resizing of the map
     const handleResize = () => {
         setMapWidth(Math.max(window.innerWidth * 0.55, MIN_WIDTH));
     };
@@ -112,7 +118,12 @@ const ClimbingMap = () => {
 
     const handleAreaClick = (area) => {
         if (area.link) {
-            navigate(`${area.link}?image=${encodeURIComponent(area.image)}`);
+            navigate(`${area.link}?image=${encodeURIComponent(area.image)}`, {
+                state: {
+                    isPlacingRoute: isPlacingRoute,
+                    routeData: routeData
+                }
+            });
         }
     };
 
