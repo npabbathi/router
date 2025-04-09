@@ -80,9 +80,9 @@ const Wall = () => {
                         key={idx}
                         x={circleX}
                         y={circleY}
-                        radius={10}
-                        fill="rgba(255, 0, 0, 0.5)"
-                        stroke="red"
+                        radius={11}
+                        fill={route.color}
+                        stroke={route.color}
                         strokeWidth={2}
                     />
                 );
@@ -131,7 +131,7 @@ const Wall = () => {
         const newCircle = { x, y };
         setCircles([newCircle]);
 
-        // update the route's x and y coordinates, and wall name. **** UGHHH THIS DOESN'T WORK WHY!!!!!!!
+        // update the route's x and y coordinates, and wall name. **** UGHHH THIS DOESN'T WORK WHY!!!!!!! USE Nidhi's updateRoute() method?
         if (routeData?.id) {
             const routeRef = doc(db, "routes", routeData.id);
             try {
@@ -181,7 +181,7 @@ const Wall = () => {
                                         key={`new-${idx}`}
                                         x={circle.x * scale + imageX}
                                         y={circle.y * scale + imageY}
-                                        radius={10}
+                                        radius={11}
                                         fill="rgba(0, 128, 255, 0.8)" // different color for now
                                         stroke="blue"
                                         strokeWidth={2}

@@ -17,13 +17,13 @@ const Info = () => {
     x: 0,
     y: 0,
   });
+  const [color, setColor] = useState("");
   
   const now = new Date(); 
   const timestamp = now.toLocaleString(); 
   const navigate = useNavigate();
 
   const { onSubmitRoute, onUpdateRoute } = RouteActions(); 
-
 
   const location = useLocation();
   const imageUrl = location.state?.imageObject;
@@ -40,17 +40,29 @@ const Info = () => {
     try {
       //updates a route if they came from drafts
       if (isEditing) {
-        await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: routeData.comments, coordinates: routeData.coordinates, wall: routeData.wall});
+        await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: routeData.comments, coordinates: routeData.coordinates, wall: routeData.wall, color: routeData.color});
         navigate("/drafts")
         alert("Route updated to in drafts!");
       } else { //creates a new route if making it for the first time
-        await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: [], coordinates, wall});
+        await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: [], coordinates, wall, color});
         alert("Route added to drafts!"); 
       }
     } catch(error) { 
       console.error("Error with saving route to draft :(", error); 
       alert("Failed to save the route. "); 
     }
+  };
+
+  // certain colors for certain grades.
+  const gradeToColor = {
+    V1: "yellow",
+    V2: "red",
+    V3: "green",
+    V4: "purple",
+    V5: "orange",
+    V6: "black",
+    V7: "blue", 
+    V8: "pink",
   };
 
   // if the user came from draft, load the previous draft data.
@@ -122,7 +134,9 @@ return (
             <button 
               key = {gradeLabel}
               type = "button"
-              onClick = {() => setGrade(gradeLabel)} 
+              onClick = {() => {
+                setGrade(gradeLabel);
+                setColor(gradeToColor[gradeLabel] || "#000");}}
               className = {grade === gradeLabel ? "grade-button selected" : "grade-button"}
             >
               {gradeLabel}
