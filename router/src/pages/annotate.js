@@ -6,9 +6,19 @@ const Annotate = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const routeData = location.state?.routeData;
+    const routeName = location.state?.routeName;
+    const grade = location.state?.grade;
+    const incline = location.state?.incline;
+    const description = location.state?.description; 
+    const notes = location.state?.notes; 
+    const timestamp = location.state?.timestamp; 
+    const imagePath = location.state?.imagePath; 
+    const comments = location.state?.comments;
+    const coordinates = location.state?.coordinates;
+    const wall = location.state?.wall;
+    const color = location.state?.color;
     
-    // useless prevPage. Needs to send back info
+    // useless prevPage. Needs to send back info probably???
     const prevPage = () => {
         navigate('/info');
     }
@@ -17,7 +27,17 @@ const Annotate = () => {
         navigate('/map', {state:
             {
                 isPlacingRoute: true,
-                routeData: routeData
+                routeName,
+                grade,
+                incline,
+                description, 
+                notes, 
+                timestamp, 
+                imagePath, 
+                comments:[],
+                coordinates,
+                wall,
+                color
             }
         });
     }
@@ -38,10 +58,6 @@ const Annotate = () => {
             </div>
 
         </div>
-
-
-
-
     );
 };
 

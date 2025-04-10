@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Stage, Layer, Circle, Image as KonvaImage, Text } from "react-konva";
 import useImage from "use-image";
 import "./wall.css";
 import { RouteActions } from "./routeActions";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../config/firebase";
+
 
 
 const Wall = () => {
+    const navigate = useNavigate();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const imageUrl = params.get("image");
@@ -17,13 +17,22 @@ const Wall = () => {
     const containerRef = useRef(null);
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
-    const { getRoutesByWall } = RouteActions();
+    const { getRoutesByWall, onSubmitRoute } = RouteActions();
     const [wallName, setWallName] = useState("");
     const [wallRoutes, setWallRoutes] = useState([]);
 
-    const [circles, setCircles] = useState([]); // *NEEDS TO BE USED FOR LATER, WHEN A USER is placing a route*
-    const routeData = location.state?.routeData;
+    const [circles, setCircles] = useState([]);
     const isPlacingRoute = location.state?.isPlacingRoute;
+    const routeName = location.state?.routeName;
+    const grade = location.state?.grade;
+    const incline = location.state?.incline;
+    const description = location.state?.description; 
+    const notes = location.state?.notes; 
+    const timestamp = location.state?.timestamp; 
+    const imagePath = location.state?.imagePath; 
+    const comments = location.state?.comments;
+    const coordinates = circles[0];
+    const color = location.state?.color;
 
 
     // Extracts only the name of the wall. For example: "east-wall" or "fs1"
@@ -63,7 +72,7 @@ const Wall = () => {
         ? Math.min(containerSize.width / image.width, (containerSize.height - paddingTop - paddingBottom) / image.height) // Adjust scale according to padding
         : 1;
 
-    // Plot circles for each route based on its coordinates
+    // Populating circles/routes that belong to this wall via their coordinates
     const plotRouteCircles = () => {
         const routeCircles = wallRoutes.map((route, idx) => {
             const { x, y } = route.coordinates || {};
@@ -117,11 +126,12 @@ const Wall = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, [imageUrl]);
 
+    // Placing a new route on the wall
     const placeCircle = async (e) => {
-        //checks if isPlacingRoute is true
+        // Checks if isPlacingRoute is true
         if (!isPlacingRoute || !image) return;
 
-        // user can't place a route with right-click. ONLY left-click permitted
+        // User can't place a route with right-click. ONLY left-click permitted
         if (e.evt.button !== 0) return;
     
         // Get pointer position relative to stage
@@ -138,27 +148,47 @@ const Wall = () => {
     
         // Save to state
         const newCircle = { x, y };
-        setCircles([newCircle]);
-
-        // update the route's x and y coordinates, and wall name. **** UGHHH THIS DOESN'T WORK WHY!!!!!!! USE Nidhi's updateRoute() method?
-        if (routeData?.id) {
-            const routeRef = doc(db, "routes", routeData.id);
-            try {
-                await updateDoc(routeRef, {
-                    coordinates: { x, y },
-                    wall: wallName,
-                });
-                console.log("Coordinates updated successfully.");
-            } catch (err) {
-                console.error("Failed to update coordinates:", err);
-            }
-        }
+        setCircles([newCircle]);     
         
     };
-    
+
+    // going back to map page, in the case that the user changes their mind and doesn't want this wall.
+    const prevPage = () => {
+        navigate('/map', {state:
+            {
+                isPlacingRoute,
+                routeName,
+                grade,
+                incline,
+                description, 
+                notes, 
+                timestamp, 
+                imagePath, 
+                comments,
+                coordinates,
+                wall: "",
+                color
+            }
+        });
+    }
+
+    const onFinalPlaceRoute = async (e) => {
+        e.preventDefault();
+        try {
+            const { x, y } = circles[0]
+            await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, imagePath, comments, coordinates: { x, y }, wall: wallName, color});
+            alert("Route has been published!"); 
+        } catch(error) { 
+            console.error("Error with publishing route :(", error); 
+            alert("Failed to publish the route. "); 
+        }
+    };
 
     return (
         <div>
+            <div className = 'back-button-con'>
+                <button type = 'button' className = 'back-button' onClick={prevPage} > Back </button>
+            </div>
             <h1 className="header">Select a Route</h1>
             <div className="wall-con" ref={containerRef}>
                 {image && (
@@ -186,23 +216,38 @@ const Wall = () => {
                                 const imageY = (containerSize.height - image.height * scale - paddingTop - paddingBottom) / 2 + paddingTop;
 
                                 return (
-                                    <Circle
-                                        key={`new-${idx}`}
-                                        x={circle.x * scale + imageX}
-                                        y={circle.y * scale + imageY}
-                                        radius={11}
-                                        fill="rgba(0, 128, 255, 0.8)" // different color for now
-                                        stroke="blue"
-                                        strokeWidth={2}
-                                    />
+                                    <React.Fragment key={`new-${idx}`}>
+                                        <Circle
+                                            x={circle.x * scale + imageX}
+                                            y={circle.y * scale + imageY}
+                                            radius={11}
+                                            fill={color}
+                                            stroke="black"
+                                            strokeWidth={0.5}
+                                        />
+                                        <Text
+                                            x={circle.x * scale + imageX - 7}
+                                            y={circle.y * scale + imageY - 5}
+                                            text={grade}
+                                            fontSize={12}
+                                            fill="white"
+                                            fontStyle="bold"
+                                        />
+                                    </React.Fragment>
                                 );
                             })}
-
-
                         </Layer>
                     </Stage>
                 )}
             </div>
+            {isPlacingRoute && (
+                <div className='submit-button-con'>
+                    <button type='button' className='submit-button' onClick={onFinalPlaceRoute} disabled={circles.length === 0}>
+                        Publish Route
+                    </button>
+                </div>
+            )}
+
         </div>
     );
 };

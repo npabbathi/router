@@ -9,3 +9,35 @@
     margin: auto;
 
 }
+
+body {
+    overflow-x: hidden; /* Prevent horizontal scroll on the entire page for now. This is because back button is pissing me off*/
+}
+
+.back-button-con {
+    display: flex;
+    padding: 10px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.submit-button-con {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.back-button {
+    white-space: nowrap;
+    background-color: #1D2F6f;
+    max-width: 100%;
+}
+
+.submit-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}

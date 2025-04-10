@@ -102,8 +102,18 @@ const ClimbingMap = () => {
     const navigate = useNavigate();
     const [mapWidth, setMapWidth] = useState(Math.max(window.innerWidth * 0.55, MIN_WIDTH));
 
-    const routeData = location.state?.routeData;
     const isPlacingRoute = location.state?.isPlacingRoute;
+    const routeName = location.state?.routeName;
+    const grade = location.state?.grade;
+    const incline = location.state?.incline;
+    const description = location.state?.description; 
+    const notes = location.state?.notes; 
+    const timestamp = location.state?.timestamp; 
+    const imagePath = location.state?.imagePath; 
+    const comments = location.state?.comments;
+    const coordinates = location.state?.coordinates;
+    const wall = location.state?.wall;
+    const color = location.state?.color;
 
 
     // the methods below are related to the interactivity and resizing of the map
@@ -121,7 +131,17 @@ const ClimbingMap = () => {
             navigate(`${area.link}?image=${encodeURIComponent(area.image)}`, {
                 state: {
                     isPlacingRoute: isPlacingRoute,
-                    routeData: routeData
+                    routeName,
+                    grade,
+                    incline,
+                    description, 
+                    notes,
+                    timestamp, 
+                    imagePath, 
+                    comments:[],
+                    coordinates,
+                    wall,
+                    color
                 }
             });
         }

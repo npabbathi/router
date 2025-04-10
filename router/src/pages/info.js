@@ -53,16 +53,16 @@ const Info = () => {
     }
   };
 
-  // certain colors for certain grades.
+  // certain colors for certain grades. **SOme of these colors might not work?
   const gradeToColor = {
-    V1: "yellow",
-    V2: "red",
-    V3: "green",
-    V4: "purple",
-    V5: "orange",
-    V6: "black",
-    V7: "blue", 
-    V8: "pink",
+    V1: "#FFFF00", //yelow
+    V2: "#FF0000", //red
+    V3: "#008000",  //green
+    V4: "#A020F0", //purple
+    V5: "#FFA500", //orange
+    V6: "#000000", //black
+    V7: "#0000FF",  //blue
+    V8: "#FFC0CB", //pink
   };
 
   // if the user came from draft, load the previous draft data.
@@ -89,21 +89,20 @@ const Info = () => {
     }); 
   }; 
 
-
- // will definitely need to pass more into this then just routeData. Because let's say a user is in the annotate
- // page, but then wants to go back to this page, we need to preserve everything and repopulate the information
   const nextPage = () => { 
     navigate('/annotate', { state: 
       { 
-        routeData: routeData,
-        // name, 
-        // grade, 
-        // incline,
-        // description, 
-        // notes, 
-        // timestamp, 
-        // imagePath, 
-        // comments
+        routeName,
+        grade,
+        incline,
+        description, 
+        notes, 
+        timestamp, 
+        imagePath, 
+        comments:[],
+        coordinates,
+        wall,
+        color
       }
     }); 
   }; 
@@ -192,7 +191,7 @@ return (
       <div className = 'button-right'>
         <button type = 'button' className = 'navigate-button' onClick={nextPage} > Next </button>
       </div>
-    </div>
+  </div>
 
   </div>
 
