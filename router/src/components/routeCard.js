@@ -14,7 +14,7 @@ export const RouteCard = ({name, grade, incline, description, onDeleteRoute, onE
         <div className="routeCard">
             {/* for icon buttons (credit below) */}
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-            <div className="imagePreview" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <div className={`imagePreview ${isHovering ? "hover-cursor" : ""}`} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <div className="underImage">
                     <img src={image} alt={name}></img>
                 </div>
