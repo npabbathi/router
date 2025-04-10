@@ -17,7 +17,7 @@ export const RouteCard = ({name, grade, incline, description, onDeleteRoute, onE
                     <img src={image}></img>
                 </div>
                 { isHovering &&
-                    <div className="overText">
+                    <div className="overText" onClick={() => {onEditRoute(id, image)}}>
                         <p3> {timestamp} </p3>
                         <p> Description: {description}</p>
                         <p> Notes: {notes} </p>
@@ -26,8 +26,8 @@ export const RouteCard = ({name, grade, incline, description, onDeleteRoute, onE
             </div>
             <div className="titleInfo">
                 <h1>{name}</h1>
-                {can_delete && <button onClick={() => { onDeleteRoute(id) }}><i class="fa fa-trash"></i></button>}
                 {can_delete && <button onClick={() => { onEditRoute(id, image) }}><i class="fa fa-pencil"></i></button>}
+                {can_delete && <button onClick={() => { onDeleteRoute(id) }}><i class="fa fa-trash"></i></button>}
             </div>
             <h4>{grade} - {incline}º</h4>
         </div>

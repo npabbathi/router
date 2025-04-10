@@ -20,7 +20,7 @@ export const AllCard = ({ name, grade, incline, description, id, notes, timestam
                     <img src={image}></img>
                 </div>
                 {isHovering &&
-                    <div className="overText">
+                    <div className="overText" onClick={() => navigate(`/review/${id}`)}>
                         <p3> {timestamp} </p3>
                         <p> Description: {description}</p>
                         <p> Notes: {notes} </p>

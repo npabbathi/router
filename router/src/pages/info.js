@@ -80,13 +80,17 @@ const Info = () => {
   // if the user wants to go back to the file upload page, original image should still remain 
   // as of now, really useless code 
   const prevPage = () => {
-    navigate('/create', { state: 
-      {
-        imageObject: imageUrl, 
-        imagePath: imagePath, 
-        isEditing: true, 
-      }
-    }); 
+    if (!isEditing) {
+      navigate('/create', { state: 
+        {
+          imageObject: imageUrl, 
+          imagePath: imagePath, 
+          isEditing: true, 
+        }
+      }); 
+    } else {
+      navigate('/drafts'); 
+    }
   }; 
 
   const nextPage = () => { 
