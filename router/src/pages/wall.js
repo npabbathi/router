@@ -20,8 +20,10 @@ const Wall = () => {
     const { getRoutesByWall, onSubmitRoute } = RouteActions();
     const [wallName, setWallName] = useState("");
     const [wallRoutes, setWallRoutes] = useState([]);
-
     const [circles, setCircles] = useState([]);
+
+    const isFromDrafts = location.state?.isFromDrafts;
+    const routeData = location.state?.routeData;
     const isPlacingRoute = location.state?.isPlacingRoute;
     const routeName = location.state?.routeName;
     const grade = location.state?.grade;
@@ -33,6 +35,7 @@ const Wall = () => {
     const comments = location.state?.comments;
     const coordinates = circles[0];
     const color = location.state?.color;
+    const placingColor = isFromDrafts ? routeData?.color : color;
 
 
     // Extracts only the name of the wall. For example: "east-wall" or "fs1"
@@ -156,6 +159,8 @@ const Wall = () => {
     const prevPage = () => {
         navigate('/map', {state:
             {
+                isFromDrafts,
+                routeData,
                 isPlacingRoute,
                 routeName,
                 grade,
@@ -221,7 +226,7 @@ const Wall = () => {
                                             x={circle.x * scale + imageX}
                                             y={circle.y * scale + imageY}
                                             radius={11}
-                                            fill={color}
+                                            fill={placingColor}
                                             stroke="black"
                                             strokeWidth={0.5}
                                         />

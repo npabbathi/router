@@ -6,6 +6,8 @@ const Annotate = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const isFromDrafts = location.state?.isFromDrafts;
+    const routeData = location.state?.routeData;
     const routeName = location.state?.routeName;
     const grade = location.state?.grade;
     const incline = location.state?.incline;
@@ -26,6 +28,8 @@ const Annotate = () => {
     const nextPage = () =>{
         navigate('/map', {state:
             {
+                isFromDrafts,
+                routeData,
                 isPlacingRoute: true,
                 routeName,
                 grade,

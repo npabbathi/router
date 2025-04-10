@@ -102,6 +102,8 @@ const ClimbingMap = () => {
     const navigate = useNavigate();
     const [mapWidth, setMapWidth] = useState(Math.max(window.innerWidth * 0.55, MIN_WIDTH));
 
+    const isFromDrafts = location.state?.isFromDrafts;
+    const routeData = location.state?.routeData;
     const isPlacingRoute = location.state?.isPlacingRoute;
     const routeName = location.state?.routeName;
     const grade = location.state?.grade;
@@ -130,6 +132,8 @@ const ClimbingMap = () => {
         if (area.link) {
             navigate(`${area.link}?image=${encodeURIComponent(area.image)}`, {
                 state: {
+                    isFromDrafts,
+                    routeData,
                     isPlacingRoute: isPlacingRoute,
                     routeName,
                     grade,

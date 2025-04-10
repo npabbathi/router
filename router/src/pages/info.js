@@ -96,6 +96,8 @@ const Info = () => {
   const nextPage = () => { 
     navigate('/annotate', { state: 
       { 
+        isFromDrafts: isEditing,
+        routeData,
         routeName,
         grade,
         incline,
