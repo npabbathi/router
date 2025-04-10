@@ -24,7 +24,6 @@ const Review = () => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user ? user.email : null);
         });
-
         const fetchRoute = async () => {
             await getRouteById(id)
             setIsLoading(false);

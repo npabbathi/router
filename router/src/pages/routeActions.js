@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { getDocs, updateDoc, getDoc, addDoc, deleteDoc, doc, collection, query, where, } from "firebase/firestore";
 import "../components/routeProject.css"
 import { useNavigate } from 'react-router-dom';
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../config/firebase";
 
 
 // This file deals with displaying all of the routes in the firestore database, along with adding/deleting routes.
@@ -84,22 +86,33 @@ export const RouteActions = () => {
      * uses the current information the user has filled to create a new route to store in the database
      */
     const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp, imagePath, comments, coordinates, wall, color }) => {
-        // e.preventDefault(); //to prevent page refresh
+        console.log("I AM CREATING A ROUTE")
         try {
-            await addDoc(routeCollectionRef, {
-                name,
-                grade,
-                incline,
-                description,
-                notes,
-                timestamp,
-                imagePath,
-                comments,
-                coordinates,
-                wall,
-                color
-            })
-            await getRouteList();
+            const routeCreator = onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    const owner = user.email
+                    console.log("the owner of this route is: " + owner)
+                    await addDoc(routeCollectionRef, {
+                        name,
+                        grade,
+                        incline,
+                        description,
+                        notes,
+                        timestamp,
+                        imagePath,
+                        comments,
+                        coordinates,
+                        wall,
+                        color,
+                        owner
+                    })
+                    await getRouteList();
+                } else {
+                    alert("you must be logged in to create a route!")
+                    console.error("you must be logged in to create a route!")
+                    return;
+                }
+            });
         } catch (err) {
             console.error(err)
         }
