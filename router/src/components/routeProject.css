@@ -3,3 +3,12 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+
+
+button:disabled {
+    opacity: 0.3;
+}
+
+button:disabled:hover {
+    background-color: var(--secondary-color);
+}

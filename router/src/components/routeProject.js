@@ -13,7 +13,7 @@ export const RouteProject = () => {
     const { routesList, onEditRoute, onDeleteRoute } = RouteActions();
     const [routesWithUrls, setRoutesWithUrls] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
-    const [toggleDraftsorAll, setToggleDraftsorAll] = useState(false);
+    const [toggleDraftsOrAll, setToggleDraftsOrAll] = useState(false);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -46,12 +46,13 @@ export const RouteProject = () => {
 
     return (
         <div>
-            <button onClick={() => {setToggleDraftsorAll(!toggleDraftsorAll)}}> Show {toggleDraftsorAll ? "My Drafts" : "All Routes"}</button>
+            <button disabled={!toggleDraftsOrAll} onClick={() => {setToggleDraftsOrAll(!toggleDraftsOrAll)}}> Show Drafts </button>
+            <button disabled={toggleDraftsOrAll} onClick={() => {setToggleDraftsOrAll(!toggleDraftsOrAll)}}> Show All Routes </button>
             <div className="allRouteCards">
                 {routesWithUrls.map((route) => (
                     <div key={route.id}>
                         <h1>{route.image}</h1>
-                        {(toggleDraftsorAll || currentUser == route.owner) && <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} onEditRoute={onEditRoute} id={route.id} can_modify={!toggleDraftsorAll} image={route.imageUrl}/>}
+                        {(toggleDraftsOrAll || currentUser == route.owner) && <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} onEditRoute={onEditRoute} id={route.id} can_modify={!toggleDraftsOrAll} image={route.imageUrl}/>}
                     </div>
                 ))}
             </div>
