@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Stage, Layer, Circle, Image as KonvaImage, Text } from "react-konva";
+import { Stage, Layer, Circle, Image as KonvaImage, Text, Group } from "react-konva";
 import useImage from "use-image";
 import "./wall.css";
 import { RouteActions } from "./routeActions";
@@ -24,7 +24,7 @@ const Wall = () => {
 
     const isFromDrafts = location.state?.isFromDrafts;
     const routeData = location.state?.routeData;
-    const isPlacingRoute = location.state?.isPlacingRoute;
+    const isPlacingRoute = location.state?.isPlacingRoute || false;
     const routeName = location.state?.routeName;
     const grade = location.state?.grade;
     const incline = location.state?.incline;
@@ -77,17 +77,36 @@ const Wall = () => {
 
     // Populating circles/routes that belong to this wall via their coordinates
     const plotRouteCircles = () => {
-        const routeCircles = wallRoutes.map((route, idx) => {
+        return wallRoutes.map((route, idx) => {
             const { x, y } = route.coordinates || {};
-            if (x && y) {
+            if (x && y && x !== 0 && y !== 0 && x != null && y != null) {
                 const imageX = (containerSize.width - image.width * scale) / 2;
                 const imageY = (containerSize.height - image.height * scale - paddingTop - paddingBottom) / 2 + paddingTop;
     
                 const circleX = x * scale + imageX;
                 const circleY = y * scale + imageY;
     
+                const goReviewRoute = () => {
+                    if (isPlacingRoute == false){
+                        navigate(`/review/${route.id}`); 
+                    }
+                };
+    
                 return (
-                    <React.Fragment key={idx}>
+                    <Group
+                        key={idx}
+                        onClick={goReviewRoute}
+                        {...(!isPlacingRoute && {
+                            onMouseEnter: (e) => {
+                              const container = e.target.getStage().container();
+                              container.style.cursor = 'pointer';
+                            },
+                            onMouseLeave: (e) => {
+                              const container = e.target.getStage().container();
+                              container.style.cursor = 'default';
+                            },
+                        })}
+                    >
                         <Circle
                             x={circleX}
                             y={circleY}
@@ -104,14 +123,13 @@ const Wall = () => {
                             fill="white"
                             fontStyle="bold"
                         />
-                    </React.Fragment>
+                    </Group>
                 );
             }
             return null;
         });
-    
-        return routeCircles;
     };
+    
     
 
     // handles resizing
@@ -192,9 +210,9 @@ const Wall = () => {
     return (
         <div>
             <div className = 'back-button-con'>
-                <button type = 'button' className = 'back-button' onClick={prevPage} > Back </button>
+                <button type = 'button' className = 'back-button' onClick={prevPage} > Back to Map </button>
             </div>
-            <h1 className="header">Select a Route</h1>
+            <h1 className="header">Select a route to review, or create your own!</h1>
             <div className="wall-con" ref={containerRef}>
                 {image && (
                     <Stage
