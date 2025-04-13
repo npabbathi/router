@@ -9,7 +9,6 @@ import All from "../pages/all.js";
 import Drafts from "../pages/drafts.js";
 import Map from "../pages/map.js";
 import Wall from "../pages/wall.js";
-import Info from "../pages/info.js";
 import Annotate from "../pages/annotate.js"
 
 const Router = () => {
@@ -21,7 +20,6 @@ const Router = () => {
         <Route path="/create" element={<Create />} />
         <Route path="/review" element={<All />} />
         <Route path="/drafts" element={<Drafts />} />
-        <Route path="/info" element={<Info />} />
         <Route path="/review/:id" element={<Review />} />
         <Route path="/wall" element={<Wall />} />
         <Route path="/annotate" element={<Annotate />} />

@@ -2,3 +2,15 @@
     display: inline-flex;
     margin: 10px;
 }
+
+.uploaded-image {
+    /* width: 300px; */
+    /* height: auto; */
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .uploaded-image:hover {
+    border-color: #888;
+  }

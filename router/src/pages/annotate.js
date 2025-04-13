@@ -22,7 +22,7 @@ const Annotate = () => {
     
     // useless prevPage. Needs to send back info probably???
     const prevPage = () => {
-        navigate('/info');
+        navigate('/create');
     }
 
     const nextPage = () =>{
