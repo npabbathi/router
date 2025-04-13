@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { RouteActions } from "./routeActions"
-import './info.css';
 
 // stolen from create.js will need to change
 import { storage } from "../config/firebase";
@@ -37,6 +36,8 @@ const Info = () => {
 //   const imageUrl = location.state?.imageObject;
   // const imagePath = location.state?.imagePath;
   const placeholder_image = 'https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2Fplaceholder_image.jpg?alt=media&token=0dd7e268-265a-4812-97e7-4f13dae4d31b'
+  const[loading, setLoading] = useState(false); 
+  
   /* did we come from drafts? */ 
   const isEditing = location.state?.isEditing;
   const id = location.state?.id;
@@ -117,7 +118,9 @@ const Info = () => {
         comments:[],
         coordinates,
         wall,
-        color
+        color, 
+        imageObject : image, 
+        imagePath : imagePath 
       }
     }); 
   }; 
@@ -130,7 +133,7 @@ UPLOADING PHOTO
 // image selected by the "choose file" button 
 const [imageUpload, setImageUpload] = useState(null);
 // image object used to display on screen once image is selected
-const [image, setImage] = useState(placeholder_image);
+const [image, setImage] = useState("");
 // path of the image to save to firestore
 const [imagePath, setImagePath] = useState("");
 const [isUploaded, setIsUploaded] = useState(false);
@@ -139,12 +142,12 @@ const [isUploaded, setIsUploaded] = useState(false);
 
 
 const uploadImage = () => {
-    if (!imageUpload) {
+    if (!uploadImage) {
         console.error("No image selected");
         return;
     }
 
-    const originalName = imageUpload.name;
+    const originalName = uploadImage.name;
 
     // after last . – something like .jpeg
     const extension = originalName.substring(originalName.lastIndexOf('.'));
@@ -154,15 +157,15 @@ const uploadImage = () => {
     
     const uniqueImageName = `${baseName}_${v4()}${extension}`;
     
-
     const imageRef = ref(storage, `images/${uniqueImageName}`);
     const metadata = {
-        contentType: imageUpload.type || "image/jpeg",
+        contentType: uploadImage.type || "image/jpeg",
     };
 
     uploadBytes(imageRef, imageUpload, metadata)
         .then(() => getDownloadURL(imageRef))
         .then((url) => {
+           
             setImage(url); // https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2FIMG_4460_ded06abb-e74f-48e2-8f9e-cd8cde7be519.jpeg?alt=media&token=de759ed2-be81-4066-b6dd-76e93457b911
             setImagePath(`images/${uniqueImageName}`); // images/IMG_4460_ded06abb-e74f-48e2-8f9e-cd8cde7be519.jpeg
             setIsUploaded(true);
@@ -242,10 +245,16 @@ return (
     
 
     <div className = 'image-part'>
-        <input type="file" id = "fileInput" accept = 'image/*' onChange={(event) => {setImageUpload(event.target.files[0])}} style = {{display: 'none'}} /> 
-        <label htmlFor = 'fileInput'>
-            <img src = {image || placeholder_image} style={{ cursor: 'pointer' }} alt = "Click to upload " className = "uploaded-image" />
-        </label>
+        <input type="file" id = "fileInput" style = {{display: 'none'}} 
+        onChange={(event) => {setImageUpload(event.target.files[0])}}  /> 
+
+        <div className = 'image-container'> 
+            <label htmlFor = 'fileInput'>  
+                <img src = {image || placeholder_image} key = {image} style={{ cursor: 'pointer' }} alt = "Click to upload " className = "uploaded-image" />
+            </label>
+        
+            <button className="create-button" onClick={uploadImage}>Upload Image</button>
+        </div>
     </div>
 
       
@@ -300,8 +309,10 @@ export default Info;
 //             console.error("No image selected");
 //             return;
 //         }
-    
+        
+//         console.log("RIGHT HERE \n", imageUpload); 
 //         const originalName = imageUpload.name;
+//         console.log("DOWN HERE \n", originalName); 
 
 //         // after last . – something like .jpeg
 //         const extension = originalName.substring(originalName.lastIndexOf('.'));
@@ -321,6 +332,7 @@ export default Info;
 //             .then(() => getDownloadURL(imageRef))
 //             .then((url) => {
 //                 setImage(url);
+            
 //                 setImagePath(`images/${uniqueImageName}`);
 //                 setIsUploaded(true);
 //             })

@@ -6,7 +6,6 @@ import "./wall.css";
 import { RouteActions } from "./routeActions";
 
 
-
 const Wall = () => {
     const navigate = useNavigate();
     const location = useLocation();
