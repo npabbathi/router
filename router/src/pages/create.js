@@ -36,7 +36,7 @@ const Info = () => {
   const location = useLocation();
 //   const imageUrl = location.state?.imageObject;
   // const imagePath = location.state?.imagePath;
-  const placeholder_image = 'https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2Fplaceholder_image.jpg?alt=media&token=25740749-3e60-4b56-9767-956e44f6c459'
+  const placeholder_image = 'https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2Fplaceholder_image.jpg?alt=media&token=0dd7e268-265a-4812-97e7-4f13dae4d31b'
   /* did we come from drafts? */ 
   const isEditing = location.state?.isEditing;
   const id = location.state?.id;
