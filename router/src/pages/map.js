@@ -151,6 +151,10 @@ const ClimbingMap = () => {
         }
     };
 
+    const toCreatePage = () => {
+        navigate(`/create`);
+    }
+
     return (
         <div>
             <h1 className="header">Select a Wall</h1>
@@ -163,6 +167,10 @@ const ClimbingMap = () => {
                     responsive
                     parentWidth={mapWidth}
                 />
+            </div>
+
+            <div className = 'create-route-button-con'>
+                <button type = 'button' className = 'create-route-button' onClick={toCreatePage}> + </button>
             </div>
         </div>
     )

@@ -206,6 +206,10 @@ const Wall = () => {
         }
     };
 
+    const toCreatePage = () => {
+        navigate(`/create`);
+    }
+
     return (
         <div>
             <div className = 'back-button-con'>
@@ -267,6 +271,11 @@ const Wall = () => {
                     <button type='button' className='submit-button' onClick={onFinalPlaceRoute} disabled={circles.length === 0}>
                         Publish Route
                     </button>
+                </div>
+            )}
+            {!isPlacingRoute && (
+                <div className = 'create-route-button-con'>
+                    <button type = 'button' className = 'create-route-button' onClick={toCreatePage}> + </button>
                 </div>
             )}
 
