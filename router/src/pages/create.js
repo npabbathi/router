@@ -38,7 +38,7 @@ const Info = () => {
   const { onSubmitRoute, onUpdateRoute } = RouteActions(); 
 
   const location = useLocation();
-//   const imageUrl = location.state?.imageObject;
+  const imageUrl = location.state?.imageObject;
   // const imagePath = location.state?.imagePath;
   const placeholder_image = 'https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2Fplaceholder_image.jpg?alt=media&token=0dd7e268-265a-4812-97e7-4f13dae4d31b'
   const[loading, setLoading] = useState(false); 
@@ -259,7 +259,7 @@ return (
 
         <div className = 'image-container'> 
             <label htmlFor = 'fileInput'>  
-                <img src = {image || placeholder_image} key = {image} style={{ cursor: 'pointer' }} alt = "Click to upload " className = "uploaded-image" />
+                <img src = {imageUrl || image || placeholder_image} key = {image} style={{ cursor: 'pointer' }} alt = "Click to upload " className = "uploaded-image" />
             </label>
         
             <button className="create-button" onClick={uploadImage}>Upload Image</button>

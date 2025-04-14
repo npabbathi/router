@@ -162,7 +162,7 @@ export const RouteActions = () => {
         }
         
         //pass the document info to info
-        navigate('/info', { state: 
+        navigate('/create', { state: 
             { 
                 imageObject : imageUrl,
                 imagePath : routeDoc.data().imagePath,
