@@ -9,6 +9,11 @@ import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import "./create.css"
 
+
+import { Stage, Layer, Text, Circle, Image as KonvaImage } from 'react-konva';
+import useImage from 'use-image';
+
+
 const Info = () => {
 
   /* route information here */
@@ -158,6 +163,8 @@ const uploadImage = () => {
     const uniqueImageName = `${baseName}_${v4()}${extension}`;
     
     const imageRef = ref(storage, `images/${uniqueImageName}`);
+
+   
     const metadata = {
         contentType: uploadImage.type || "image/jpeg",
     };
@@ -168,11 +175,13 @@ const uploadImage = () => {
            
             setImage(url); // https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2FIMG_4460_ded06abb-e74f-48e2-8f9e-cd8cde7be519.jpeg?alt=media&token=de759ed2-be81-4066-b6dd-76e93457b911
             setImagePath(`images/${uniqueImageName}`); // images/IMG_4460_ded06abb-e74f-48e2-8f9e-cd8cde7be519.jpeg
+            
             setIsUploaded(true);
         })
         .catch((error) => {
             console.error("Upload failed:", error);
         });
+        
 };
 
 

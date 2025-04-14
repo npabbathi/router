@@ -1,18 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import "./annotate.css"
 import { Stage, Layer, Text, Circle, Image} from "react-konva";
 import useImage from 'use-image';
+import { v4 as uuidv4 } from 'uuid';
 
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../config/firebase"; 
-
-
-
+import { storage } from "../config/firebase";
+import { ref, uploadBytes, listAll, getDownloadURL, uploadString} from "firebase/storage";
 
 
 const Annotate = () => {
-    
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -30,73 +27,67 @@ const Annotate = () => {
     const wall = location.state?.wall;
     const color = location.state?.color;
 
-    const [annotations, setAnnotations] = useState([]);  // Manage annotations (text and circles)
-    const [currentAnnotation, setCurrentAnnotation] = useState(null); // Track current annotation type (circle or text)
-    const [text, setText] = useState("");  // Text for annotation
+    /* managing annotations */
+    const [annotations, setAnnotations] = useState([]);  
+    // track current annotation type (circle/text)
+    const [currentAnnotation, setCurrentAnnotation] = useState(null); 
+     // text for annotation
+    const [text, setText] = useState(""); 
 
     const imageUrl = location.state?.imageObject;
-    // const [image] = useImage(imageUrl);
-    
+    const [image, status] = useImage(imageUrl);
+    console.log("Image status:", status);
+    console.log("Image object:", image);
+
     const stageRef = useRef(null);
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
 
     const CANVAS_WIDTH = 800;
     const CANVAS_HEIGHT = 600;
 
-    const [image, setImage] = useState("");
-    // const [imagePath, setImagePath] = useState("");
-    const uploadAnnotatedImage = async (dataUrl, fileName) => {
-        console.log('FILE NAME: \n', fileName); 
-        console.log("DATA URL: \n", dataUrl); 
-        const imageRef = ref(storage, `annotated/${fileName}`);
-        // await uploadString(imageRef, dataUrl, 'data_url'); // Upload base64 string
-        // const downloadURL = await getDownloadURL(imageRef);
-       
-        // const metadata = {
-        //     contentType: uploadImage.type || "image/jpeg",
-        // };
 
-    
-        // uploadBytes(imageRef, imageUpload, metadata)
-        //     .then(() => getDownloadURL(imageRef))
-        //     .then((url) => {
-        //         console.log('DOWNLOAD URL: \n', url); 
-        //         setImage(url); // https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2FIMG_4460_ded06abb-e74f-48e2-8f9e-cd8cde7be519.jpeg?alt=media&token=de759ed2-be81-4066-b6dd-76e93457b911
-        //         // setImagePath(`images/${uniqueImageName}`); // images/IMG_4460_ded06abb-e74f-48e2-8f9e-cd8cde7be519.jpeg
-        //         // setIsUploaded(true);
-        //     })
-        //     .catch((error) => {
-        //         console.error("Upload failed:", error);
-        // });
-      };
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === "Delete" && selectedId) {
+                deleteAnnotation(selectedId);
+            }
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [selectedId, annotations]);
 
 
     const handleStageClick = (e) => {
         const stage = e.target.getStage();
         const mousePos = stage.getPointerPosition();
-
-        // Depending on the current annotation type, add text or circle
+    
         if (currentAnnotation === 'circle') {
             setAnnotations([
                 ...annotations,
                 {
+                    id: uuidv4(),
                     type: 'circle',
                     x: mousePos.x,
                     y: mousePos.y,
                     radius: 20,
                     fill: 'red',
+                    draggable: true,
                 }
             ]);
         } else if (currentAnnotation === 'text') {
             setAnnotations([
                 ...annotations,
                 {
+                    id: uuidv4(),
                     type: 'text',
                     x: mousePos.x,
                     y: mousePos.y,
                     text: text,
+                    draggable: true,
                 }
             ]);
-            setText("");  // Reset text after adding
+            setText(""); 
         }
     };
 
@@ -116,74 +107,151 @@ const Annotate = () => {
         navigate('/create');
     };
 
-    const nextPage = async () =>{
-        const dataUrl = stageRef.current.toDataURL(); // Annotated image as base64
-        const fileName = `annotated_${Date.now()}.png`;
-
-        try { 
-            const downloadURL = await uploadAnnotatedImage(dataUrl, fileName);
-            console.log("Firebase Image URL:", downloadURL);
-
-        navigate('/map', {
-            state: {
-              isFromDrafts,
-              routeData,
-              isPlacingRoute: true,
-              routeName,
-              grade,
-              incline,
-              description, 
-              notes, 
-              timestamp, 
-              imagePath: downloadURL,
-              comments: [],
-              coordinates,
-              wall,
-              color
-            }
-          });
-        } catch (err) {
-          console.error("Upload failed:", err);
+    const deleteAnnotation = (id) => {
+        const updated = annotations.filter(a => a.id !== id);
+        setAnnotations(updated);
+        if (selectedId === id) {
+            setSelectedId(null);
         }
-      };
-      
+    };
+
+    const nextPage = () =>{
+        // const uri = stageRef.current.toDataURL();
+        // const fileName = `annotations/${Date.now()}.png`;
+        // const imageRef = ref(storage, fileName);  
+        // console.log("URI: \n", uri); 
+        navigate('/map', {state:
+            {
+                isFromDrafts,
+                routeData,
+                isPlacingRoute: true,
+                routeName,
+                grade,
+                incline,
+                description, 
+                notes, 
+                timestamp, 
+                imagePath: imagePath, 
+                comments:[],
+                coordinates,
+                wall,
+                color
+            }
+        });
+    }
+
+
+    const uploadImage = async () => {
+        if (status !== 'loaded') {
+            console.warn("Image not fully loaded yet!");
+            return;
+        }
+
+        
+        await new Promise((res) => setTimeout(res, 100));
+        const uri = stageRef.current.toDataURL();  
+        console.log(stageRef.current); 
+        console.log("URI: \n", uri); 
+        
+
+        const baseName = "annotated_image";
+        const extension = ".png";
+        const uniqueImageName = `${baseName}_${uuidv4()}${extension}`;
+    
+        const imagePath = `images/${uniqueImageName}`;
+        const imageRef = ref(storage, imagePath);
+        console.log("IMAGE PATH: \n", imagePath); 
+        const metadata = {
+            contentType: "image/png",
+        };
+        console.log("ANNOTATIONS: \n", annotations); 
+    
+        // try {
+            uploadString(imageRef, uri, 'data_url', metadata);
+            const downloadURL = await getDownloadURL(imageRef);
+            image = downloadURL; 
+
+            console.log("Image URL:", downloadURL);
+            console.log("Image Path:", imagePath);
+            console.log("I'M RIGHT HERE\n"); 
+    
+        // } catch (error) {
+        //     console.error("Error uploading canvas image:", error);
+        // }
+    };
+
+
 
 
     return (
         <div>
             <div className="picture">
-            <Stage ref={stageRef} width={window.innerWidth} height={window.innerHeight} onClick={handleStageClick}>
+            <Stage width={window.innerWidth} height={window.innerHeight} onClick={handleStageClick} ref={stageRef}>
                 <Layer>
                     <Image
                     image={image}
                     width={window.innerWidth}
                     height={window.innerHeight}
                     // onClick={handleStageClick}
+                    onLoad={() => setIsImageLoaded(true)}
+                    
                     />
+                    
+                    
                     {annotations.map((annotation, index) => {
-                    if (annotation.type === 'circle') {
-                        return (
-                        <Circle
-                            key={index}
-                            x={annotation.x}
-                            y={annotation.y}
-                            radius={annotation.radius}
-                            fill={annotation.fill}
-                        />
-                        );
-                    } else if (annotation.type === 'text') {
-                        return (
-                        <Text
-                            key={index}
-                            x={annotation.x}
-                            y={annotation.y}
-                            text={annotation.text}
-                            fontSize={18}
-                            fill="black"
-                        />
-                        );
-                    }
-                    return null;
+                        if (annotation.type === 'circle') {
+                            return (
+                                <Circle
+                                    key={annotation.id}
+                                    x={annotation.x}
+                                    y={annotation.y}
+                                    radius={annotation.radius}
+                                    fill={annotation.fill}
+                                    draggable
+                                    onClick={() => setSelectedId(annotation.id)}
+                                    onDragEnd={(e) => {
+                                        const updated = annotations.map(a =>
+                                            a.id === annotation.id
+                                                ? { ...a, x: e.target.x(), y: e.target.y() }
+                                                : a
+                                        );
+                                        setAnnotations(updated);
+                                    }}
+                                    // onDblClick={() => deleteAnnotation(annotation.id)}
+                                />
+                            );
+                        } else if (annotation.type === 'text') {
+                            return (
+                                <Text
+                                    key={annotation.id}
+                                    x={annotation.x}
+                                    y={annotation.y}
+                                    text={annotation.text}
+                                    fontSize={18}
+                                    fill="black"
+                                    draggable
+                                    onClick={() => setSelectedId(annotation.id)}
+                                    onDblClick={() => {
+                                        const newText = prompt("Edit text:", annotation.text);
+                                        if (newText !== null) {
+                                            const updated = annotations.map(a =>
+                                                a.id === annotation.id ? { ...a, text: newText } : a
+                                            );
+                                            setAnnotations(updated);
+                                        }
+                                    }}
+                                    onDragEnd={(e) => {
+                                        const updated = annotations.map(a =>
+                                            a.id === annotation.id
+                                                ? { ...a, x: e.target.x(), y: e.target.y() }
+                                                : a
+                                        );
+                                        setAnnotations(updated);
+                                    }}
+                                />
+                            );
+                        }
+                        return null;
                     })}
                 </Layer>
                 </Stage>
@@ -194,9 +262,10 @@ const Annotate = () => {
                     <button type="button" className="navigate-button" onClick={prevPage}> Back </button>
                 </div>
                 <div className="button-right">
-                    <button type="button" className="navigate-button" onClick={nextPage}> Next </button>
+                    <button type="button" className="navigate-button" disabled={status !== "loaded"} onClick={nextPage}> Next </button>
                 </div>
             </div>
+
 
             {/* Buttons for annotation types */}
             <div className="annotation-tools">
@@ -210,6 +279,9 @@ const Annotate = () => {
                         placeholder="Enter text"
                     />
                 )}
+
+                <button className="create-button" onClick={uploadImage}> Finish Annotation </button>
+    
             </div>
         </div>
     );
