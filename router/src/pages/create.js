@@ -38,7 +38,7 @@ const Info = () => {
   const { onSubmitRoute, onUpdateRoute } = RouteActions(); 
 
   const location = useLocation();
-  const imageUrl = location.state?.imageObject;
+  
   // const imagePath = location.state?.imagePath;
   const placeholder_image = 'https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2Fplaceholder_image.jpg?alt=media&token=0dd7e268-265a-4812-97e7-4f13dae4d31b'
   const[loading, setLoading] = useState(false); 
@@ -47,6 +47,22 @@ const Info = () => {
   const isEditing = location.state?.isEditing;
   const id = location.state?.id;
   const routeData = location.state?.routeData;
+
+  const draftImage = location.state?.imageObject; 
+  const [newImage, setImage] = useState("");
+
+  /* 
+  UPLOADING PHOTO  
+  */ 
+  // image selected by the "choose file" button 
+  const [imageUpload, setImageUpload] = useState(null);
+  // image object used to display on screen once image is selected
+  
+  // path of the image to save to firestore
+  const [imagePath, setImagePath] = useState("");
+  const [isUploaded, setIsUploaded] = useState(false);
+  // const navigate = useNavigate();
+
 
   const onSaveDraft = async (e) => {
     e.preventDefault();
@@ -88,6 +104,7 @@ const Info = () => {
       setIncline(routeData.incline);
       setDesc(routeData.description);
       setNotes(routeData.notes)
+      setImage(routeData.imageObject); 
     }
   }, []);
 
@@ -124,7 +141,7 @@ const Info = () => {
         coordinates,
         wall,
         color, 
-        imageObject : imageUrl, 
+        imageObject : isEditing ? draftImage : newImage, 
         imagePath : imagePath 
       }
     }); 
@@ -132,17 +149,6 @@ const Info = () => {
 
 
 
-/* 
-UPLOADING PHOTO  
-*/ 
-// image selected by the "choose file" button 
-const [imageUpload, setImageUpload] = useState(null);
-// image object used to display on screen once image is selected
-const [image, setImage] = useState("");
-// path of the image to save to firestore
-const [imagePath, setImagePath] = useState("");
-const [isUploaded, setIsUploaded] = useState(false);
-// const navigate = useNavigate();
 
 
 
@@ -259,7 +265,7 @@ return (
 
         <div className = 'image-container'> 
             <label htmlFor = 'fileInput'>  
-                <img src = {imageUrl || image || placeholder_image} key = {image} style={{ cursor: 'pointer' }} alt = "Click to upload " className = "uploaded-image" />
+                <img src = {draftImage || newImage || placeholder_image} key = {newImage} style={{ cursor: 'pointer' }} alt = "Click to upload " className = "uploaded-image" />
             </label>
         
             <button className="create-button" onClick={uploadImage}>Upload Image</button>

@@ -167,13 +167,20 @@ const Annotate = () => {
         console.log("ANNOTATIONS: \n", annotations); 
     
         // try {
-            uploadString(imageRef, uri, 'data_url', metadata);
-            const downloadURL = await getDownloadURL(imageRef);
-            image = downloadURL; 
-
-            console.log("Image URL:", downloadURL);
-            console.log("Image Path:", imagePath);
-            console.log("I'M RIGHT HERE\n"); 
+            // uploadString(imageRef, uri, 'data_url', metadata);
+            uploadString(imageRef, metadata)
+                .then(() => getDownloadURL(imageRef))
+                .then((url) => { 
+            // const downloadURL = await getDownloadURL(imageRef);
+            // image = downloadURL; 
+                image = url; 
+                console.log("Image URL:", image);
+                console.log("Image Path:", imagePath);
+                console.log("I'M RIGHT HERE\n"); 
+                }) 
+                .catch((error) => {
+                    console.error("Upload failed:", error);
+                });
     
         // } catch (error) {
         //     console.error("Error uploading canvas image:", error);
@@ -262,7 +269,7 @@ const Annotate = () => {
                     <button type="button" className="navigate-button" onClick={prevPage}> Back </button>
                 </div>
                 <div className="button-right">
-                    <button type="button" className="navigate-button" disabled={status !== "loaded"} onClick={nextPage}> Next </button>
+                    <button type="button" className="navigate-button" onClick={nextPage}> Next </button>
                 </div>
             </div>
 
