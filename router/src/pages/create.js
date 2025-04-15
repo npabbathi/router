@@ -142,7 +142,8 @@ const Info = () => {
         wall,
         color, 
         imageObject : isEditing ? draftImage : newImage, 
-        imagePath : imagePath 
+        imagePath : imagePath,
+        id
       }
     }); 
   }; 

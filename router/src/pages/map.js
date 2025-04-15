@@ -112,10 +112,12 @@ const ClimbingMap = () => {
     const notes = location.state?.notes; 
     const timestamp = location.state?.timestamp; 
     const imagePath = location.state?.imagePath; 
+    const imageObject = location.state?.imageObject;
     const comments = location.state?.comments;
     const coordinates = location.state?.coordinates;
     const wall = location.state?.wall;
     const color = location.state?.color;
+    const id = location.state?.id;
 
 
     // the methods below are related to the interactivity and resizing of the map
@@ -145,7 +147,8 @@ const ClimbingMap = () => {
                     comments:[],
                     coordinates,
                     wall,
-                    color
+                    color,
+                    id
                 }
             });
         }

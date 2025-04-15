@@ -26,6 +26,7 @@ const Annotate = () => {
     const coordinates = location.state?.coordinates;
     const wall = location.state?.wall;
     const color = location.state?.color;
+    const id = location.state?.id;
 
     /* managing annotations */
     const [annotations, setAnnotations] = useState([]);  
@@ -131,11 +132,13 @@ const Annotate = () => {
                 description, 
                 notes, 
                 timestamp, 
-                imagePath: imagePath, 
+                imagePath: imagePath,
+                imageObject: imageUrl,
                 comments:[],
                 coordinates,
                 wall,
-                color
+                color,
+                id
             }
         });
     }

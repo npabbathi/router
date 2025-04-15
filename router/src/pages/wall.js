@@ -16,7 +16,7 @@ const Wall = () => {
     const containerRef = useRef(null);
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
-    const { getRoutesByWall, onSubmitRoute } = RouteActions();
+    const { getRoutesByWall, onSubmitRoute, onUpdateRoute } = RouteActions();
     const [wallName, setWallName] = useState("");
     const [wallRoutes, setWallRoutes] = useState([]);
     const [circles, setCircles] = useState([]);
@@ -35,6 +35,7 @@ const Wall = () => {
     const coordinates = circles[0];
     const color = location.state?.color;
     const placingColor = isFromDrafts ? routeData?.color : color;
+    const id = location.state?.id;
 
 
     // Extracts only the name of the wall. For example: "east-wall" or "fs1"
@@ -189,7 +190,8 @@ const Wall = () => {
                 comments,
                 coordinates,
                 wall: "",
-                color
+                color,
+                id
             }
         });
     }
@@ -203,6 +205,18 @@ const Wall = () => {
         } catch(error) { 
             console.error("Error with publishing route :(", error); 
             alert("Failed to publish the route. "); 
+        }
+    };
+
+    const onEditingRoute = async (e) =>{
+        e.preventDefault();
+        try {
+            const { x, y } = circles[0]
+            await onUpdateRoute({id, name: routeName, grade, incline, description, notes, timestamp, imagePath, comments, coordinates: { x, y }, wall:wallName, color})
+            alert("Route has been updated!")
+        } catch(error){
+            console.error("Error with updating route :(", error); 
+            alert("Failed to update the route. "); 
         }
     };
 
@@ -268,7 +282,7 @@ const Wall = () => {
             </div>
             {isPlacingRoute && (
                 <div className='submit-button-con'>
-                    <button type='button' className='submit-button' onClick={onFinalPlaceRoute} disabled={circles.length === 0}>
+                    <button type='button' className='submit-button' onClick={isFromDrafts ? onEditingRoute : onFinalPlaceRoute} disabled={circles.length === 0}>
                         Publish Route
                     </button>
                 </div>
