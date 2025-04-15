@@ -59,7 +59,7 @@ const Info = () => {
   // image object used to display on screen once image is selected
   
   // path of the image to save to firestore
-  const [imagePath, setImagePath] = useState("");
+  const [imagePath, setImagePath] = useState(location.state?.imagePath);
   const [isUploaded, setIsUploaded] = useState(false);
   // const navigate = useNavigate();
 
