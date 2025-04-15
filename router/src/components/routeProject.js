@@ -52,7 +52,9 @@ export const RouteProject = () => {
                 {routesWithUrls.map((route) => (
                     <div key={route.id}>
                         <h1>{route.image}</h1>
-                        {(toggleDraftsOrAll || currentUser == route.owner) && <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} onEditRoute={onEditRoute} id={route.id} can_modify={!toggleDraftsOrAll} image={route.imageUrl}/>}
+                        <h1>hello: {route.wall}</h1>
+                        {(currentUser === route.owner && toggleDraftsOrAll) && <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} onEditRoute={onEditRoute} id={route.id} can_modify={true} image={route.imageUrl}/>}
+                        {(currentUser === route.owner && !toggleDraftsOrAll && route.wall === "") && <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} onEditRoute={onEditRoute} id={route.id} can_modify={true} image={route.imageUrl}/>}
                     </div>
                 ))}
             </div>
