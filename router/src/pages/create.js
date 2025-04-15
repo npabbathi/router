@@ -124,7 +124,7 @@ const Info = () => {
         coordinates,
         wall,
         color, 
-        imageObject : image, 
+        imageObject : imageUrl, 
         imagePath : imagePath 
       }
     }); 
