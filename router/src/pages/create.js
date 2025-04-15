@@ -15,6 +15,8 @@ import useImage from 'use-image';
 
 
 const Info = () => {
+  const location = useLocation();
+
 
   /* route information here */
   const [routeName, setRouteName] = useState("");
@@ -27,7 +29,7 @@ const Info = () => {
     x: 0,
     y: 0,
   });
-  const [color, setColor] = useState("");
+  const [color, setColor] = useState(location.state?.routeData.color);
   
   /* time stamp information */
   const now = new Date(); 
@@ -36,8 +38,6 @@ const Info = () => {
 
   /* submitting a route + updating route */
   const { onSubmitRoute, onUpdateRoute } = RouteActions(); 
-
-  const location = useLocation();
   
   // const imagePath = location.state?.imagePath;
   const placeholder_image = 'https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2Fplaceholder_image.jpg?alt=media&token=0dd7e268-265a-4812-97e7-4f13dae4d31b'
