@@ -200,7 +200,7 @@ const Wall = () => {
         e.preventDefault();
         try {
             const { x, y } = circles[0]
-            await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, imagePath, comments, coordinates: { x, y }, wall: wallName, color});
+            await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall: wallName, color});
             alert("Route has been published!"); 
         } catch(error) { 
             console.error("Error with publishing route :(", error); 
@@ -212,7 +212,7 @@ const Wall = () => {
         e.preventDefault();
         try {
             const { x, y } = circles[0]
-            await onUpdateRoute({id, name: routeName, grade, incline, description, notes, timestamp, imagePath, comments, coordinates: { x, y }, wall:wallName, color})
+            await onUpdateRoute({id, name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall:wallName, color})
             alert("Route has been updated!")
         } catch(error){
             console.error("Error with updating route :(", error); 

@@ -21,7 +21,7 @@ const Annotate = () => {
     const description = location.state?.description; 
     const notes = location.state?.notes; 
     const timestamp = location.state?.timestamp; 
-    const imagePath = location.state?.imagePath; 
+    const imagePath = location.state?.image; 
     const comments = location.state?.comments;
     const coordinates = location.state?.coordinates;
     const wall = location.state?.wall;
@@ -35,7 +35,7 @@ const Annotate = () => {
      // text for annotation
     const [text, setText] = useState(""); 
 
-    const imageUrl = location.state?.imageObject;
+    const imageUrl = location.state?.image;
     const [image, status] = useImage(imageUrl);
     console.log("Image status:", status);
     console.log("Image object:", image);
@@ -272,7 +272,7 @@ const Annotate = () => {
                     <button type="button" className="navigate-button" onClick={prevPage}> Back </button>
                 </div>
                 <div className="button-right">
-                    <button type="button" className="navigate-button" onClick={nextPage}> Next </button>
+                    <button type="button" className="navigate-button" disabled={status !== "loaded"} onClick={nextPage}> Next </button>
                 </div>
             </div>
 

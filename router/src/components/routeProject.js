@@ -11,7 +11,6 @@ import { onAuthStateChanged } from "firebase/auth";
 export const RouteProject = () => {
     
     const { routesList, onEditRoute, onDeleteRoute } = RouteActions();
-    const [routesWithUrls, setRoutesWithUrls] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
     const [toggleDraftsOrAll, setToggleDraftsOrAll] = useState(false);
 
@@ -19,28 +18,6 @@ export const RouteProject = () => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user ? user.email : null);
         });
-
-        const fetchImageUrls = async () => {
-            const updatedRoutes = await Promise.all(
-                routesList.map(async (route) => {
-                    if (route.imagePath) {
-                        try {
-                            const imageRef = ref(storage, route.imagePath);
-                            const url = await getDownloadURL(imageRef);
-                            return { ...route, imageUrl: url };
-                        } catch (error) {
-                            console.error("Failed to get image URL:", error);
-                            return { ...route, imageUrl: null };
-                        }
-                    } else {
-                        return { ...route, imageUrl: null };
-                    }
-                })
-            );
-            setRoutesWithUrls(updatedRoutes);
-        };
-
-        fetchImageUrls();
     
         }, [routesList, storage]);
 
@@ -49,12 +26,10 @@ export const RouteProject = () => {
             <button disabled={!toggleDraftsOrAll} onClick={() => {setToggleDraftsOrAll(!toggleDraftsOrAll)}}> Show Drafts </button>
             <button disabled={toggleDraftsOrAll} onClick={() => {setToggleDraftsOrAll(!toggleDraftsOrAll)}}> Show All Routes </button>
             <div className="allRouteCards">
-                {routesWithUrls.map((route) => (
+                {routesList.map((route) => (
                     <div key={route.id}>
-                        <h1>{route.image}</h1>
-                        {/* <h1>wall: {route.wall}</h1> */}
-                        {(currentUser === route.owner && toggleDraftsOrAll) && <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} onEditRoute={onEditRoute} id={route.id} can_modify={true} image={route.imageUrl}/>}
-                        {(currentUser === route.owner && !toggleDraftsOrAll && route.wall === "") && <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} onEditRoute={onEditRoute} id={route.id} can_modify={true} image={route.imageUrl}/>}
+                        {(currentUser === route.owner && toggleDraftsOrAll) && <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} onEditRoute={onEditRoute} id={route.id} can_modify={true} image={route.image}/>}
+                        {(currentUser === route.owner && !toggleDraftsOrAll && route.wall === "") && <RouteCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} onDeleteRoute={onDeleteRoute} onEditRoute={onEditRoute} id={route.id} can_modify={true} image={route.image}/>}
                     </div>
                 ))}
             </div>

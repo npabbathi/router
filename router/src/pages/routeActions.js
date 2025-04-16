@@ -85,7 +85,7 @@ export const RouteActions = () => {
     /**
      * uses the current information the user has filled to create a new route to store in the database
      */
-    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp, imagePath, comments, coordinates, wall, color }) => {
+    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp, image, comments, coordinates, wall, color }) => {
         console.log("I AM CREATING A ROUTE")
         try {
             const routeCreator = onAuthStateChanged(auth, async (user) => {
@@ -99,7 +99,8 @@ export const RouteActions = () => {
                         description,
                         notes,
                         timestamp,
-                        imagePath,
+                        imagePath: image,
+                        image: image,
                         comments,
                         coordinates,
                         wall,
@@ -121,7 +122,7 @@ export const RouteActions = () => {
     /**
      * uses the current information the user has filled to update an existing route in the database
      */
-    const onUpdateRoute = async ({ id, name, grade, incline, description, notes, timestamp, imagePath, comments, coordinates, wall, color }) => {
+    const onUpdateRoute = async ({ id, name, grade, incline, description, notes, timestamp, image, comments, coordinates, wall, color }) => {
         try {
             const routeRef = doc(db, "routes", id);
             await updateDoc(routeRef, {
@@ -131,7 +132,7 @@ export const RouteActions = () => {
                 description,
                 notes,
                 timestamp,
-                imagePath,
+                image,
                 comments,
                 coordinates,
                 wall,
@@ -163,9 +164,7 @@ export const RouteActions = () => {
         
         //pass the document info to info
         navigate('/create', { state: 
-            { 
-                imageObject : imageUrl,
-                imagePath : routeDoc.data().imagePath,
+            {
                 isEditing : true,
                 id: id,
                 routeData: routeDoc.data()

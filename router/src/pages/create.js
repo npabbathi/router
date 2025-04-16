@@ -5,17 +5,22 @@ import { RouteActions } from "./routeActions"
 
 // stolen from create.js will need to change
 import { storage } from "../config/firebase";
-import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import "./create.css"
 
 
-import { Stage, Layer, Text, Circle, Image as KonvaImage } from 'react-konva';
-import useImage from 'use-image';
+// import { Stage, Layer, Text, Circle, Image as KonvaImage } from 'react-konva';
+// import useImage from 'use-image';
 
 
 const Info = () => {
   const location = useLocation();
+
+  /* did we come from drafts? */ 
+  const isEditing = location.state?.isEditing;
+  const id = location.state?.id;
+  const routeData = location.state?.routeData;
 
 
   /* route information here */
@@ -24,12 +29,7 @@ const Info = () => {
   const [incline, setIncline] = useState(0);
   const [description, setDesc] = useState(""); 
   const [notes, setNotes] = useState("");
-  const [wall, setWall] = useState("");
-  const [coordinates, setCoordinates] = useState({
-    x: 0,
-    y: 0,
-  });
-  const [color, setColor] = useState(location.state?.routeData.color);
+  const [color, setColor] = useState(routeData?.color);
   
   /* time stamp information */
   const now = new Date(); 
@@ -38,31 +38,15 @@ const Info = () => {
 
   /* submitting a route + updating route */
   const { onSubmitRoute, onUpdateRoute } = RouteActions(); 
-  
-  // const imagePath = location.state?.imagePath;
-  const placeholder_image = 'https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2Fplaceholder_image.jpg?alt=media&token=0dd7e268-265a-4812-97e7-4f13dae4d31b'
-  const[loading, setLoading] = useState(false); 
-  
-  /* did we come from drafts? */ 
-  const isEditing = location.state?.isEditing;
-  const id = location.state?.id;
-  const routeData = location.state?.routeData;
-
-  const draftImage = location.state?.imageObject; 
-  const [newImage, setImage] = useState("");
 
   /* 
   UPLOADING PHOTO  
   */ 
   // image selected by the "choose file" button 
   const [imageUpload, setImageUpload] = useState(null);
-  // image object used to display on screen once image is selected
-  
-  // path of the image to save to firestore
-  const [imagePath, setImagePath] = useState(location.state?.imagePath);
-  const [isUploaded, setIsUploaded] = useState(false);
-  // const navigate = useNavigate();
 
+  // image object used to display on screen once image is selected
+  const [image, setImage] = useState("");
 
   const onSaveDraft = async (e) => {
     e.preventDefault();
@@ -70,11 +54,11 @@ const Info = () => {
     try {
       //updates a route if they came from drafts
       if (isEditing) {
-        await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: routeData.comments, coordinates: routeData.coordinates, wall: routeData.wall, color: routeData.color});
+        await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, image, comments: routeData.comments, coordinates: routeData.coordinates, wall: routeData.wall, color: routeData.color});
         navigate("/drafts")
         alert("Route updated to in drafts!");
       } else { //creates a new route if making it for the first time
-        await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, imagePath, comments: [], coordinates, wall, color});
+        await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image, comments: [], coordinates: { x: 0, y: 0 }, wall: "", color});
         alert("Route added to drafts!"); 
       }
     } catch(error) { 
@@ -104,24 +88,17 @@ const Info = () => {
       setIncline(routeData.incline);
       setDesc(routeData.description);
       setNotes(routeData.notes)
-      setImage(routeData.imageObject); 
+      setImage(routeData.image); 
     }
   }, []);
 
+  useEffect(() => {
+    uploadImage();
+  }, [imageUpload])
 
-  // AC: get rid of this 
+
   const prevPage = () => {
-    if (!isEditing) {
-      navigate('/create', { state: 
-        {
-        //   imageObject: imageUrl, 
-          imagePath: imagePath, 
-          isEditing: true, 
-        }
-      }); 
-    } else {
-      navigate('/drafts'); 
-    }
+    navigate('/drafts'); 
   }; 
 
 
@@ -136,25 +113,18 @@ const Info = () => {
         description, 
         notes, 
         timestamp, 
-        imagePath, 
+        image, 
         comments:[],
-        coordinates,
-        wall,
-        color, 
-        imageObject : isEditing ? draftImage : newImage, 
-        imagePath : imagePath,
+        coordinates: { x: 0, y: 0 },
+        wall: "",
+        color,
         id
       }
     }); 
   }; 
 
-
-
-
-
-
 const uploadImage = () => {
-    if (!uploadImage) {
+    if (!imageUpload) {
         console.error("No image selected");
         return;
     }
@@ -179,11 +149,7 @@ const uploadImage = () => {
     uploadBytes(imageRef, imageUpload, metadata)
         .then(() => getDownloadURL(imageRef))
         .then((url) => {
-           
             setImage(url); // https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2FIMG_4460_ded06abb-e74f-48e2-8f9e-cd8cde7be519.jpeg?alt=media&token=de759ed2-be81-4066-b6dd-76e93457b911
-            setImagePath(`images/${uniqueImageName}`); // images/IMG_4460_ded06abb-e74f-48e2-8f9e-cd8cde7be519.jpeg
-            
-            setIsUploaded(true);
         })
         .catch((error) => {
             console.error("Upload failed:", error);
@@ -265,11 +231,9 @@ return (
         onChange={(event) => {setImageUpload(event.target.files[0])}}  /> 
 
         <div className = 'image-container'> 
-            <label htmlFor = 'fileInput'>  
-                <img src = {draftImage || newImage || placeholder_image} key = {newImage} style={{ cursor: 'pointer' }} alt = "Click to upload " className = "uploaded-image" />
+            <label htmlFor = 'fileInput'>
+                <img src = {image} key = {image} style={{ cursor: 'pointer' }} alt = "Click to upload" className = "uploaded-image" />
             </label>
-        
-            <button className="create-button" onClick={uploadImage}>Upload Image</button>
         </div>
     </div>
 
@@ -278,7 +242,7 @@ return (
 
   <div className = 'button-row'>
       <div className = 'button-left'>
-        <button type = 'button' className = 'navigate-button' onClick={prevPage} > Back </button>
+        {isEditing && <button type = 'button' className = 'navigate-button' onClick={prevPage} > Back </button>}
       </div>
       <div className = 'button-right'>
         <button type = 'button' className = 'navigate-button'  onClick={nextPage} > Next </button>
@@ -293,89 +257,3 @@ return (
 };
 
 export default Info;
-
-
-
-
-// import { useEffect, useState } from "react";
-// import { storage } from "../config/firebase";
-// import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
-// import { v4 } from "uuid";
-// import { useNavigate, useLocation } from 'react-router-dom';
-// import "./create.css"
-// import { RouteActions } from "./routeActions"
-
-
-// const Upload = () => {
-
-
-//     // image selected by the "choose file" button 
-//     const [imageUpload, setImageUpload] = useState(null);
-//     // image object used to display on screen once image is selected
-//     const [image, setImage] = useState(null);
-//     // path of the image to save to firestore
-//     const [imagePath, setImagePath] = useState("");
-//     const [isUploaded, setIsUploaded] = useState(false);
-//     const navigate = useNavigate();
-
-
-
-//     const uploadImage = () => {
-//         if (!imageUpload) {
-//             console.error("No image selected");
-//             return;
-//         }
-        
-//         console.log("RIGHT HERE \n", imageUpload); 
-//         const originalName = imageUpload.name;
-//         console.log("DOWN HERE \n", originalName); 
-
-//         // after last . – something like .jpeg
-//         const extension = originalName.substring(originalName.lastIndexOf('.'));
-
-//         // from 0 to . – initial name 
-//         const baseName = originalName.substring(0, originalName.lastIndexOf('.'));
-       
-//         const uniqueImageName = `${baseName}_${v4()}${extension}`;
-        
-    
-//         const imageRef = ref(storage, `images/${uniqueImageName}`);
-//         const metadata = {
-//             contentType: imageUpload.type || "image/jpeg",
-//         };
-    
-//         uploadBytes(imageRef, imageUpload, metadata)
-//             .then(() => getDownloadURL(imageRef))
-//             .then((url) => {
-//                 setImage(url);
-            
-//                 setImagePath(`images/${uniqueImageName}`);
-//                 setIsUploaded(true);
-//             })
-//             .catch((error) => {
-//                 console.error("Upload failed:", error);
-//             });
-//     };
-    
-//     const nextPage = () => {
-//         navigate('/info', { state: 
-//             { 
-//                 imageObject : image,
-//                 imagePath : imagePath,
-//                 isEditing : false,
-//             } 
-//         }); // Pass as an object
-//     };
-
-
-
-//     return (
-//         <div>
-//             <input type="file" onChange={(event) => {setImageUpload(event.target.files[0])}}/>
-//             <button className="create-button" onClick={uploadImage}>Upload Image</button>
-//             <img src={image}/>
-//             <button className="create-button" onClick={nextPage} disabled={!isUploaded}>Next</button>
-//         </div>
-//     );
-// };
-// export default Upload;
