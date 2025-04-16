@@ -72,7 +72,7 @@ export const RouteActions = () => {
             setRoute(null);
         }
     };
-    
+
     /**
      * uses firestore to delete a route in the database
      */
@@ -160,20 +160,21 @@ export const RouteActions = () => {
             console.error("No such document!");
             return;
         }
-        
+
         //pass the document info to info
-        navigate('/create', { state: 
+        navigate('/create', {
+            state:
             {
-                isEditing : true,
+                isEditing: true,
                 id: id,
                 routeData: routeDoc.data()
-            } 
+            }
         }); // Pass as an object
     }
 
     const getRoutesByWall = async (wallName) => {
         const q = query(routeCollectionRef, where("wall", "==", wallName));
-    
+
         try {
             const querySnapshot = await getDocs(q);
             if (!querySnapshot.empty) {
