@@ -33,10 +33,10 @@ const Review = () => {
     }, []);
 
     useEffect(() => {
-        if (route && route.imagePath) {
+        if (route && route.image) {
             setComments(route.comments);
             setIsLoading(false);
-            const imageRef = ref(storage, route.imagePath);
+            const imageRef = ref(storage, route.image);
             getDownloadURL(imageRef)
                 .then((url) => {
                     setImage(url);

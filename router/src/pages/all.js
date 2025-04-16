@@ -15,9 +15,9 @@ export const All = () => {
         const fetchImageUrls = async () => {
             const updatedRoutes = await Promise.all(
                 routesList.map(async (route) => {
-                    if (route.imagePath) {
+                    if (route.image) {
                         try {
-                            const imageRef = ref(storage, route.imagePath);
+                            const imageRef = ref(storage, route.image);
                             const url = await getDownloadURL(imageRef);
                             return { ...route, imageUrl: url };
                         } catch (error) {
@@ -41,7 +41,6 @@ export const All = () => {
             <div className="allRouteCards">
                 {routesWithUrls.map((route) => (
                     <div key={route.id}>
-                        <h1>{route.image}</h1>
                         <AllCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} id={route.id} can_delete={false} image={route.imageUrl}/>
                     </div>
                 ))}

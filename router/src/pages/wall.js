@@ -186,7 +186,7 @@ const Wall = () => {
                 description, 
                 notes, 
                 timestamp, 
-                imagePath, 
+                image: imagePath, 
                 comments,
                 coordinates,
                 wall: "",

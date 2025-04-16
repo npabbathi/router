@@ -99,7 +99,6 @@ export const RouteActions = () => {
                         description,
                         notes,
                         timestamp,
-                        imagePath: image,
                         image: image,
                         comments,
                         coordinates,
