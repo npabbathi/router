@@ -21,7 +21,7 @@ const Annotate = () => {
     const description = location.state?.description; 
     const notes = location.state?.notes; 
     const timestamp = location.state?.timestamp; 
-    const imagePath = location.state?.image; 
+    const image = location.state?.image; 
     const comments = location.state?.comments;
     const coordinates = location.state?.coordinates;
     const wall = location.state?.wall;
@@ -35,10 +35,9 @@ const Annotate = () => {
      // text for annotation
     const [text, setText] = useState(""); 
 
-    const imageUrl = location.state?.image;
-    const [image, status] = useImage(imageUrl);
+    const [annotationImage, status] = useImage(image);
     console.log("Image status:", status);
-    console.log("Image object:", image);
+    console.log("Image object:", annotationImage);
 
     const stageRef = useRef(null);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -132,8 +131,7 @@ const Annotate = () => {
                 description, 
                 notes, 
                 timestamp, 
-                imagePath: imagePath,
-                imageObject: imageUrl,
+                image,
                 comments:[],
                 coordinates,
                 wall,
@@ -176,8 +174,8 @@ const Annotate = () => {
                 .then((url) => { 
             // const downloadURL = await getDownloadURL(imageRef);
             // image = downloadURL; 
-                image = url; 
-                console.log("Image URL:", image);
+                annotationImage = url; 
+                console.log("Image URL:", annotationImage);
                 console.log("Image Path:", imagePath);
                 console.log("I'M RIGHT HERE\n"); 
                 }) 
@@ -199,7 +197,7 @@ const Annotate = () => {
             <Stage width={window.innerWidth} height={window.innerHeight} onClick={handleStageClick} ref={stageRef}>
                 <Layer>
                     <Image
-                    image={image}
+                    image={annotationImage}
                     width={window.innerWidth}
                     height={window.innerHeight}
                     // onClick={handleStageClick}

@@ -30,7 +30,7 @@ const Wall = () => {
     const description = location.state?.description; 
     const notes = location.state?.notes; 
     const timestamp = location.state?.timestamp; 
-    const imagePath = location.state?.imagePath; 
+    const imagePath = location.state?.image; 
     const comments = location.state?.comments;
     const coordinates = circles[0];
     const color = location.state?.color;

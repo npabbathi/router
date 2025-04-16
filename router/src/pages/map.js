@@ -111,8 +111,7 @@ const ClimbingMap = () => {
     const description = location.state?.description; 
     const notes = location.state?.notes; 
     const timestamp = location.state?.timestamp; 
-    const imagePath = location.state?.imagePath; 
-    const imageObject = location.state?.imageObject;
+    const image = location.state?.image;
     const comments = location.state?.comments;
     const coordinates = location.state?.coordinates;
     const wall = location.state?.wall;
@@ -143,7 +142,7 @@ const ClimbingMap = () => {
                     description, 
                     notes,
                     timestamp, 
-                    imagePath, 
+                    image, 
                     comments:[],
                     coordinates,
                     wall,
