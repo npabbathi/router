@@ -12,7 +12,7 @@ const RouteCard = ({ name, grade, incline, description, notes }) => {
             {notes && <div className="detail-item"><strong>OTHER NOTES:</strong> {notes}</div>}
             <div className="details">
                 <div className="detail-item">
-                    <strong>WALL-INFORMATION:</strong>
+                    {/* <strong>WALL-INFORMATION:</strong> */}
                     <div className="detail-item">
                         <strong>GRADE:</strong> {grade}
                     </div>
