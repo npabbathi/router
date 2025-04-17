@@ -48,8 +48,41 @@ const Info = () => {
   // image object used to display on screen once image is selected
   const [image, setImage] = useState("");
 
+  function canContinue() {
+    if (routeName === "") {
+      alert("Please provide a route name before continuing!")
+      return false;
+    }
+
+    if (grade === "") {
+      alert("Please provide a grade before continuing!")
+      return false;
+    }
+
+    if (incline === 0) {
+      alert("Please provide a valid incline before continuing!")
+      return false;
+    }
+
+    if (description === "") {
+      alert("Please provide a description before continuing!")
+      return false;
+    }
+
+    if (image === "") {
+      alert("Please upload an image before continuing!")
+      return false;
+    }
+
+    return true;
+  }
+
   const onSaveDraft = async (e) => {
     e.preventDefault();
+
+    if (!canContinue()) {
+      return;
+    }
 
     try {
       //updates a route if they came from drafts
@@ -103,6 +136,10 @@ const Info = () => {
 
 
   const nextPage = () => {
+    if (!canContinue()) {
+      return;
+    }
+
     navigate('/annotate', {
       state:
       {
@@ -174,7 +211,6 @@ const Info = () => {
               id="routeName" type="text" value={routeName}
               placeholder="Enter route name."
               onChange={(e) => setRouteName(e.target.value)}
-              required
             />
           </div>
 
@@ -211,7 +247,6 @@ const Info = () => {
             <label htmlFor="description">Description</label>
             <textarea value={description} onChange={(e) => setDesc(e.target.value)}
               placeholder="Enter route information."
-              required
             />
           </div>
 
@@ -234,7 +269,7 @@ const Info = () => {
 
           <div className='image-container'>
             <label htmlFor='fileInput'>
-              <img src={image} key={image} style={{ cursor: 'pointer' }} alt="Click to upload" className="uploaded-image" />
+              <img src={image} key={image} style={{ cursor: 'pointer' }} alt="Click to upload an image. Let's hit the rocks!" className="uploaded-image" />
             </label>
           </div>
         </div>

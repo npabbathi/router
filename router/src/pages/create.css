@@ -6,8 +6,12 @@
   
   
 .uploaded-image {
-    /* width: 300px; */
-    /* height: auto; */
+    width: 600px;
+    height: auto;
+    text-align: center;
+    background-color: #1D2F6f;
+    color: white;
+    font-size:xx-large;
     border: 4px dashed #ccc;
     border-radius: 8px;
     transition: border-color 0.2s ease;
