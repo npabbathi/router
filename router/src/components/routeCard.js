@@ -11,7 +11,7 @@ export const RouteCard = ({ name, grade, incline, description, onDeleteRoute, on
     const navigate = useNavigate();
 
     return (
-        <div className="routeCard" onClick={() => { can_modify ? onEditRoute(id, image) : navigate(`/review/${id}`) }}>
+        <div className="routeCard" onClick={() => { if (can_modify) { onEditRoute(id, image)} }}>
             {/* for icon buttons (credit below) */}
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <div className={`imagePreview draftsBackground ${isHovering ? "hover-cursor" : ""}`} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>

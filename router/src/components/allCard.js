@@ -27,13 +27,13 @@ export const AllCard = ({ name, grade, incline, description, id, notes, timestam
                     </div>
                 }
             </div>
-            <div className="titleInfo">
+            <div className="titleInfo reviewTitleInfo">
                 <h1>{name}</h1>
-                <button className="viewButton" onClick={() => navigate(`/review/${id}`)}>
+                {/* <button className="viewButton" onClick={() => navigate(`/review/${id}`)}>
                     <i className="fa fa-eye"></i>
-                </button>
+                </button> */}
+                <h4>{grade} - {incline}º</h4>
             </div>
-            <h4>{grade} - {incline}º</h4>
         </div>
     )
 }

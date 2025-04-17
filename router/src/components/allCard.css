@@ -17,7 +17,10 @@
 }
 
 .allCard {
-    width: 100%;
-
+    overflow-wrap: anywhere;
+    max-width: 300px; 
 }
 
+.reviewTitleInfo {
+    flex-direction: column;
+}
