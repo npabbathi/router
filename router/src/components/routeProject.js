@@ -22,8 +22,10 @@ export const RouteProject = () => {
 
     return (
         <div>
-            <button disabled={!toggleDraftsOrAll} onClick={() => { setToggleDraftsOrAll(!toggleDraftsOrAll) }}> Show Drafts </button>
-            <button disabled={toggleDraftsOrAll} onClick={() => { setToggleDraftsOrAll(!toggleDraftsOrAll) }}> Show All Routes </button>
+            <div className="draftsHeader">
+                <button className="draftsButton" disabled={!toggleDraftsOrAll} onClick={() => { setToggleDraftsOrAll(!toggleDraftsOrAll) }}> Drafted Routes </button>
+                <button className="publishedButton" disabled={toggleDraftsOrAll} onClick={() => { setToggleDraftsOrAll(!toggleDraftsOrAll) }}> Published Routes </button>
+            </div>
             <div className="allRouteCards">
                 {routesList.map((route) => (
                     <div key={route.id}>

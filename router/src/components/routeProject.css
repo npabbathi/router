@@ -1,14 +1,30 @@
 .allRouteCards {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    margin-left: 80px;
 }
 
 
 button:disabled {
-    opacity: 0.3;
+    background-color: var(--accent-color);
 }
 
-button:disabled:hover {
-    background-color: var(--secondary-color);
+.draftsButton {
+    border-top-left-radius: 20px 20px !important;
+    border-bottom-left-radius: 20px 20px !important;
+    border-top-right-radius: 0px 0px !important;
+    border-bottom-right-radius: 0px 0px !important;
+}
+
+.publishedButton {
+    border-top-left-radius: 0px 0px !important;
+    border-bottom-left-radius: 0px 0px !important;
+    border-top-right-radius: 20px 20px !important;
+    border-bottom-right-radius: 20px 20px !important;
+}
+
+.draftsHeader {
+    display: flex;
+    margin-top: 20px;
+    margin-left: 100px;
 }

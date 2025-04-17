@@ -1,3 +1,4 @@
+import "./routeCard.css"
 import "./allCard.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import { IdCard } from "lucide-react";
@@ -12,24 +13,23 @@ export const AllCard = ({ name, grade, incline, description, id, notes, timestam
     const navigate = useNavigate();
 
     return (
-        <div className="allCard">
+        <div className="routeCard" onClick={() => navigate(`/review/${id}`)}>
             {/* for icon buttons (credit below) */}
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-            <div className="allImagePreview" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <div className={`imagePreview reviewBackground ${isHovering ? "hover-cursor" : ""}`} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <div className="underImage">
                     <img src={image}></img>
                 </div>
                 {isHovering &&
-                    <div className="overText" onClick={() => navigate(`/review/${id}`)}>
+                    <div className="overText">
+                        <p> {description} </p>
                         <p3> {timestamp} </p3>
-                        <p> Description: {description}</p>
-                        <p> Notes: {notes} </p>
                     </div>
                 }
             </div>
             <div className="titleInfo">
                 <h1>{name}</h1>
-                <button onClick={() => navigate(`/review/${id}`)}>
+                <button className="viewButton" onClick={() => navigate(`/review/${id}`)}>
                     <i className="fa fa-eye"></i>
                 </button>
             </div>
