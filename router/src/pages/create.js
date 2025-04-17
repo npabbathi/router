@@ -121,6 +121,7 @@ const Info = () => {
 
   // certain colors for certain grades. **SOme of these colors might not work?
   const gradeToColor = {
+    V0: "#FFFF00", //yelow
     V1: "#FFFF00", //yelow
     V2: "#FF0000", //red
     V3: "#008000",  //green
@@ -129,6 +130,7 @@ const Info = () => {
     V6: "#000000", //black
     V7: "#0000FF",  //blue
     V8: "#FFC0CB", //pink
+    V9: "#4B0082" //indigo
   };
 
   // if the user came from draft, load the previous draft data.
@@ -241,7 +243,7 @@ const Info = () => {
               <div className="form-group">
                 <label htmlFor="grade">Grade</label>
                 <div className="grade-buttons">
-                  {Array.from({ length: 12 }, (_, i) => `V${i}`).map((gradeLabel) => (
+                  {Array.from({ length: 10 }, (_, i) => `V${i}`).map((gradeLabel) => (
                     <button
                       key={gradeLabel}
                       type="button"

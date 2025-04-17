@@ -202,6 +202,13 @@ const Wall = () => {
             const { x, y } = circles[0]
             await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall: wallName, color});
             alert("Route has been published!"); 
+
+            // once route is successfully published, refresh page
+            navigate(`/map`, {
+                state: {
+                    isPlacingRoute: false
+                }
+            });
         } catch(error) { 
             console.error("Error with publishing route :(", error); 
             alert("Failed to publish the route. "); 
@@ -214,6 +221,13 @@ const Wall = () => {
             const { x, y } = circles[0]
             await onUpdateRoute({id, name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall:wallName, color})
             alert("Route has been updated!")
+
+            // once route is successfully published, refresh page
+            navigate(`/map`, {
+                state: {
+                    isPlacingRoute: false
+                }
+            });
         } catch(error){
             console.error("Error with updating route :(", error); 
             alert("Failed to update the route. "); 
