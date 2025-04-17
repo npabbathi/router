@@ -15,7 +15,7 @@ const Router = () => {
   return (
     <Routes>
       <Route element={<PrivateRoutes />}>
-        <Route path="/" element={<Home />} />
+        <Route path="/router" element={<Home />} />
         <Route path="/map" element={<Map />} />
         <Route path="/create" element={<Create />} />
         <Route path="/review" element={<All />} />
@@ -25,6 +25,7 @@ const Router = () => {
         <Route path="/annotate" element={<Annotate />} />
       </Route>
       <Route path="/login" element={<Login/>}/>
+      <Route path="/" element={<Login />} />
     </Routes>
   );
 };

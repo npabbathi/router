@@ -38,7 +38,7 @@ export const All = () => {
 
     return (
         <div>
-            <div className="allRouteCards">
+            <div className="allCards">
                 {routesWithUrls.map((route) => (
                     <div key={route.id}>
                         <AllCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} id={route.id} can_delete={false} image={route.imageUrl}/>

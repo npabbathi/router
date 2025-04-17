@@ -24,12 +24,21 @@
     object-fit: contain;
 }
 
+.create-route-button-con{
+    display: block;
+    margin-left: auto;
+    margin-right: 20% !important;
+    /* border-radius: 90%; */
+    font-size: 30px;
+    width: 70px;
+}
 
 .create-route-button{
     display: block;
     margin-left: auto;
-    margin-right: 8%;
+    margin-right: 8% !important;
     /* border-radius: 90%; */
     font-size: 30px;
+    width: 70px;
 }
 

@@ -170,7 +170,6 @@ const ClimbingMap = () => {
                     parentWidth={mapWidth}
                 />
             </div>
-
             <div className = 'create-route-button-con'>
                 <button type = 'button' className = 'create-route-button' onClick={toCreatePage}> + </button>
             </div>

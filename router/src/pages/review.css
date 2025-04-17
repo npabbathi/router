@@ -89,16 +89,6 @@ textarea {
     resize: none;
 }
 
-button {
-    background: var(--secondary-color);
-    color: white;
-    padding: 10px;
-    border-radius: 10px !important;
-    border: 2px solid hsl(0, 89%, 4%);
-    cursor: pointer;
-    transition: 0.3s;
-}
-
 button:hover {
     background: var(--accent-color);
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
+import RouterToast from "../components/toast";
 
 import { RouteActions } from "./routeActions"
 
@@ -22,7 +23,6 @@ const Info = () => {
   const id = location.state?.id;
   const routeData = location.state?.routeData;
 
-
   /* route information here */
   const [routeName, setRouteName] = useState("");
   const [grade, setGrade] = useState("");
@@ -30,6 +30,9 @@ const Info = () => {
   const [description, setDesc] = useState("");
   const [notes, setNotes] = useState("");
   const [color, setColor] = useState(routeData?.color);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
+  const [showToast, setShowToast] = useState(false);
 
   /* time stamp information */
   const now = new Date();
@@ -38,6 +41,13 @@ const Info = () => {
 
   /* submitting a route + updating route */
   const { onSubmitRoute, onUpdateRoute } = RouteActions();
+
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => setShowToast(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
 
   /* 
   UPLOADING PHOTO  
@@ -50,27 +60,30 @@ const Info = () => {
 
   function canContinue() {
     if (routeName === "") {
-      alert("Please provide a route name before continuing!")
+      setToastMessage("Please provide a route name before continuing!");
+      setToastType("danger");
+      setShowToast(true);
       return false;
     }
 
     if (grade === "") {
-      alert("Please provide a grade before continuing!")
-      return false;
-    }
-
-    if (incline === 0) {
-      alert("Please provide a valid incline before continuing!")
+      setToastMessage("Please provide a grade before continuing!");
+      setToastType("danger");
+      setShowToast(true);
       return false;
     }
 
     if (description === "") {
-      alert("Please provide a description before continuing!")
+      setToastMessage("Please provide a description before continuing!");
+      setToastType("danger");
+      setShowToast(true);
       return false;
     }
 
     if (image === "") {
-      alert("Please upload an image before continuing!")
+      setToastMessage("Please upload an image before continuing!");
+      setToastType("danger");
+      setShowToast(true);
       return false;
     }
 
@@ -89,14 +102,20 @@ const Info = () => {
       if (isEditing) {
         await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, image, comments: routeData.comments, coordinates: routeData.coordinates, wall: routeData.wall, color: routeData.color });
         navigate("/drafts")
-        alert("Route updated to in drafts!");
+        setToastMessage("Route updated in drafts!");
+        setToastType("success");
+        setShowToast(true);
       } else { //creates a new route if making it for the first time
         await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image, comments: [], coordinates: { x: 0, y: 0 }, wall: "", color });
-        alert("Route added to drafts!");
+        setToastMessage("Route added to drafts!");
+        setToastType("success");
+        setShowToast(true);
       }
     } catch (error) {
       console.error("Error with saving route to draft :(", error);
-      alert("Failed to save the route. ");
+      setToastMessage("Failed to save the route.");
+      setToastType("danger");
+      setShowToast(true);
     }
   };
 
@@ -198,96 +217,96 @@ const Info = () => {
 
 
   return (
-    <div className="outer-container">
+    <div className="">
+      {showToast && (
+        <div style={{ position: "fixed", top: 20, right: 20, zIndex: 9999 }}>
+          <RouterToast message={toastMessage} type={toastType} />
+        </div>
+      )}
 
       <div className="container">
+        <div className="row">
+          <div className="col">
+            <form onSubmit={onSaveDraft} className="form-part" >
+              <h1 className="title"> INSERT ROUTE INFORMATION </h1>
+              <div className="form-group">
+                <label htmlFor="routeName">Route Name</label>
+                <input
+                  id="routeName" type="text" value={routeName}
+                  placeholder="Enter route name."
+                  onChange={(e) => setRouteName(e.target.value)}
+                />
+              </div>
 
+              <div className="form-group">
+                <label htmlFor="grade">Grade</label>
+                <div className="grade-buttons">
+                  {Array.from({ length: 12 }, (_, i) => `V${i}`).map((gradeLabel) => (
+                    <button
+                      key={gradeLabel}
+                      type="button"
+                      onClick={() => {
+                        setGrade(gradeLabel);
+                        setColor(gradeToColor[gradeLabel] || "#000");
+                      }}
+                      className={grade === gradeLabel ? "grade-button selected" : "grade-button"}
+                    >
+                      {gradeLabel}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-        <form onSubmit={onSaveDraft} className="form-part" >
-          <h1 className="title"> INSERT ROUTE INFORMATION </h1>
-          <div className="form-group">
-            <label htmlFor="routeName">Route Name</label>
-            <input
-              id="routeName" type="text" value={routeName}
-              placeholder="Enter route name."
-              onChange={(e) => setRouteName(e.target.value)}
-            />
+              <div className="form-group incline-group">
+                <label htmlFor="incline">Wall Incline (Degrees)</label>
+                <input id="inclineSlider" type="range" min="0" max="180" value={incline}
+                  onChange={(e) => setIncline(Number(e.target.value))}
+                />
+                <input id="incline" type="number" value={incline}
+                  onChange={(e) => setIncline(Number(e.target.value))}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="description">Description</label>
+                <textarea value={description} onChange={(e) => setDesc(e.target.value)}
+                  placeholder="Enter route information."
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="notes">Additional Notes</label>
+                <textarea value={notes} onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Extra notes (safety, concerns, etc.)"
+                />
+              </div>
+              <input type="submit" value="Save to Drafts" className="submit-button" />
+            </form>
           </div>
+          <div className='image-part col'>
+            <input type="file" id="fileInput" style={{ display: 'none' }}
+              onChange={(event) => { setImageUpload(event.target.files[0]) }} />
 
-          <div className="form-group">
-            <label htmlFor="grade">Grade</label>
-            <div className="grade-buttons">
-              {Array.from({ length: 8 }, (_, i) => `V${i + 1}`).map((gradeLabel) => (
-                <button
-                  key={gradeLabel}
-                  type="button"
-                  onClick={() => {
-                    setGrade(gradeLabel);
-                    setColor(gradeToColor[gradeLabel] || "#000");
-                  }}
-                  className={grade === gradeLabel ? "grade-button selected" : "grade-button"}
-                >
-                  {gradeLabel}
-                </button>
-              ))}
+            <div className='image-container'>
+              <label htmlFor='fileInput'>
+                <img src={image} key={image} style={{ cursor: 'pointer' }} alt="Click to upload an image. Let's hit the rocks!" className="uploaded-image" />
+              </label>
             </div>
           </div>
-
-          <div className="form-group incline-group">
-            <label htmlFor="incline">Wall Incline</label>
-            <input id="inclineSlider" type="range" min="0" max="180" value={incline}
-              onChange={(e) => setIncline(Number(e.target.value))}
-            />
-            <input id="incline" type="number" value={incline}
-              onChange={(e) => setIncline(Number(e.target.value))}
-            />
+          <div className="button-row">
+            {isEditing && (
+              <button type="button" className="navigate-button" onClick={prevPage}>
+                Back
+              </button>
+            )}
+            <div className="spacer" />
+            <button type="button" className="navigate-button" onClick={nextPage}>
+              Next
+            </button>
           </div>
-
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <textarea value={description} onChange={(e) => setDesc(e.target.value)}
-              placeholder="Enter route information."
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="notes">Additional Notes</label>
-            <textarea value={notes} onChange={(e) => setNotes(e.target.value)}
-              placeholder="Extra notes (safety, concerns, etc.)"
-            />
-          </div>
-
-
-          <input type="submit" value="Save to Drafts" className="submit-button" />
-
-        </form>
-
-
-        <div className='image-part'>
-          <input type="file" id="fileInput" style={{ display: 'none' }}
-            onChange={(event) => { setImageUpload(event.target.files[0]) }} />
-
-          <div className='image-container'>
-            <label htmlFor='fileInput'>
-              <img src={image} key={image} style={{ cursor: 'pointer' }} alt="Click to upload an image. Let's hit the rocks!" className="uploaded-image" />
-            </label>
-          </div>
-        </div>
-
-
-      </div>
-
-      <div className='button-row'>
-        <div className='button-left'>
-          {isEditing && <button type='button' className='navigate-button' onClick={prevPage} > Back </button>}
-        </div>
-        <div className='button-right'>
-          <button type='button' className='navigate-button' onClick={nextPage} > Next </button>
         </div>
       </div>
-
     </div>
-
 
 
   );

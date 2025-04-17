@@ -10,19 +10,20 @@ const Header = ({ currentUser, setCurrentUser }) => {
     const navigate = useNavigate();
     return (
         <Navbar expand="lg" className="bg-body-tertiary justify-content-center">
-            <Container>
-                <Navbar.Brand as={Link} to="/">
+            <Container className="justify-content-between" style={{paddingLeft: '70px', paddingRight: '70px'}}>
+                <Navbar.Brand as={Link} to="/router">
                     <img
                         alt=""
                         src={logo}
                         width="15"
+                        style={{marginRight: '60px'}}
                         height="20"
                         className="d-inline-block align-top"
                     />{' '}
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="justify-content-center navbar" variant="underline" defaultActiveKey="/home">
+                    <Nav className="justify-content-center navbar d-flex w-100 justify-content-between align-items-center" variant="underline" defaultActiveKey="/home">
                         <Nav.Item>
                             <Nav.Link as={Link} to="/map" eventKey="link-1">MAP</Nav.Link>
                         </Nav.Item>
@@ -34,10 +35,9 @@ const Header = ({ currentUser, setCurrentUser }) => {
                         </Nav.Item>
                         <Nav.Item>
                             <Nav.Link as={Link} to="/review" eventKey="link-3">REVIEW</Nav.Link>
-                            
                         </Nav.Item>
                     </Nav>
-                    <Dropdown align="end">
+                    <Dropdown align="end" style={{ marginLeft: "60px" }}>
                         <Dropdown.Toggle variant="light" id="dropdown-basic">
                             <img
                                 src={logout_icon}

@@ -5,3 +5,19 @@
 .reviewBackground {
     background-color: var(--accent-color);
 }
+
+.allCards {
+    width: 80%; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: center; 
+    gap: 20px; 
+}
+
+.allCard {
+    width: 100%;
+
+}
+

@@ -16,16 +16,32 @@ body {
   padding: 0;
 }
 
+button {
+  background: var(--secondary-color);
+  color: white;
+  padding: 10px;
+  margin: 15px !important;
+  border-radius: 10px !important;
+  border: 2px solid hsl(0, 89%, 4%);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
 .navbar {
   font-family: 'Roboto Mono', monospace;
   color: var(--dark-color);
   font-weight: bold;
+  font-size: x-large;
   margin: 0;
   padding: 0;
 }
 
+.navbar .nav-link {
+  color: var(--dark-color) !important;
+}
+
 .navbar .nav-link:hover {
-  color: var(--primary-color);
+  color: var(--primary-color) !important;
 }
 
 blockquote, .serif-text {

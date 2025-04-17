@@ -1,6 +1,7 @@
 import { auth } from "../config/firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth"
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // This file handles the user authentication to firebase. It allows for signing up, logging in, and logging out of an account
 
@@ -8,6 +9,7 @@ export const Auth = ({ setCurrentUser }) => {
     //input states
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -41,6 +43,7 @@ export const Auth = ({ setCurrentUser }) => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             setCurrentUser(email);
+            navigate("/router");
         } catch (err) {
             console.error(err)
         }

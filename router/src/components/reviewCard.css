@@ -1,11 +1,10 @@
-.route-card {
+.review-card {
     background: rgba(255, 255, 255, 0.1); 
     backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 400px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -16,7 +15,7 @@
     border-color: black;
 }
 
-.route-card .header {
+.review-card .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -24,7 +23,7 @@
     font-weight: bold;
 }
 
-.route-card .details {
+.review-card .details {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
@@ -32,26 +31,26 @@
     padding: 10px 0;
 }
 
-.route-card .detail-item {
+.review-card .detail-item {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.route-card .description {
+.review-card .description {
     font-size: 14px;
     background: rgba(255, 255, 255, 0.1);
     padding: 10px;
     border-radius: 8px;
 }
 
-.route-card .tags {
+.review-card .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
 }
 
-.route-card .tag {
+.review-card .tag {
     background: rgba(0, 0, 255, 0.2);
     padding: 6px 12px;
     border-radius: 12px;
@@ -60,7 +59,7 @@
 }
 
 @media (max-width: 768px) {
-    .route-card {
+    .review-card {
         max-width: 100%;
     }
 }
