@@ -6,6 +6,21 @@
 
 
 .uploaded-image {
+  /* width: 300px; */
+  /* height: auto; */
+  border: 4px dashed #ccc;
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.create-button {
+  display: inline-flex;
+  margin: 10px;
+}
+
+
+
+.uploaded-image {
   width: 600px;
   height: auto;
   text-align: center;
@@ -92,9 +107,9 @@ textarea {
 
 .grade-buttons {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 0 auto;
+  /* flex-wrap: wrap; */
+  gap: 5px;
+  /* margin: 0 auto; */
   justify-content: center;
 }
 
@@ -194,3 +209,172 @@ textarea {
     100% { transform: rotate(360deg); }
   }
    */
+.uploaded-image:hover {
+  border-color: #888;
+}
+
+
+.container {
+  max-width: 100%;
+  margin: auto;
+  padding: 20px;
+  background: white;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+
+  display: flex; 
+  /* flex-direction: column;  */
+}
+
+.form-part{
+  flex: 1; 
+}
+
+.image-part {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem; /* optional spacing between image and button */
+}
+
+
+
+.title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 15px;
+  border: 1px solid #000000;
+}
+
+
+
+textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+.grade-buttons {
+  display: flex;
+  gap: 8px;
+  
+}
+
+
+.grade-button {
+  padding: 10px;
+  width: 60px;
+  height: 50px;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
+.grade-button:hover{
+  background-color: rgb(106, 126, 234);
+}
+
+.grade-button.selected {
+  background-color: #8390FA;
+  color: white;
+  font-weight: bold;
+}
+
+.incline-group {
+  display: flex;
+  align-items: center;
+}
+
+.incline-group input[type="range"] {
+  width: 80%;
+  margin-right: 16px;
+}
+
+.incline-group input[type="number"] {
+  width: 60px;
+  padding: 8px;
+}
+
+.submit-button {
+  padding: 10px;
+  background-color: #8390FA;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: rgb(106, 126, 234);
+}
+
+.uploaded-image {
+  max-width: 100%;
+  /* margin-top: 16px; */
+  height: auto; 
+  /* border: 4px solid;  */
+  border-radius: 40px; 
+  /* object-fit: contain;  */
+  display: block; 
+}
+
+
+
+.navigate-button{ 
+  background-color: #1D2F6f;
+  /* float: right;  */
+}
+
+.button-row { 
+display: flex; 
+justify-content: space-between;
+margin-top: 30px; 
+padding: 8px;
+}
+
+.button-left, .button-right{ 
+display: flex; 
+/* gap: 10px;  */
+}
+
+
+/* .spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #555;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+ */
