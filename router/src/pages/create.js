@@ -292,7 +292,7 @@ const Info = () => {
 
             <div className='image-container'>
               <label htmlFor='fileInput'>
-                <img src={placeholder_image || image} key={image} style={{ cursor: 'pointer' }} className="uploaded-image" />
+                <img src={image|| placeholder_image} key={image} style={{ cursor: 'pointer' }} className="uploaded-image" />
               </label>
             </div>
           </div>

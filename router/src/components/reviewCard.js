@@ -1,7 +1,7 @@
 import React from "react";
 import "./routeCard.css";
 
-const RouteCard = ({ name, grade, incline, description, notes }) => {
+const RouteCard = ({ name, grade, incline, description, notes}) => {
     return (
         <div className="route-card">
             <div> <strong>ROUTE: {name}</strong></div>
