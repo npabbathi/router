@@ -70,16 +70,22 @@ const Review = () => {
     if (isLoading) return <div>Loading...</div>;
     if (!route) return <div>Route not found!</div>;
 
+    console.log("I'M RIGHT HERE\n", route.annotations); 
+
     return (
         <div className="container">
             <div className="col image-section">
             <div className="route-image">
                 {/* {image && <img src={image} alt="Route Image" className="route-image" />} */}
-                {route.isAnnotate ? (
+                {route.isAnnotate &&  route.annotations?.length > 0 ? (
                 <ReactImageAnnotate 
                     src={image} 
                     annotations={route.annotations} 
+                    value={route.annotations}
                     showAnnotations={true}
+                    // annotation={{ geometry: null, data: {} }}  // prevent 'undefined' errors
+                    onChange={() => {}}  // dummy function to suppress errors
+                    onSubmit={() => {}}  // another dummy function
                 />
                 ) : (
                 <img 
