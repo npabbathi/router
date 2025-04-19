@@ -8,6 +8,8 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 
+
+
 // interactive areas/walls of the map
 const areas = [
     { name: "FS1", 
@@ -118,6 +120,9 @@ const ClimbingMap = () => {
     const color = location.state?.color;
     const id = location.state?.id;
 
+    const annotations = location.state?.annotations;  // AC: TESTING
+    const isAnnotate = location.state?.isAnnotate; 
+
 
     // the methods below are related to the interactivity and resizing of the map
     const handleResize = () => {
@@ -147,7 +152,9 @@ const ClimbingMap = () => {
                     coordinates,
                     wall,
                     color,
-                    id
+                    id, 
+                    annotations, // AC
+                    isAnnotate, 
                 }
             });
         }

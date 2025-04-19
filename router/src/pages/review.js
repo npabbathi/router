@@ -11,6 +11,8 @@ import { db } from "../config/firebase";
 import {doc, updateDoc} from "firebase/firestore";
 import { useParams } from "react-router-dom";
 
+import ReactImageAnnotate from "react-image-annotation";
+
 const Review = () => {
     const { id } = useParams();
     const [image, setImage] = useState(null);
@@ -19,6 +21,7 @@ const Review = () => {
     const [comments, setComments] = useState([]);
     const [commentText, setCommentText] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
+
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -70,7 +73,21 @@ const Review = () => {
     return (
         <div className="container">
             <div className="col image-section">
-                {image && <img src={image} alt="Route Image" className="route-image" />}
+            <div className="route-image">
+                {/* {image && <img src={image} alt="Route Image" className="route-image" />} */}
+                {route.isAnnotate ? (
+                <ReactImageAnnotate 
+                    src={image} 
+                    annotations={route.annotations} 
+                    showAnnotations={true}
+                />
+                ) : (
+                <img 
+                    src={image} 
+                    alt="Route Preview" 
+                />
+                )}
+                </div>
             </div>
             <div className="col">
                 <div className="details-section">

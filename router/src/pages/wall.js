@@ -37,6 +37,9 @@ const Wall = () => {
     const placingColor = isFromDrafts ? routeData?.color : color;
     const id = location.state?.id;
 
+    const annotations = location.state?.annotations; // AC 
+    const isAnnotate = location.state?.isAnnotate; 
+
 
     // Extracts only the name of the wall. For example: "east-wall" or "fs1"
     useEffect(() => {
@@ -191,7 +194,8 @@ const Wall = () => {
                 coordinates,
                 wall: "",
                 color,
-                id
+                id, 
+                annotations // AC
             }
         });
     }
@@ -200,7 +204,10 @@ const Wall = () => {
         e.preventDefault();
         try {
             const { x, y } = circles[0]
-            await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall: wallName, color});
+
+            // ALLISON ACTIVELY LOOKING INTO 
+            await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall: wallName, color, annotations, isAnnotate}); // AC
+            
             alert("Route has been published!"); 
 
             // once route is successfully published, refresh page
@@ -219,7 +226,10 @@ const Wall = () => {
         e.preventDefault();
         try {
             const { x, y } = circles[0]
-            await onUpdateRoute({id, name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall:wallName, color})
+
+            /* ALLISON ACTIVELY CHANGING ******/
+            await onUpdateRoute({id, name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall:wallName, color, annotations, isAnnotate})
+            
             alert("Route has been updated!")
 
             // once route is successfully published, refresh page
