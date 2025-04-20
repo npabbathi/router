@@ -19,9 +19,27 @@ import html2canvas from 'html2canvas';
 
 
 function ImageAnnotation() {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const navigate = useNavigate();
-    const location = useLocation();
+  const image = location.state?.image;
+  const annotationsInitial = location.state?.annotations || [];
+
+  const [annotations, setAnnotations] = useState(annotationsInitial);
+  const [annotation, setAnnotation] = useState({});
+  const [scale, setScale] = useState(1); // Default zoom level
+  const annotationRef = useRef();
+
+  const onChange = (newAnnotation) => setAnnotation(newAnnotation);
+  
+  const onSubmit = (newAnnotation) => {
+    //    isAnnotate = true; // AC SETTING VARIABLE
+    setAnnotate(true);  
+      setAnnotations([...annotations, newAnnotation]);
+      setAnnotation({});
+    };
+
+ 
 
     /* loading stuff from create to pass through to publish */
     const isFromDrafts = location.state?.isFromDrafts;
@@ -37,23 +55,16 @@ function ImageAnnotation() {
     const wall = location.state?.wall;
     const color = location.state?.color;
     const id = location.state?.id;
-    const image = location.state?.image; 
-
+   
     /* image annotating information */
-    const [annotations, setAnnotations] = useState([]);
-    const [annotation, setAnnotation] = useState({});
-    const annotationRef = useRef(null); // to capture annotation DOM
+    
     const [imageURL, setURL] = useState(""); 
 
     const [isAnnotate, setAnnotate] = useState(false); 
-    
-    const onChange = (newAnnotation) => {
-      setAnnotation(newAnnotation);
-    };
-
+  
 
     const nextPage = () =>{
-        console.log('ANNOTATIONS: ', annotations); 
+        // console.log('ANNOTATIONS: ', annotations); 
         navigate('/map', {state:
             {
                 isFromDrafts,
@@ -77,32 +88,42 @@ function ImageAnnotation() {
             }
         });
     }
-  
-    const onSubmit = (newAnnotation) => {
-    //    isAnnotate = true; // AC SETTING VARIABLE
-    setAnnotate(true);  
-      setAnnotations([...annotations, newAnnotation]);
-      setAnnotation({});
-    };
-  
-    const uploadAnnotatedImage = async () => {
-      if (annotationRef.current) {
-        const canvas = await html2canvas(annotationRef.current);
-        const dataUrl = canvas.toDataURL('image/png');
-  
-        const imageRef = ref(storage, `annotated_images/${image}`);
-        await uploadBytes(imageRef, dataUrl, 'data_url');
-        const url = await getDownloadURL(imageRef);
-        console.log("IMAGE: ", url); 
-        setURL(url); 
-        
-        alert("Annotated image uploaded!");
-      }
-    };
-  
-    return (
-      <div>
-        <div ref={annotationRef}>
+
+  const zoomIn = () => setScale(prev => Math.min(prev + 0.1, 3));
+  const zoomOut = () => setScale(prev => Math.max(prev - 0.1, 0.5));
+  const resetZoom = () => setScale(1);
+
+  const handleSliderChange = (e) => {
+    setScale(parseFloat(e.target.value));
+  };
+
+  return (
+    <div className="image-annotation-wrapper">
+      <div className="zoom-buttons">
+          <button className="zoom-button" onClick={zoomOut}>-</button>
+
+          <input
+            type="range"
+            min="0.5"
+            max="3"
+            step="0.1"
+            value={scale}
+            onChange={handleSliderChange}
+            className="zoom-slider"
+          />
+
+          <button className="zoom-button" onClick={zoomIn}>+</button>
+
+          <button className="zoom-button reset-button" onClick={resetZoom}>Reset</button>
+          <span className="zoom-label">{Math.round(scale * 100)}%</span>
+        </div>
+
+      <div className="zoom-container">
+        <div
+          className="zoom-content"
+          ref={annotationRef}
+          style={{ transform: `scale(${scale})` }}
+        >
           <ReactImageAnnotate
             src={image}
             alt="Annotated Image"
@@ -112,18 +133,13 @@ function ImageAnnotation() {
             onSubmit={onSubmit}
           />
         </div>
-        <button onClick={uploadAnnotatedImage}>Upload Annotated Image</button>
-
-        <div className="button-row">
-            <div className="button-right">
-                <button type="button" className="navigate-button"  onClick={nextPage}> Next </button>
-            </div>
-        </div>
       </div>
-      
 
-      
-    );
-  }
-  
-  export default ImageAnnotation;
+      <div className="button-row">
+        <button className="navigate-button" onClick={nextPage}>Next</button>
+      </div>
+    </div>
+  );
+}
+
+export default ImageAnnotation;
