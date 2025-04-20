@@ -16,6 +16,8 @@ const Wall = () => {
     const containerRef = useRef(null);
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
+    const [isHovering, setIsHovering] = useState(false);
+
     const { getRoutesByWall, onSubmitRoute, onUpdateRoute } = RouteActions();
     const [wallName, setWallName] = useState("");
     const [wallRoutes, setWallRoutes] = useState([]);
@@ -27,10 +29,10 @@ const Wall = () => {
     const routeName = location.state?.routeName;
     const grade = location.state?.grade;
     const incline = location.state?.incline;
-    const description = location.state?.description; 
-    const notes = location.state?.notes; 
-    const timestamp = location.state?.timestamp; 
-    const imagePath = location.state?.image; 
+    const description = location.state?.description;
+    const notes = location.state?.notes;
+    const timestamp = location.state?.timestamp;
+    const imagePath = location.state?.image;
     const comments = location.state?.comments;
     const coordinates = circles[0];
     const color = location.state?.color;
@@ -38,7 +40,7 @@ const Wall = () => {
     const id = location.state?.id;
 
     const annotations = location.state?.annotations; // AC 
-    const isAnnotate = location.state?.isAnnotate; 
+    const isAnnotate = location.state?.isAnnotate;
 
 
     // Extracts only the name of the wall. For example: "east-wall" or "fs1"
@@ -85,28 +87,28 @@ const Wall = () => {
             if (x && y && x !== 0 && y !== 0 && x != null && y != null) {
                 const imageX = (containerSize.width - image.width * scale) / 2;
                 const imageY = (containerSize.height - image.height * scale - paddingTop - paddingBottom) / 2 + paddingTop;
-    
+
                 const circleX = x * scale + imageX;
                 const circleY = y * scale + imageY;
-    
+
                 const goReviewRoute = () => {
-                    if (isPlacingRoute == false){
-                        navigate(`/review/${route.id}`); 
+                    if (isPlacingRoute == false) {
+                        navigate(`/review/${route.id}`);
                     }
                 };
-    
+
                 return (
                     <Group
                         key={idx}
                         onClick={goReviewRoute}
                         {...(!isPlacingRoute && {
                             onMouseEnter: (e) => {
-                              const container = e.target.getStage().container();
-                              container.style.cursor = 'pointer';
+                                const container = e.target.getStage().container();
+                                container.style.cursor = 'pointer';
                             },
                             onMouseLeave: (e) => {
-                              const container = e.target.getStage().container();
-                              container.style.cursor = 'default';
+                                const container = e.target.getStage().container();
+                                container.style.cursor = 'default';
                             },
                         })}
                     >
@@ -132,8 +134,8 @@ const Wall = () => {
             return null;
         });
     };
-    
-    
+
+
 
     // handles resizing
     useEffect(() => {
@@ -157,28 +159,29 @@ const Wall = () => {
 
         // User can't place a route with right-click. ONLY left-click permitted
         if (e.evt.button !== 0) return;
-    
+
         // Get pointer position relative to stage
         const stage = e.target.getStage();
         const pointerPos = stage.getPointerPosition();
-    
+
         // Calculate offsets
         const imageX = (containerSize.width - image.width * scale) / 2;
         const imageY = (containerSize.height - image.height * scale - paddingTop - paddingBottom) / 2 + paddingTop;
-    
+
         // Convert to image-native coordinates
         const x = (pointerPos.x - imageX) / scale;
         const y = (pointerPos.y - imageY) / scale;
-    
+
         // Save to state
         const newCircle = { x, y };
-        setCircles([newCircle]);     
-        
+        setCircles([newCircle]);
+
     };
 
     // going back to map page, in the case that the user changes their mind and doesn't want this wall.
     const prevPage = () => {
-        navigate('/map', {state:
+        navigate('/map', {
+            state:
             {
                 isFromDrafts,
                 routeData,
@@ -186,15 +189,15 @@ const Wall = () => {
                 routeName,
                 grade,
                 incline,
-                description, 
-                notes, 
-                timestamp, 
-                image: imagePath, 
+                description,
+                notes,
+                timestamp,
+                image: imagePath,
                 comments,
                 coordinates,
                 wall: "",
                 color,
-                id, 
+                id,
                 annotations // AC
             }
         });
@@ -206,9 +209,9 @@ const Wall = () => {
             const { x, y } = circles[0]
 
             // ALLISON ACTIVELY LOOKING INTO 
-            await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall: wallName, color, annotations, isAnnotate}); // AC
-            
-            alert("Route has been published!"); 
+            await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall: wallName, color, annotations, isAnnotate }); // AC
+
+            alert("Route has been published!");
 
             // once route is successfully published, refresh page
             navigate(`/map`, {
@@ -216,20 +219,20 @@ const Wall = () => {
                     isPlacingRoute: false
                 }
             });
-        } catch(error) { 
-            console.error("Error with publishing route :(", error); 
-            alert("Failed to publish the route. "); 
+        } catch (error) {
+            console.error("Error with publishing route :(", error);
+            alert("Failed to publish the route. ");
         }
     };
 
-    const onEditingRoute = async (e) =>{
+    const onEditingRoute = async (e) => {
         e.preventDefault();
         try {
             const { x, y } = circles[0]
 
             /* ALLISON ACTIVELY CHANGING ******/
-            await onUpdateRoute({id, name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall:wallName, color, annotations, isAnnotate})
-            
+            await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall: wallName, color, annotations, isAnnotate })
+
             alert("Route has been updated!")
 
             // once route is successfully published, refresh page
@@ -238,9 +241,9 @@ const Wall = () => {
                     isPlacingRoute: false
                 }
             });
-        } catch(error){
-            console.error("Error with updating route :(", error); 
-            alert("Failed to update the route. "); 
+        } catch (error) {
+            console.error("Error with updating route :(", error);
+            alert("Failed to update the route. ");
         }
     };
 
@@ -250,10 +253,14 @@ const Wall = () => {
 
     return (
         <div>
-            <div className = 'back-button-con'>
-                <button type = 'button' className = 'back-button' onClick={prevPage} > Back to Map </button>
+            {/* for icon buttons (credit below) */}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+            <div className="header">
+                <button type='button' className='back-button' onClick={prevPage}><i class="fa fa-arrow-left"></i>  Back</button>
+                <h1 className="wall-header"><b>SELECT A ROUTE TO REVIEW</b></h1>
+                {!isPlacingRoute && (<button type='button' className='button-and-label wall-button-and-label' onClick={toCreatePage} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}> + </button>)}
             </div>
-            <h1 className="header">Select a route to review, or create your own!</h1>
+            <p className={`${isHovering ? "hover-cursor" : "unhover-cursor"} wall-tip`}>CREATE A NEW ROUTE</p>
             <div className="wall-con" ref={containerRef}>
                 {image && (
                     <Stage
@@ -309,11 +316,6 @@ const Wall = () => {
                     <button type='button' className='submit-button' onClick={isFromDrafts ? onEditingRoute : onFinalPlaceRoute} disabled={circles.length === 0}>
                         Publish Route
                     </button>
-                </div>
-            )}
-            {!isPlacingRoute && (
-                <div className = 'create-route-button-con'>
-                    <button type = 'button' className = 'create-route-button' onClick={toCreatePage}> + </button>
                 </div>
             )}
 

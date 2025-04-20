@@ -57,7 +57,7 @@ const Info = () => {
 
   // image object used to display on screen once image is selected
   const [image, setImage] = useState("");
-  const placeholder_image = 'https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2Fplaceholder.jpg?alt=media&token=205f1f2f-d675-4495-b49f-3a06c531277e'; 
+  const placeholder_image = 'https://firebasestorage.googleapis.com/v0/b/router-ae6e4.firebasestorage.app/o/images%2Fplaceholder.jpg?alt=media&token=205f1f2f-d675-4495-b49f-3a06c531277e';
 
   function canContinue() {
     if (routeName === "") {
@@ -292,7 +292,7 @@ const Info = () => {
 
             <div className='image-container'>
               <label htmlFor='fileInput'>
-                <img src={image|| placeholder_image} key={image} style={{ cursor: 'pointer' }} className="uploaded-image" />
+                <img src={image || placeholder_image} key={image} style={{ cursor: 'pointer' }} className="uploaded-image" />
               </label>
             </div>
           </div>
