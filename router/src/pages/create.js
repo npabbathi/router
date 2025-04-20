@@ -225,6 +225,8 @@ const Info = () => {
 
   return (
     <div className="">
+      {/* for icon buttons (credit below) */}
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
       {showToast && (
         <div style={{ position: "fixed", top: 20, right: 20, zIndex: 9999 }}>
           <RouterToast message={toastMessage} type={toastType} />
@@ -233,19 +235,19 @@ const Info = () => {
       <div className="button-row">
         {isEditing && (
           <button type="button" onClick={prevPage}>
-            Back
+            <i class="fa fa-arrow-left"></i>  Back
           </button>
         )}
+        <h1 className="title"> INSERT ROUTE INFORMATION </h1>
         <div className="spacer" />
         <button type="button" onClick={nextPage}>
-          Next
+        Next  <i class="fa fa-arrow-right"></i>
         </button>
       </div>
       <div className="container">
         <div className="row">
           <div className="col">
             <form onSubmit={onSaveDraft} className="form-part" >
-              <h1 className="title"> INSERT ROUTE INFORMATION </h1>
               <div className="form-group">
                 <label htmlFor="routeName">Route Name</label>
                 <input
