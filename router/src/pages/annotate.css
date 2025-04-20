@@ -1,19 +1,112 @@
-.picture {
-    width: 75vw;
-    height: 75vh;
-    object-fit: cover; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: sans-serif;
+}
 
-    /* display: flex;
-    justify-content: center;
-    margin-top: 20px; */
-  }
-  
-  .picture img {
-    max-width: 100%; 
-    max-height: 100%;
-    object-fit: contain;
-  }
+.image-annotation-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.zoom-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.zoom-button {
+  padding: 0.4rem 0.8rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.zoom-button:hover {
+  background-color: #0056b3;
+}
+
+.reset-button {
+  background-color: #6c757d;
+}
+
+.reset-button:hover {
+  background-color: #5a6268;
+}
+
+.zoom-slider {
+  width: 160px;
+  cursor: pointer;
+}
+
+.zoom-label {
+  font-size: 0.9rem;
+  min-width: 40px;
+}
+
+
+.zoom-container {
+  width: 100%;
+  max-width: 1000px;
+  height: 80vh;
+  overflow: auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #f9f9f9;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.zoom-content {
+  transform-origin: top left;
+  transition: transform 0.1s ease-in-out;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.navigate-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.navigate-button:hover {
+  background-color: #45a049;
+}
+
+
+.annotation-delete-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.annotation-delete-btn:hover {
+  background-color: darkred;
+}
