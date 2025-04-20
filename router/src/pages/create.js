@@ -148,6 +148,10 @@ const Info = () => {
   }, []);
 
   useEffect(() => {
+    if (image === "") {
+      setImage(placeholder_image);
+      return;
+    }
     uploadImage();
   }, [imageUpload])
 
@@ -226,7 +230,17 @@ const Info = () => {
           <RouterToast message={toastMessage} type={toastType} />
         </div>
       )}
-
+      <div className="button-row">
+        {isEditing && (
+          <button type="button" onClick={prevPage}>
+            Back
+          </button>
+        )}
+        <div className="spacer" />
+        <button type="button" onClick={nextPage}>
+          Next
+        </button>
+      </div>
       <div className="container">
         <div className="row">
           <div className="col">
@@ -295,17 +309,6 @@ const Info = () => {
                 <img src={image || placeholder_image} key={image} style={{ cursor: 'pointer' }} className="uploaded-image" />
               </label>
             </div>
-          </div>
-          <div className="button-row">
-            {isEditing && (
-              <button type="button" className="navigate-button" onClick={prevPage}>
-                Back
-              </button>
-            )}
-            <div className="spacer" />
-            <button type="button" className="navigate-button" onClick={nextPage}>
-              Next
-            </button>
           </div>
         </div>
       </div>
