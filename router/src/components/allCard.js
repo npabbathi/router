@@ -8,32 +8,39 @@ import ReactImageAnnotate from "react-image-annotation";
 
 //this file deals with displaying a "card" or overview of a route, either used in the drafts or current/previous routes part of the website
 
-export const AllCard = ({ name, grade, incline, description, id, notes, timestamp, image, annotations, isAnnotate}) => {
+export const AllCard = ({ name, grade, incline, description, id, notes, timestamp, image, annotations, isAnnotate }) => {
 
     const [isHovering, setIsHovering] = useState(false);
     const navigate = useNavigate();
 
     return (
-        <div className="allCard" onClick={() => navigate(`/review/${id}`)}>
+        <div className="all-card" onClick={() => navigate(`/review/${id}`)}>
             {/* for icon buttons (credit below) */}
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-            <div className={`imagePreview reviewBackground ${isHovering ? "hover-cursor" : ""}`} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <div className="underImage">
-                    <img src={image}></img>
-                </div>
-                {isHovering &&
-                    <div className="overText">
-                        <p> {description} </p>
-                        <p3> {timestamp} </p3>
+            <div className="container">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+                <div className="row"></div>
+                <div className="col">
+                    <div className={`imagePreview reviewBackground ${isHovering ? "hover-cursor" : ""}`} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                        <div className="underImage">
+                            <img src={image}></img>
+                        </div>
+                        {isHovering &&
+                            <div className="overText">
+                                <p> {description} </p>
+                                <p3> {timestamp} </p3>
+                            </div>
+                        }
                     </div>
-                }
-            </div>
-            <div className="titleInfo reviewTitleInfo">
-                <h1>{name}</h1>
-                {/* <button className="viewButton" onClick={() => navigate(`/review/${id}`)}>
+                </div>
+                <div className='col'>
+                    <div className="titleInfo reviewTitleInfo">
+                        <h1>{name}</h1>
+                        {/* <button className="viewButton" onClick={() => navigate(`/review/${id}`)}>
                     <i className="fa fa-eye"></i>
                 </button> */}
-                <h4>{grade} - {incline}º</h4>
+                        <h4>{grade} - {incline}º</h4>
+                    </div>
+                </div>
             </div>
         </div>
     )
