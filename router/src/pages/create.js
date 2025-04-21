@@ -154,11 +154,12 @@ const Info = () => {
   }, []);
 
   useEffect(() => {
-    if (image === "") {
+    if (!isEditing && image === "") {
       setImage(placeholder_image);
       return;
+    } else if (!isEditing) {
+      uploadImage();
     }
-    uploadImage();
   }, [imageUpload])
 
 
@@ -310,7 +311,7 @@ const Info = () => {
 
             <div className='image-container'>
               <label htmlFor='fileInput'>
-                <img src={image || placeholder_image} key={image} style={{ cursor: 'pointer' }} className="uploaded-image" />
+                <img src={image} key={image} style={{ cursor: 'pointer' }} className="uploaded-image" />
               </label>
             </div>
           </div>
