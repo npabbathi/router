@@ -365,7 +365,7 @@ textarea {
 }
  */
 
-.create-back-button:disabled {
+.create-header-button:disabled {
   background-color: white;
   color: var(--secondary-color);
   cursor: not-allowed;

@@ -38,7 +38,8 @@ const Info = () => {
 
   const annotationsInitial = location.state?.annotations || [];
   const [annotations, setAnnotations] = useState(annotationsInitial); // AC 
-  const [isAnnotate, setAnnotate] = useState(false); 
+  const [isAnnotate, setAnnotate] = useState(false);
+  const [savedToDrafts, setSavedToDrafts] = useState(false);
 
   /* time stamp information */
   const now = new Date();
@@ -114,6 +115,7 @@ const Info = () => {
         setShowToast(true);
       } else { //creates a new route if making it for the first time
         await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image, comments: [], coordinates: { x: 0, y: 0 }, wall: "", color, annotations: annotations, isAnnotate: isAnnotate});
+        setSavedToDrafts(true);
         setToastMessage("Route added to drafts!");
         setToastType("success");
         setShowToast(true);
@@ -239,13 +241,14 @@ const Info = () => {
         </div>
       )}
       <div className="button-row">
-        <button type="button" onClick={prevPage} disabled={!isEditing} className="create-back-button">
+        <button type="button" onClick={prevPage} disabled={!isEditing} className="create-header-button">
           <i class="fa fa-arrow-left"></i>  Back
         </button>
         <h1 className="title"> INSERT ROUTE INFORMATION </h1>
-        <button type="button" onClick={nextPage}>
-          Next  <i class="fa fa-arrow-right"></i>
-        </button>
+        <div>
+          <button onClick={onSaveDraft} className="create-header-button" disabled={savedToDrafts}> <i class="fa fa-save"></i> Drafts</button>
+          <button type="button" onClick={nextPage}> Next  <i class="fa fa-arrow-right"></i> </button>
+          </div>
       </div>
       <div className="container">
         <div className="row">
@@ -302,7 +305,6 @@ const Info = () => {
                   placeholder="Extra notes (safety, concerns, etc.)"
                 />
               </div>
-              <input type="submit" value="Save to Drafts" className="submit-button" />
             </form>
           </div>
           <div className='image-part col'>
