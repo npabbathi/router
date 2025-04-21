@@ -2,7 +2,7 @@ import { auth } from "../config/firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import "./auth.css"
 // This file handles the user authentication to firebase. It allows for signing up, logging in, and logging out of an account
 
 export const Auth = ({ setCurrentUser }) => {
@@ -15,10 +15,10 @@ export const Auth = ({ setCurrentUser }) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setCurrentUser(user);
-                localStorage.setItem("token", "true"); 
+                localStorage.setItem("token", "true");
             } else {
                 setCurrentUser(null);
-                localStorage.removeItem("token"); 
+                localStorage.removeItem("token");
             }
         });
         return () => unsubscribe();
@@ -63,11 +63,13 @@ export const Auth = ({ setCurrentUser }) => {
 
     return (
         <div>
-            <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-            <input placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-            <button onClick={signUp}> Sign Up </button>
-            <button onClick={signIn}> Log In </button>
-            <button onClick={logout}> Log out </button>
+            <input className="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+            <input className="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+            <div className="container loginbuttons">
+                <button onClick={signUp}> Sign Up </button>
+                <button onClick={signIn}> Log In </button>
+                <button onClick={logout}> Log out </button>
+            </div>
         </div>
     )
 }

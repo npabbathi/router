@@ -1,0 +1,15 @@
+.email {
+    margin: 10px;
+    width: 75%;
+}
+
+.password {
+    margin: 10px;
+    width: 75%;
+}
+
+.loginbuttons {
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+}

@@ -14,31 +14,29 @@ export const AllCard = ({ name, grade, incline, description, id, notes, timestam
     const navigate = useNavigate();
 
     return (
-        <div className="all-card" onClick={() => navigate(`/review/${id}`)}>
+        <div className="allCard" onClick={() => navigate(`/review/${id}`)}>
             {/* for icon buttons (credit below) */}
-            <div className="container">
+            <div className="container all-card">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-                <div className="row"></div>
-                <div className="col">
-                    <div className={`imagePreview reviewBackground ${isHovering ? "hover-cursor" : ""}`} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                        <div className="underImage">
+                <div className="row">
+                    <div className="col-4">
+                        <div className={`all-image ${isHovering ? "hover-cursor" : ""}`} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                             <img src={image}></img>
+                            {isHovering &&
+                                <div className="overText">
+                                    <p> {name} </p>
+                                    <p3> {timestamp} </p3>
+                                </div>
+                            }
                         </div>
-                        {isHovering &&
-                            <div className="overText">
-                                <p> {description} </p>
-                                <p3> {timestamp} </p3>
-                            </div>
-                        }
                     </div>
-                </div>
-                <div className='col'>
-                    <div className="titleInfo reviewTitleInfo">
-                        <h1>{name}</h1>
-                        {/* <button className="viewButton" onClick={() => navigate(`/review/${id}`)}>
-                    <i className="fa fa-eye"></i>
-                </button> */}
-                        <h4>{grade} - {incline}º</h4>
+                    <div className="col-8">
+                        <div className="">
+                            <h1>{name}</h1>
+                            <h4>Grade: {grade}</h4>
+                            <h4>Incline: {incline}º</h4>
+                            <h4>Description: {description} </h4>
+                        </div>
                     </div>
                 </div>
             </div>

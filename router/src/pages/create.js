@@ -250,7 +250,7 @@ const Info = () => {
           <button type="button" onClick={nextPage}> Next  <i class="fa fa-arrow-right"></i> </button>
           </div>
       </div>
-      <div className="container">
+      <div className="create-container">
         <div className="row">
           <div className="col">
             <form onSubmit={onSaveDraft} className="form-part" >

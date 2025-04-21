@@ -70,10 +70,8 @@ const Review = () => {
     if (isLoading) return <div>Loading...</div>;
     if (!route) return <div>Route not found!</div>;
 
-    console.log("I'M RIGHT HERE\n", route.annotations); 
-
     return (
-        <div className="container">
+        <div className="container review-container">
             <div className="col image-section">
             <div className="route-image">
                 {/* {image && <img src={image} alt="Route Image" className="route-image" />} */}
@@ -95,7 +93,7 @@ const Review = () => {
                 )}
                 </div>
             </div>
-            <div className="col">
+            <div className="col review-col">
                 <div className="details-section">
                     <div className="navbar title">ROUTE INFORMATION</div>
                     <ReviewCard
