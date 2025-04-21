@@ -8,7 +8,7 @@ function RouterToast({message, type}) {
         <img src="../images/logo.png" className="rounded me-2" alt="" />
         <strong className="me-auto">Router</strong>
       </Toast.Header>
-      <Toast.Body>{message}</Toast.Body>
+      <Toast.Body style={{color: 'white'}}>{message}</Toast.Body>
     </Toast>
   );
 }

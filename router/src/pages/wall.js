@@ -4,7 +4,7 @@ import { Stage, Layer, Circle, Image as KonvaImage, Text, Group } from "react-ko
 import useImage from "use-image";
 import "./wall.css";
 import { RouteActions } from "./routeActions";
-
+import RouterToast from "../components/toast";
 
 const Wall = () => {
     const navigate = useNavigate();
@@ -22,6 +22,9 @@ const Wall = () => {
     const [wallName, setWallName] = useState("");
     const [wallRoutes, setWallRoutes] = useState([]);
     const [circles, setCircles] = useState([]);
+    const [toastMessage, setToastMessage] = useState("");
+    const [toastType, setToastType] = useState("success");
+    const [showToast, setShowToast] = useState(false);
 
     const isFromDrafts = location.state?.isFromDrafts;
     const routeData = location.state?.routeData;
@@ -52,6 +55,14 @@ const Wall = () => {
             setWallName(nameWithoutExtension);
         }
     }, [imageUrl]);
+
+    // shows toast on error or success
+    useEffect(() => {
+        if (showToast) {
+            const timer = setTimeout(() => setShowToast(false), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [showToast]);
 
     // Fetches all routes that belong to this wall
     useEffect(() => {
@@ -211,7 +222,9 @@ const Wall = () => {
             // ALLISON ACTIVELY LOOKING INTO 
             await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall: wallName, color, annotations, isAnnotate }); // AC
 
-            alert("Route has been published!");
+            setToastMessage("Route has been published!");
+            setToastType("success");
+            setShowToast(true);
 
             // once route is successfully published, refresh page
             navigate(`/map`, {
@@ -221,7 +234,9 @@ const Wall = () => {
             });
         } catch (error) {
             console.error("Error with publishing route :(", error);
-            alert("Failed to publish the route. ");
+            setToastMessage("Failed to publish the route.");
+            setToastType("danger");
+            setShowToast(true);
         }
     };
 
@@ -233,7 +248,9 @@ const Wall = () => {
             /* ALLISON ACTIVELY CHANGING ******/
             await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, image: imagePath, comments, coordinates: { x, y }, wall: wallName, color, annotations, isAnnotate })
 
-            alert("Route has been updated!")
+            setToastMessage("Route has been updated!");
+            setToastType("success");
+            setShowToast(true);
 
             // once route is successfully published, refresh page
             navigate(`/map`, {
@@ -243,7 +260,9 @@ const Wall = () => {
             });
         } catch (error) {
             console.error("Error with updating route :(", error);
-            alert("Failed to update the route. ");
+            setToastMessage("Failed to update the route.");
+            setToastType("danger");
+            setShowToast(true);
         }
     };
 
@@ -253,6 +272,11 @@ const Wall = () => {
 
     return (
         <div>
+            {showToast && (
+                <div style={{ position: "fixed", top: 20, right: 20, zIndex: 9999 }}>
+                    <RouterToast message={toastMessage} type={toastType} />
+                </div>
+            )}
             {/* for icon buttons (credit below) */}
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <div className="header">

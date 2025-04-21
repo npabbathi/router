@@ -8,8 +8,9 @@ import { auth } from "../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import './review.css';
 import { db } from "../config/firebase";
-import {doc, updateDoc} from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
+import RouterToast from "../components/toast";
 
 import ReactImageAnnotate from "react-image-annotation";
 
@@ -21,7 +22,9 @@ const Review = () => {
     const [comments, setComments] = useState([]);
     const [commentText, setCommentText] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
-
+    const [toastMessage, setToastMessage] = useState("");
+    const [toastType, setToastType] = useState("success");
+    const [showToast, setShowToast] = useState(false);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -34,6 +37,15 @@ const Review = () => {
 
         fetchRoute();
     }, []);
+
+
+    // shows toast on error or success
+    useEffect(() => {
+        if (showToast) {
+            const timer = setTimeout(() => setShowToast(false), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [showToast]);
 
     useEffect(() => {
         if (route && route.image) {
@@ -54,7 +66,9 @@ const Review = () => {
         e.preventDefault();
 
         if (!currentUser || !commentText) {
-            alert("You must be logged in and provide a comment.");
+            setToastMessage("Please provide a comment.");
+            setToastType("danger");
+            setShowToast(true);
             return;
         }
 
@@ -71,61 +85,68 @@ const Review = () => {
     if (!route) return <div>Route not found!</div>;
 
     return (
-        <div className="container review-container">
-            <div className="col image-section">
-            <div className="route-image">
-                {/* {image && <img src={image} alt="Route Image" className="route-image" />} */}
-                {route.isAnnotate &&  route.annotations?.length > 0 ? (
-                <ReactImageAnnotate 
-                    src={image} 
-                    annotations={route.annotations} 
-                    value={route.annotations}
-                    showAnnotations={true}
-                    // annotation={{ geometry: null, data: {} }}  // prevent 'undefined' errors
-                    onChange={() => {}}  // dummy function to suppress errors
-                    onSubmit={() => {}}  // another dummy function
-                />
-                ) : (
-                <img 
-                    src={image} 
-                    alt="Route Preview" 
-                />
-                )}
+        <div>
+            {showToast && (
+                <div style={{ position: "fixed", top: 20, right: 20, zIndex: 9999 }}>
+                    <RouterToast message={toastMessage} type={toastType} />
                 </div>
-            </div>
-            <div className="col review-col">
-                <div className="details-section">
-                    <div className="navbar title">ROUTE INFORMATION</div>
-                    <ReviewCard
-                        name={route.name}
-                        grade={route.grade}
-                        incline={route.incline}
-                        description={route.description}
-                        notes={route.notes}
-                        timestamp={route.timestamp}
-                    />
-                </div>
-                <div className="comments-section">
-                    <div className="title">
-                        <div className="navbar">COMMENTS</div>
+            )}
+            <div className="container review-container">
+                <div className="col image-section">
+                    <div className="route-image">
+                        {/* {image && <img src={image} alt="Route Image" className="route-image" />} */}
+                        {route.isAnnotate && route.annotations?.length > 0 ? (
+                            <ReactImageAnnotate
+                                src={image}
+                                annotations={route.annotations}
+                                value={route.annotations}
+                                showAnnotations={true}
+                                // annotation={{ geometry: null, data: {} }}  // prevent 'undefined' errors
+                                onChange={() => { }}  // dummy function to suppress errors
+                                onSubmit={() => { }}  // another dummy function
+                            />
+                        ) : (
+                            <img
+                                src={image}
+                                alt="Route Preview"
+                            />
+                        )}
                     </div>
-                    {comments.length > 0 ? (
-                        comments.map((comment, index) => (
-                            <Comment key={index} username={comment.username} comment={comment.comment} className="comment" />
-                        ))
-                    ) : (
-                        <p>No comments yet!</p>
-                    )}
-                    <form onSubmit={handleAddComment} className="comment-form">
-                        <textarea
-                            placeholder="Add a comment..."
-                            value={commentText}
-                            onChange={(e) => setCommentText(e.target.value)}
-                            className="comment-input"
-                            required
+                </div>
+                <div className="col review-col">
+                    <div className="details-section">
+                        <div className="navbar title">ROUTE INFORMATION</div>
+                        <ReviewCard
+                            name={route.name}
+                            grade={route.grade}
+                            incline={route.incline}
+                            description={route.description}
+                            notes={route.notes}
+                            timestamp={route.timestamp}
                         />
-                        <button type="submit" className="comment-button">Add Comment</button>
-                    </form>
+                    </div>
+                    <div className="comments-section">
+                        <div className="title">
+                            <div className="navbar">COMMENTS</div>
+                        </div>
+                        {comments.length > 0 ? (
+                            comments.map((comment, index) => (
+                                <Comment key={index} username={comment.username} comment={comment.comment} className="comment" />
+                            ))
+                        ) : (
+                            <p>No comments yet!</p>
+                        )}
+                        <form onSubmit={handleAddComment} className="comment-form">
+                            <textarea
+                                placeholder="Add a comment..."
+                                value={commentText}
+                                onChange={(e) => setCommentText(e.target.value)}
+                                className="comment-input"
+                                required
+                            />
+                            <button type="submit" className="comment-button">Add Comment</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
