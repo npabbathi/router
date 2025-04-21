@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import AllCard from "../components/allCard";
 import "../components/routeProject.css"
-import { RouteActions } from "./routeActions"; 
+import { RouteActions } from "./routeActions";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../config/firebase";
+import { useNavigate } from "react-router-dom";
 
 // This file deals with displaying all of the routes in the firestore database to be used to go to the review page
 export const All = () => {
-    
+
     const { routesList } = RouteActions();
     const [routesWithUrls, setRoutesWithUrls] = useState([]);
+    const [searchInput, setSearchInput] = useState("");
+    const navigate = useNavigate();
+    const { route, getRouteByName } = RouteActions();
 
     useEffect(() => {
         const fetchImageUrls = async () => {
@@ -33,15 +37,31 @@ export const All = () => {
         };
 
         fetchImageUrls();
-    
-        }, [routesList, storage]);
+
+    }, [routesList, storage]);
+
+
+    const handleSearchKeyPress = async (e) => {
+        if (e.key === "Enter" && searchInput.trim() !== "") {
+            try {
+                const route = await getRouteByName(searchInput);
+                console.log(route);
+                navigate(`/review/${route.id}`);
+            } catch (error) {
+                console.error("Error finding route:", error);
+                alert("Error fetching route");
+            }
+        }
+    };
 
     return (
         <div>
             <div className="allCards">
+                <input className="all-search" type="text" placeholder="Search for a route by name" onChange={(e) => setSearchInput(e.target.value)}
+                    onKeyDown={handleSearchKeyPress}></input>
                 {routesWithUrls.map((route) => (
                     <div key={route.id}>
-                        <AllCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes = {route.notes} timestamp = {route.timestamp} id={route.id} can_delete={false} image={route.imageUrl} annotations = {route.annotations} isAnnotate = {route.isAnnotate}/>
+                        <AllCard name={route.name} grade={route.grade} incline={route.incline} description={route.description} notes={route.notes} timestamp={route.timestamp} id={route.id} can_delete={false} image={route.imageUrl} annotations={route.annotations} isAnnotate={route.isAnnotate} />
                     </div>
                 ))}
             </div>

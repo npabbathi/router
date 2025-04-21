@@ -34,7 +34,7 @@ export const RouteActions = () => {
     };
 
     const getRouteByName = async (routeName) => {
-        console.log(`Searching for route: ${routeName}`); // Log the search term
+        console.log(`Searching for route: "${routeName}"`); 
         const routeCollectionRef = collection(db, "routes");
         const q = query(routeCollectionRef, where("name", "==", routeName));
 
@@ -46,9 +46,9 @@ export const RouteActions = () => {
                     id: doc.id,
                 }));
                 const routeData = filteredData[0];
-                setRoute(routeData);
+                return routeData; 
             } else {
-                console.log(`No route found with name: "${routeName}"`); // Log no results
+                console.log(`No route found with name: "${routeName}"`); 
                 setRoute(null);
             }
         } catch (error) {

@@ -91,7 +91,7 @@ const Review = () => {
                     <RouterToast message={toastMessage} type={toastType} />
                 </div>
             )}
-            <div className="container review-container">
+            <div className="container">
                 <div className="col image-section">
                     <div className="route-image">
                         {/* {image && <img src={image} alt="Route Image" className="route-image" />} */}

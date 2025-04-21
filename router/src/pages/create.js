@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import RouterToast from "../components/toast";
+import ProgressBarComponent from "../components/progress";
 
 import { RouteActions } from "./routeActions"
 
@@ -35,6 +36,8 @@ const Info = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
   const [showToast, setShowToast] = useState(false);
+  const [progress, setProgress] = useState(33);
+  const stepLabel = "Step 1 of 3: Fill Out Route Info";  
 
   const annotationsInitial = location.state?.annotations || [];
   const [annotations, setAnnotations] = useState(annotationsInitial); // AC 
@@ -108,13 +111,13 @@ const Info = () => {
     try {
       //updates a route if they came from drafts
       if (isEditing) {
-        await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, image, comments: routeData.comments, coordinates: routeData.coordinates, wall: routeData.wall, color: routeData.color, annotations: annotations,isAnnotate: isAnnotate});
+        await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, image, comments: routeData.comments, coordinates: routeData.coordinates, wall: routeData.wall, color: routeData.color, annotations: annotations, isAnnotate: isAnnotate });
         navigate("/drafts")
         setToastMessage("Route updated in drafts!");
         setToastType("success");
         setShowToast(true);
       } else { //creates a new route if making it for the first time
-        await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image, comments: [], coordinates: { x: 0, y: 0 }, wall: "", color, annotations: annotations, isAnnotate: isAnnotate});
+        await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image, comments: [], coordinates: { x: 0, y: 0 }, wall: "", color, annotations: annotations, isAnnotate: isAnnotate });
         setSavedToDrafts(true);
         setToastMessage("Route added to drafts!");
         setToastType("success");
@@ -240,6 +243,7 @@ const Info = () => {
           <RouterToast message={toastMessage} type={toastType} />
         </div>
       )}
+      <ProgressBarComponent progress={progress} stepLabel={stepLabel} />
       <div className="button-row">
         <button type="button" onClick={prevPage} disabled={!isEditing} className="create-header-button">
           <i class="fa fa-arrow-left"></i>  Back
@@ -248,7 +252,7 @@ const Info = () => {
         <div>
           <button onClick={onSaveDraft} className="create-header-button" disabled={savedToDrafts}> <i class="fa fa-save"></i> Drafts</button>
           <button type="button" onClick={nextPage}> Next  <i class="fa fa-arrow-right"></i> </button>
-          </div>
+        </div>
       </div>
       <div className="create-container">
         <div className="row">

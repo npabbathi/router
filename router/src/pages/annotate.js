@@ -4,7 +4,7 @@ import "./annotate.css"
 import { Stage, Layer, Text, Circle, Image } from "react-konva";
 import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
-
+import ProgressBarComponent from "../components/progress";
 import { storage } from "../config/firebase";
 import { ref, uploadBytes, listAll, getDownloadURL, uploadString } from "firebase/storage";
 import ReactImageAnnotate from "react-image-annotation";
@@ -29,6 +29,8 @@ function ImageAnnotation() {
   const [annotation, setAnnotation] = useState({});
   const [scale, setScale] = useState(1); // Default zoom level
   const annotationRef = useRef();
+  const [progress, setProgress] = useState(66);
+  const stepLabel = "Step 2 of 3: Annotate Route";
 
   const onChange = (newAnnotation) => setAnnotation(newAnnotation);
 
@@ -100,6 +102,7 @@ function ImageAnnotation() {
 
   return (
     <div>
+      <ProgressBarComponent progress={progress} stepLabel={stepLabel} />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
       <div className="button-row annotate-button-row">
         <button type="button" disabled={true} className="create-header-button">
