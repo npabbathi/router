@@ -229,7 +229,8 @@ const Wall = () => {
             // once route is successfully published, refresh page
             navigate(`/map`, {
                 state: {
-                    isPlacingRoute: false
+                    isPlacingRoute: false,
+                    isRoutePublished: true
                 }
             });
         } catch (error) {
@@ -255,7 +256,8 @@ const Wall = () => {
             // once route is successfully published, refresh page
             navigate(`/map`, {
                 state: {
-                    isPlacingRoute: false
+                    isPlacingRoute: false,
+                    isRoutePublished : true
                 }
             });
         } catch (error) {
@@ -281,7 +283,8 @@ const Wall = () => {
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <div className="header">
                 <button type='button' className='back-button' onClick={prevPage}><i class="fa fa-arrow-left"></i>  Back</button>
-                <h1 className={`wall-header ${isPlacingRoute ? "placing-a-route-margin" : ""}`}><b>SELECT A ROUTE TO REVIEW</b></h1>
+            {!isPlacingRoute && (<h1 className={`wall-header ${isPlacingRoute ? "placing-a-route-margin" : ""}`}><b>SELECT A ROUTE TO REVIEW</b></h1>)}
+            {isPlacingRoute && (<h1 className={`wall-header ${isPlacingRoute ? "placing-a-route-margin" : ""}`}><b>PLACE</b> your route on the wall, and then <b>PUBLISH</b></h1>)}
                 {!isPlacingRoute && (<button type='button' className='button-and-label wall-button-and-label' onClick={toCreatePage} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}> + </button>)}
             </div>
             {isPlacingRoute && (

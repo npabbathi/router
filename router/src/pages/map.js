@@ -6,6 +6,8 @@ import ImageMapper from "react-img-mapper";
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import RouterToast from "../components/toast";
+
 
 // interactive areas/walls of the map
 const areas = [
@@ -126,9 +128,14 @@ const ClimbingMap = () => {
     const wall = location.state?.wall;
     const color = location.state?.color;
     const id = location.state?.id;
+    const isRoutePublished = location.state?.isRoutePublished;
 
     const annotations = location.state?.annotations;  // AC: TESTING
     const isAnnotate = location.state?.isAnnotate;
+
+    const [toastMessage, setToastMessage] = useState("");
+    const [toastType, setToastType] = useState("success");
+    const [showToast, setShowToast] = useState(false);
 
 
     // the methods below are related to the interactivity and resizing of the map
@@ -171,10 +178,30 @@ const ClimbingMap = () => {
         navigate(`/create`);
     }
 
+    useEffect(() => {
+        if (isRoutePublished) {
+            setToastMessage("Route successfully published!");
+            setToastType("success");
+            setShowToast(true);
+    
+            const timer = setTimeout(() => {
+                setShowToast(false);
+            }, 3000); // hide after 3s
+    
+            return () => clearTimeout(timer);
+        }
+    }, [isRoutePublished]);
+
     return (
         <div>
+            {showToast && (
+                <div style={{ position: "fixed", top: 20, right: 20, zIndex: 9999 }}>
+                    <RouterToast message={toastMessage} type={toastType} />
+                </div>
+            )}
             <div className="header">
-                <h1><b>SELECT A WALL</b></h1>
+                {!isPlacingRoute && (<h1><b>SELECT A WALL</b></h1>)}
+                {isPlacingRoute && (<h1>Now it's time to <b>PUBLISH</b> your route! Select a wall first</h1>)}
                 {!isPlacingRoute && (
                     <button className="button-and-label" type='button' onClick={toCreatePage} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}><b>+</b></button>
                 )}

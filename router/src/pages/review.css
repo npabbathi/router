@@ -94,3 +94,8 @@ textarea {
 button:hover {
     background: var(--accent-color);
 }
+
+.sc-dnqmqq{
+    display: none !important;
+}
+  

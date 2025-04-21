@@ -13,6 +13,8 @@ import { useParams } from "react-router-dom";
 import RouterToast from "../components/toast";
 
 import ReactImageAnnotate from "react-image-annotation";
+import { PointSelector } from 'react-image-annotation';
+
 
 const Review = () => {
     const { id } = useParams();
@@ -86,6 +88,13 @@ const Review = () => {
 
     return (
         <div>
+            <style>
+                {`
+                    .sc-dnqmqq{
+                        display: none !important;
+                    }
+                `}
+            </style>
             {showToast && (
                 <div style={{ position: "fixed", top: 20, right: 20, zIndex: 9999 }}>
                     <RouterToast message={toastMessage} type={toastType} />
