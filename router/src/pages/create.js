@@ -10,6 +10,8 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 import "./create.css"
 
+import ReactImageAnnotate from "react-image-annotation";
+
 
 // import { Stage, Layer, Text, Circle, Image as KonvaImage } from 'react-konva';
 // import useImage from 'use-image';
@@ -33,6 +35,10 @@ const Info = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
   const [showToast, setShowToast] = useState(false);
+
+  const annotationsInitial = location.state?.annotations || [];
+  const [annotations, setAnnotations] = useState(annotationsInitial); // AC 
+  const [isAnnotate, setAnnotate] = useState(false); 
 
   /* time stamp information */
   const now = new Date();
@@ -101,13 +107,13 @@ const Info = () => {
     try {
       //updates a route if they came from drafts
       if (isEditing) {
-        await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, image, comments: routeData.comments, coordinates: routeData.coordinates, wall: routeData.wall, color: routeData.color });
+        await onUpdateRoute({ id, name: routeName, grade, incline, description, notes, timestamp, image, comments: routeData.comments, coordinates: routeData.coordinates, wall: routeData.wall, color: routeData.color, annotations: annotations,isAnnotate: isAnnotate});
         navigate("/drafts")
         setToastMessage("Route updated in drafts!");
         setToastType("success");
         setShowToast(true);
       } else { //creates a new route if making it for the first time
-        await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image, comments: [], coordinates: { x: 0, y: 0 }, wall: "", color });
+        await onSubmitRoute({ name: routeName, grade, incline, description, notes, timestamp, image, comments: [], coordinates: { x: 0, y: 0 }, wall: "", color, annotations: annotations, isAnnotate: isAnnotate});
         setToastMessage("Route added to drafts!");
         setToastType("success");
         setShowToast(true);
