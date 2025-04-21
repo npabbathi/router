@@ -81,7 +81,7 @@ const Info = () => {
       return false;
     }
 
-    if (image === "") {
+    if (image === placeholder_image) {
       setToastMessage("Please upload an image before continuing!");
       setToastType("danger");
       setShowToast(true);
@@ -224,8 +224,7 @@ const Info = () => {
 
 
   return (
-    <div className="">
-      {/* for icon buttons (credit below) */}
+    <div>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
       {showToast && (
         <div style={{ position: "fixed", top: 20, right: 20, zIndex: 9999 }}>
@@ -233,15 +232,12 @@ const Info = () => {
         </div>
       )}
       <div className="button-row">
-        {isEditing && (
-          <button type="button" onClick={prevPage}>
-            <i class="fa fa-arrow-left"></i>  Back
-          </button>
-        )}
+        <button type="button" onClick={prevPage} disabled={!isEditing} className="create-back-button">
+          <i class="fa fa-arrow-left"></i>  Back
+        </button>
         <h1 className="title"> INSERT ROUTE INFORMATION </h1>
-        <div className="spacer" />
         <button type="button" onClick={nextPage}>
-        Next  <i class="fa fa-arrow-right"></i>
+          Next  <i class="fa fa-arrow-right"></i>
         </button>
       </div>
       <div className="container">
