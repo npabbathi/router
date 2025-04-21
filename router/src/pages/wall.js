@@ -257,9 +257,16 @@ const Wall = () => {
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <div className="header">
                 <button type='button' className='back-button' onClick={prevPage}><i class="fa fa-arrow-left"></i>  Back</button>
-                <h1 className="wall-header"><b>SELECT A ROUTE TO REVIEW</b></h1>
+                <h1 className={`wall-header ${isPlacingRoute ? "placing-a-route-margin" : ""}`}><b>SELECT A ROUTE TO REVIEW</b></h1>
                 {!isPlacingRoute && (<button type='button' className='button-and-label wall-button-and-label' onClick={toCreatePage} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}> + </button>)}
             </div>
+            {isPlacingRoute && (
+                <div className='submit-button-con'>
+                    <button type='button' className="publish-route" onClick={isFromDrafts ? onEditingRoute : onFinalPlaceRoute} disabled={circles.length === 0}>
+                        Publish Route
+                    </button>
+                </div>
+            )}
             <p className={`${isHovering ? "hover-cursor" : "unhover-cursor"} wall-tip`}>CREATE A NEW ROUTE</p>
             <div className="wall-con" ref={containerRef}>
                 {image && (
@@ -311,13 +318,6 @@ const Wall = () => {
                     </Stage>
                 )}
             </div>
-            {isPlacingRoute && (
-                <div className='submit-button-con'>
-                    <button type='button' className='submit-button' onClick={isFromDrafts ? onEditingRoute : onFinalPlaceRoute} disabled={circles.length === 0}>
-                        Publish Route
-                    </button>
-                </div>
-            )}
 
         </div>
     );

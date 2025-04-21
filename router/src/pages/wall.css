@@ -45,3 +45,18 @@ body {
 .wall-button-and-label {
     margin-right: auto !important;
 }
+
+.placing-a-route-margin {
+    margin-right: auto;
+}
+
+.publish-route:disabled {
+    background-color: white !important;
+    color: var(--secondary-color);
+    padding: 5px;
+}
+
+.publish-route {
+    margin-top: -10px !important;
+    margin-bottom: -10px !important;
+}
