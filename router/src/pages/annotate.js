@@ -57,6 +57,8 @@ function ImageAnnotation() {
   const wall = location.state?.wall;
   const color = location.state?.color;
   const id = location.state?.id;
+  const preselectWall = location.state?.preselectWall;
+
 
   /* image annotating information */
 
@@ -67,7 +69,9 @@ function ImageAnnotation() {
 
   const nextPage = () => {
     // console.log('ANNOTATIONS: ', annotations); 
-    navigate('/map', {
+    const nextRoute = preselectWall ? '/wall' : '/map';
+
+    navigate(nextRoute, {
       state:
       {
         isFromDrafts,
@@ -87,7 +91,8 @@ function ImageAnnotation() {
         color,
         id,
         annotations, // AC 
-        isAnnotate
+        isAnnotate,
+        preselectWall
       }
     });
   }

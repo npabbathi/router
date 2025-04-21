@@ -25,6 +25,7 @@ const Info = () => {
   const isEditing = location.state?.isEditing;
   const id = location.state?.id;
   const routeData = location.state?.routeData;
+  const preselectWall = location.state?.preselectWall;
 
   /* route information here */
   const [routeName, setRouteName] = useState("");
@@ -194,7 +195,8 @@ const Info = () => {
         coordinates: { x: 0, y: 0 },
         wall: "",
         color,
-        id
+        id,
+        preselectWall
       }
     });
   };
