@@ -10,7 +10,7 @@ const Wall = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const imageUrl = location.state?.imageUrl || params.get("image");
+    const imageUrl = location.state?.preselectWall || params.get("image");
     const [image] = useImage(imageUrl);
 
     const containerRef = useRef(null);
@@ -41,7 +41,6 @@ const Wall = () => {
     const color = location.state?.color;
     const placingColor = isFromDrafts ? routeData?.color : color;
     const id = location.state?.id;
-    const preselectWall = location.state?.preselectWall;
 
     const annotations = location.state?.annotations; // AC 
     const isAnnotate = location.state?.isAnnotate;
