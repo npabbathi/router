@@ -134,6 +134,7 @@ textarea {
 
 .incline-group input[type="range"] {
   width: 80%;
+  overflow: wrap;
   margin-right: 16px;
 }
 

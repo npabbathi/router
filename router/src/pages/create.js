@@ -266,7 +266,7 @@ const Info = () => {
           <div className="col">
             <form onSubmit={onSaveDraft} className="form-part" >
               <div className="form-group">
-                <label htmlFor="routeName">Route Name</label>
+                <label htmlFor="routeName">Route Name<span style={{ color: 'red' }}>*</span></label>
                 <input
                   id="routeName" type="text" value={routeName}
                   placeholder="Enter route name."
@@ -275,7 +275,7 @@ const Info = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="grade">Grade</label>
+                <label htmlFor="grade">Grade<span style={{ color: 'red' }}>*</span></label>
                 <div className="grade-buttons">
                   {Array.from({ length: 10 }, (_, i) => `V${i}`).map((gradeLabel) => (
                     <button
@@ -294,7 +294,7 @@ const Info = () => {
               </div>
 
               <div className="form-group incline-group">
-                <label htmlFor="incline">Wall Incline (Degrees)</label>
+                <label htmlFor="incline">Wall Incline (Degrees)<span style={{ color: 'red' }}>*</span></label>
                 <input id="inclineSlider" type="range" min="0" max="90" value={incline}
                   onChange={(e) => setIncline(Number(e.target.value))}
                 />
@@ -304,8 +304,8 @@ const Info = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="description">Description</label>
-                <textarea value={description} onChange={(e) => setDesc(e.target.value)}
+                <label htmlFor="description">Description<span style={{ color: 'red' }}>*</span></label>
+                <textarea required value={description} onChange={(e) => setDesc(e.target.value)}
                   placeholder="Enter information about your route – useful information includes the type of climb, whether there are specific climbers this route is oriented towards, and the length of time expected to complete the climb."
                 />
               </div>
