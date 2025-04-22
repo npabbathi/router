@@ -123,6 +123,11 @@ const Info = () => {
         setToastMessage("Route added to drafts!");
         setToastType("success");
         setShowToast(true);
+        navigate(`/drafts`, {
+          state: {
+            isDraftMade : true
+          }
+        });
       }
     } catch (error) {
       console.error("Error with saving route to draft :(", error);
