@@ -44,6 +44,16 @@
     background: none !important;
     border: none;
     color:black !important;
+    margin: 0px !important;
+    padding: none !important;
+}
+
+.trashButton {
+    margin: 0px !important;
+}
+
+.editButton {
+    margin: 0px !important;
 }
 
 .trashButton:hover {

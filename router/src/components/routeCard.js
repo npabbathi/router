@@ -36,10 +36,16 @@ export const RouteCard = ({ name, grade, incline, description, onDeleteRoute, on
             </div>
             <div className="titleInfo">
                 <h1>{name}</h1>
+            </div>
+            <div className="row">
+                <div className="col">
+                <h4>{grade} - {incline}º</h4>
+                </div>
+                <div className="col">
                 {can_modify && <button className="editButton" onClick={() => { onEditRoute(id, image) }}><i class="fa fa-pencil"></i></button>}
                 <button className="trashButton" onClick={() => { onDeleteRoute(id) }}><i class="fa fa-trash"></i></button>
             </div>
-            <h4>{grade} - {incline}º</h4>
+            </div>
         </div>
     )
 }

@@ -37,7 +37,7 @@ const Info = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("success");
   const [showToast, setShowToast] = useState(false);
-  const [progress, setProgress] = useState(33);
+  const [progress, setProgress] = useState(25);
   const stepLabel = "Step 1 of 3: Fill Out Route Info";  
 
   const annotationsInitial = location.state?.annotations || [];
@@ -306,7 +306,7 @@ const Info = () => {
               <div className="form-group">
                 <label htmlFor="description">Description</label>
                 <textarea value={description} onChange={(e) => setDesc(e.target.value)}
-                  placeholder="Enter route information."
+                  placeholder="Enter information about your route. Some useful informtation includes what type of climb you expect it to be and if there are specific climbers this route is oriented towards."
                 />
               </div>
 

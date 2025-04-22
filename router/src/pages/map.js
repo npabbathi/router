@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import RouterToast from "../components/toast";
-
+import ProgressBarComponent from "../components/progress";
 
 // interactive areas/walls of the map
 const areas = [
@@ -136,7 +136,8 @@ const ClimbingMap = () => {
     const [toastMessage, setToastMessage] = useState("");
     const [toastType, setToastType] = useState("success");
     const [showToast, setShowToast] = useState(false);
-
+    const [progress, setProgress] = useState(75);
+    const stepLabel = "Step 3 of 3: Place Your Route";
 
     // the methods below are related to the interactivity and resizing of the map
     const handleResize = () => {
@@ -183,11 +184,11 @@ const ClimbingMap = () => {
             setToastMessage("Route successfully published!");
             setToastType("success");
             setShowToast(true);
-    
+
             const timer = setTimeout(() => {
                 setShowToast(false);
             }, 3000); // hide after 3s
-    
+
             return () => clearTimeout(timer);
         }
     }, [isRoutePublished]);
@@ -199,6 +200,7 @@ const ClimbingMap = () => {
                     <RouterToast message={toastMessage} type={toastType} />
                 </div>
             )}
+            {isPlacingRoute && <ProgressBarComponent progress={progress} stepLabel={stepLabel} />}
             <div className="header">
                 {!isPlacingRoute && (<h1><b>SELECT A WALL</b></h1>)}
                 {isPlacingRoute && (<h1>Now it's time to <b>PUBLISH</b> your route! Select a wall first</h1>)}

@@ -7,7 +7,7 @@ const ProgressBarComponent = ({ progress, stepLabel }) => {
       <ProgressBar
         now={progress}
         label={stepLabel}
-        variant={progress < 34 ? 'primary' : progress < 67 ? 'secondary' : 'success'}
+        variant={progress < 26 ? 'primary' : progress < 51 ? 'secondary' : 'success'}
       />
     </div>
   );
