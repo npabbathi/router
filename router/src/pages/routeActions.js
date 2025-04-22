@@ -34,7 +34,7 @@ export const RouteActions = () => {
     };
 
     const getRouteByName = async (routeName) => {
-        console.log(`Searching for route: "${routeName}"`); 
+        console.log(`Searching for route: "${routeName}"`);
         const routeCollectionRef = collection(db, "routes");
         const q = query(routeCollectionRef, where("name", "==", routeName));
 
@@ -46,9 +46,9 @@ export const RouteActions = () => {
                     id: doc.id,
                 }));
                 const routeData = filteredData[0];
-                return routeData; 
+                return routeData;
             } else {
-                console.log(`No route found with name: "${routeName}"`); 
+                console.log(`No route found with name: "${routeName}"`);
                 setRoute(null);
             }
         } catch (error) {
@@ -85,7 +85,7 @@ export const RouteActions = () => {
     /**
      * uses the current information the user has filled to create a new route to store in the database
      */
-    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp, image, comments, coordinates, wall, color, annotations, isAnnotate}) => {
+    const onSubmitRoute = async ({ name, grade, incline, description, notes, timestamp, image, comments, coordinates, wall, color, annotations, isAnnotate }) => {
         console.log("I AM CREATING A ROUTE")
         try {
             const routeCreator = onAuthStateChanged(auth, async (user) => {
@@ -123,7 +123,7 @@ export const RouteActions = () => {
     /**
      * uses the current information the user has filled to update an existing route in the database
      */
-    const onUpdateRoute = async ({ id, name, grade, incline, description, notes, timestamp, image, comments, coordinates, wall, color, annotations, isAnnotate}) => {
+    const onUpdateRoute = async ({ id, name, grade, incline, description, notes, timestamp, image, comments, coordinates, wall, color, annotations, isAnnotate }) => {
         try {
             const routeRef = doc(db, "routes", id);
             await updateDoc(routeRef, {
@@ -137,7 +137,7 @@ export const RouteActions = () => {
                 comments,
                 coordinates,
                 wall,
-                color, 
+                color,
                 annotations, // AC
                 isAnnotate
             })
