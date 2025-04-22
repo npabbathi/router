@@ -306,7 +306,7 @@ const Info = () => {
               <div className="form-group">
                 <label htmlFor="description">Description</label>
                 <textarea value={description} onChange={(e) => setDesc(e.target.value)}
-                  placeholder="Enter information about your route. Some useful informtation includes what type of climb you expect it to be and if there are specific climbers this route is oriented towards."
+                  placeholder="Enter information about your route – useful information includes the type of climb, whether there are specific climbers this route is oriented towards, and the length of time expected to complete the climb."
                 />
               </div>
 

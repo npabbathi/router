@@ -29,7 +29,7 @@ function ImageAnnotation() {
   const [annotation, setAnnotation] = useState({});
   const [scale, setScale] = useState(1); // Default zoom level
   const annotationRef = useRef();
-  const [progress, setProgress] = useState(50);
+  const [progress, setProgress] = useState(66);
   const stepLabel = "Step 2 of 3: Annotate Route";
 
   const onChange = (newAnnotation) => setAnnotation(newAnnotation);
@@ -114,8 +114,10 @@ function ImageAnnotation() {
           <i class="fa fa-arrow-left"></i>  Back
         </button>
         <h1 className="annotate-header"><b>ANNOTATE YOUR ROUTE</b></h1>
+        
         <button onClick={nextPage}> Next  <i class="fa fa-arrow-right"></i> </button>
       </div>
+      <h3 className="annotate-description"><b> Click and Drag to Annotate </b></h3>
       <div className="image-annotation-wrapper">
         <div className="zoom-buttons">
           <button className="zoom-button" onClick={zoomOut}>-</button>
@@ -157,4 +159,4 @@ function ImageAnnotation() {
   );
 }
 
-export default ImageAnnotation;
+export default ImageAnnotation; 
