@@ -1,7 +1,8 @@
 import React from "react";
 
 const InclineVisual = ({ angle }) => {
-  const θ = Math.max(0, Math.min(angle, 90));
+  const top = 90 - angle;
+  const θ = Math.max(0, Math.min(top, 90));
   const rad = (θ * Math.PI) / 180;
 
   const baseX = 20;
@@ -42,7 +43,7 @@ const InclineVisual = ({ angle }) => {
       )}
 
       <text x={baseX + 20} y={baseY - 20} fontSize="12" fill="black">
-        {θ}°
+        {angle}°
       </text>
     </svg>
   );
