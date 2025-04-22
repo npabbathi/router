@@ -25,7 +25,7 @@ export const AllCard = ({ name, grade, incline, description, id, notes, timestam
                             {isHovering &&
                                 <div className="overText">
                                     <p> {name} </p>
-                                    <p3> {timestamp} </p3>
+                                    <p3> {grade} </p3>
                                 </div>
                             }
                         </div>
