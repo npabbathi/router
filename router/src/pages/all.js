@@ -5,6 +5,7 @@ import { RouteActions } from "./routeActions";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../config/firebase";
 import { useNavigate } from "react-router-dom";
+import RouterToast from "../components/toast";
 
 // This file deals with displaying all of the routes in the firestore database to be used to go to the review page
 export const All = () => {
@@ -14,6 +15,9 @@ export const All = () => {
     const [searchInput, setSearchInput] = useState("");
     const navigate = useNavigate();
     const { route, getRouteByName } = RouteActions();
+    const [toastMessage, setToastMessage] = useState("");
+    const [toastType, setToastType] = useState("success");
+    const [showToast, setShowToast] = useState(false);
 
     useEffect(() => {
         const fetchImageUrls = async () => {
@@ -49,13 +53,27 @@ export const All = () => {
                 navigate(`/review/${route.id}`);
             } catch (error) {
                 console.error("Error finding route:", error);
-                alert("Error fetching route");
+                setToastMessage("Could not find route.");
+                setToastType("danger");
+                setShowToast(true);
             }
         }
     };
 
+    useEffect(() => {
+        if (showToast) {
+            const timer = setTimeout(() => setShowToast(false), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [showToast]);
+
     return (
         <div>
+            {showToast && (
+                <div style={{ position: "fixed", top: 20, right: 20, zIndex: 9999 }}>
+                    <RouterToast message={toastMessage} type={toastType} />
+                </div>
+            )}
             <div className="allCards">
                 <input className="all-search" type="text" placeholder="Search for a route by name" onChange={(e) => setSearchInput(e.target.value)}
                     onKeyDown={handleSearchKeyPress}></input>

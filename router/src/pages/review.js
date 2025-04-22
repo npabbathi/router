@@ -87,7 +87,7 @@ const Review = () => {
     if (!route) return <div>Route not found!</div>;
 
     return (
-        <div>
+        <div style={{ marginTop: '50px' }}>
             <style>
                 {`
                     .sc-dnqmqq{
@@ -100,65 +100,69 @@ const Review = () => {
                     <RouterToast message={toastMessage} type={toastType} />
                 </div>
             )}
-            <div className="container">
-                <div className="col image-section">
-                    <div className="route-image">
-                        {/* {image && <img src={image} alt="Route Image" className="route-image" />} */}
-                        {route.isAnnotate && route.annotations?.length > 0 ? (
-                            <ReactImageAnnotate
-                                src={image}
-                                annotations={route.annotations}
-                                value={route.annotations}
-                                showAnnotations={true}
-                                // annotation={{ geometry: null, data: {} }}  // prevent 'undefined' errors
-                                onChange={() => { }}  // dummy function to suppress errors
-                                onSubmit={() => { }}  // another dummy function
-                            />
-                        ) : (
-                            <img
-                                src={image}
-                                alt="Route Preview"
-                            />
-                        )}
-                    </div>
-                </div>
-                <div className="col review-col">
-                    <div className="details-section">
-                        <div className="navbar title">ROUTE INFORMATION</div>
-                        <ReviewCard
-                            name={route.name}
-                            grade={route.grade}
-                            incline={route.incline}
-                            description={route.description}
-                            notes={route.notes}
-                            timestamp={route.timestamp}
-                        />
-                    </div>
-                    <div className="comments-section">
-                        <div className="title">
-                            <div className="navbar">COMMENTS</div>
+            <div className="container" style={{ border: 'none', marginBottom: '50px' }}>
+                <div className="row" style={{ border: 'none' }}>
+                    <div className="col-5 review-col-1 image-section">
+                        <div className="route-image">
+                            {/* {image && <img src={image} alt="Route Image" className="route-image" />} */}
+                            {route.isAnnotate && route.annotations?.length > 0 ? (
+                                <ReactImageAnnotate
+                                    src={image}
+                                    annotations={route.annotations}
+                                    value={route.annotations}
+                                    showAnnotations={true}
+                                    // annotation={{ geometry: null, data: {} }}  // prevent 'undefined' errors
+                                    onChange={() => { }}  // dummy function to suppress errors
+                                    onSubmit={() => { }}  // another dummy function
+                                />
+                            ) : (
+                                <img
+                                    src={image}
+                                    alt="Route Preview"
+                                />
+                            )}
                         </div>
-                        {comments.length > 0 ? (
-                            comments.map((comment, index) => (
-                                <Comment key={index} username={comment.username} comment={comment.comment} className="comment" />
-                            ))
-                        ) : (
-                            <p>No comments yet!</p>
-                        )}
-                        <form onSubmit={handleAddComment} className="comment-form">
-                            <textarea
-                                placeholder="Add a comment..."
-                                value={commentText}
-                                onChange={(e) => setCommentText(e.target.value)}
-                                className="comment-input"
-                                required
+                    </div>
+                    <div className="col-7 review-col-2">
+                        <div className="details-section">
+                            <div className="navbar title">ROUTE INFORMATION</div>
+                            <ReviewCard
+                                name={route.name}
+                                grade={route.grade}
+                                incline={route.incline}
+                                description={route.description}
+                                notes={route.notes}
+                                timestamp={route.timestamp}
                             />
-                            <button type="submit" className="comment-button">Add Comment</button>
-                        </form>
+                        </div>
+                        <div className="comments-section">
+                            <div className="title">
+                                <div className="navbar">COMMENTS</div>
+                            </div>
+                            {comments.length > 0 ? (
+                                comments.map((comment, index) => (
+                                    <Comment key={index} username={comment.username} comment={comment.comment} className="comment" />
+                                ))
+                            ) : (
+                                <p>No comments yet!</p>
+                            )}
+                            <form onSubmit={handleAddComment} className="comment-form">
+                                <textarea
+                                    placeholder="Add a comment..."
+                                    value={commentText}
+                                    onChange={(e) => setCommentText(e.target.value)}
+                                    className="comment-input"
+                                    required
+                                />
+                                <div className="button-comment">
+                                    <button type="submit" className="comment-button">Add Comment</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

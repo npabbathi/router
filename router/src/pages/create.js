@@ -290,7 +290,7 @@ const Info = () => {
 
               <div className="form-group incline-group">
                 <label htmlFor="incline">Wall Incline (Degrees)</label>
-                <input id="inclineSlider" type="range" min="0" max="180" value={incline}
+                <input id="inclineSlider" type="range" min="0" max="90" value={incline}
                   onChange={(e) => setIncline(Number(e.target.value))}
                 />
                 <input id="incline" type="number" value={incline}
