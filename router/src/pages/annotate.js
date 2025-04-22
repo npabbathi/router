@@ -29,7 +29,7 @@ function ImageAnnotation() {
   const [annotation, setAnnotation] = useState({});
   const [scale, setScale] = useState(1); // Default zoom level
   const annotationRef = useRef();
-  const [progress, setProgress] = useState(66);
+  const [progress, setProgress] = useState(51);
   const stepLabel = "Step 2 of 3: Annotate Route";
 
   const onChange = (newAnnotation) => setAnnotation(newAnnotation);
